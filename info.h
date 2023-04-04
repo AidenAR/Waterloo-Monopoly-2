@@ -2,8 +2,9 @@
 #define INFO_H
 
 #include <string>
+#include "player.h"
+
 class Reply;
-class Player;
 
 // Only non-ownable properties will use this object; ownable should use OInfo.
 struct Info {

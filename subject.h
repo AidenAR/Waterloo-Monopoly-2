@@ -1,9 +1,9 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
-class Observer;
+template <typename InfoType, typename StateType> class Observer;
 
-template <InfoType, StateType> class Subject {
+template <typename InfoType, typename StateType> class Subject {
     protected:
     void setState(StateType newS);
     public:
