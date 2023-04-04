@@ -14,7 +14,7 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
-
+#include "AcademicBuildings.h"
 
 class Player : public Subject<Info, State> {
     char pieceName;
