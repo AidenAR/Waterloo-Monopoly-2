@@ -65,6 +65,7 @@ vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
 }
 
 
+
 class Player : public Subject<Info, State> {
     char pieceName;
     const int StartingMoney = 1500;

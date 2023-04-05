@@ -16,7 +16,7 @@
 #include <unordered_map>
 #include "AcademicBuildings.h"
 
-class Player : public Subject<Info, State> {
+class Player : public Subject<Info, State> , public Observer<Info, State>{
     char pieceName;
     const int startingMoney = 1500;
     std::string playerName;
@@ -59,6 +59,7 @@ public:
     void printAssets();
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
-    void TimsJailTurns(); //Handles jail rolls as well as jail tur
+    void TimsJailTurns(); //Handles jail rolls as well as jail turn
+    void notify(Subject<Info, State> &whoFrom) override;
 };
 #endif //PLAYER_H
