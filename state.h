@@ -5,7 +5,7 @@
 // which will create a State object to characterize what kind of 
 
 
-enum class StateType{Purchase, Mortgage, Trade, Unmortgage, Bankrupt, PrevPosn};
+enum class StateType{Purchase, Mortgage, Trade, Unmortgage, Bankrupt, PrevPosn, Playing};
 
 class State{
     StateType type;

@@ -10,8 +10,10 @@ Player::Player(string playerName, char pieceName, int money, int rollRims, Cell 
     playerName{playerName}, pieceName{pieceName},
     money{startingMoney}, rollRims{rollRims},
     playerPosn{0}, numGyms{0}, numResidences{0},
-    jailTurns{0}, timsJail{false} {
+    jailTurns{0}, timsJail{false},
+    state{StateType::Playing, 0}{
 }
+
 
 char Player::getPieceName() {
     return pieceName;
@@ -50,17 +52,18 @@ bool Player::getTimsJail {
 
 int Player::getNumGyms {
     return numGyms;
-};
+}
 
 
 int Player::getNumResidences {
     return numResidences;
-};
+}
 
 
-vector<std::shared_ptr<Cell>> Player::getOwnedProperties {
+vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
+    return ownedProperties;
+}
 
-};
 
 class Player : public Subject<Info, State> {
     char pieceName;
@@ -74,7 +77,6 @@ class Player : public Subject<Info, State> {
              {"Health", 0}, {"Env", 0}, {"Sci1", 0},
              {"Sci2", 0}, {"Math", 0}};
 
-public:
 
 
     void addRollRims();
