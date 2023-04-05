@@ -11,7 +11,7 @@ struct Info {
     std::string cellName;
 };
 
-// Only ownable properties will use this object; non-ownable should use OInfo.
+// Only ownable properties will use this object; non-ownable should use Info.
 struct OInfo : public Info {
     Player *ownedBy;
     int improveCount;
