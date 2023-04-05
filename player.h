@@ -49,7 +49,7 @@ public:
     std::vector<std::shared_ptr<Cell>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
-    void rollMove(); //set Pos after Dice Roll
+    void rollMove(int num); //set Pos after Dice Roll
     void purchaseProperties(std::shared_ptr<Cell> c);
     void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
     void BuyProperties(std::shared_ptr<Cell> c);
