@@ -18,9 +18,10 @@
 
 class Player : public Subject<Info, State> {
     char pieceName;
+    const int startingMoney = 1500;
     std::string playerName;
     int money;
-    Cell playerPosn;
+    int playerPosn;
     std::vector<std::shared_ptr<Cell>> ownedProperties;
     std::unordered_map<std::string, int> FacultyMap =
             {{"Arts1", 0}, {"Arts2", 0}, {"Eng", 0},
@@ -32,9 +33,12 @@ class Player : public Subject<Info, State> {
     int rollRims;
     int jailTurns;
     std::vector<int> jailRolls;
+    State state;
 public:
+    Player(std::string playerName, char pieceName,
+           int money, int rollRims, Cell playerPosn);
     char getPieceName();
-    std::string playerName();
+    std::string getPlayerName();
     int getMoney();
     Cell getPlayerPosn();
     State getState();
