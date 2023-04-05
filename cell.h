@@ -13,7 +13,7 @@ class Cell: public Subject<Info, State>, public Observer<Info, State> {
     std::string name;
     public:
         Cell(std::string name);
-        virtual void notify(Subject<Info, State> &whoNotified) = 0;
+        virtual void notify(Subject<Info, State> *whoFrom) = 0;
         virtual Info getInfo() const = 0;
         void notifyObservers();
         std::string getName() const;

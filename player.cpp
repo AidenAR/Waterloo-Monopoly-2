@@ -3,8 +3,10 @@
 //
 
 #include "player.h"
-using namespace std;
 #include <string>
+#include <algorithm>
+
+using namespace std;
 #include <cstdlib>
 #include <iostream>
 
@@ -82,6 +84,16 @@ void Player::addRollRims() {
         cout << "Congrats! You won a Roll Up the Rim cup" << endl;
     }
 }
+vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
+    return ownedProperties;
+}
+
+// As this is a Player, we will only be notified by Cells, so Cells
+// contain data with their Info attribute; use accessors.
+// Do NOT call State accessors here.
+void notify(Subject<Info, State> *whoFrom) {
+    Info *info = whoFrom->getInfo();
+    string cellname = info->cellName;
 
 
 void Player::subtractRollRims() {
@@ -108,25 +120,6 @@ void Player::subFunds(int num) {
 void  Player::addFunds(int num) {
     money += num;
 }
-
-
-void Player::purchaseProperties(std::shared_ptr<Cell> c) {
-    Info prop = c.getInfo();
-    if (prop.ownedBy == None) {
-        //Pay
-        subFunds(int pop.price);
-
-        //Add to prop vector
-        ownedProperties.insert(ownedProperties.end(), c);
-
-        if (prop.cellName) == 
-    }
-
-
-}
-
-void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
-{}
 
 
 void Player::printAssets() {
@@ -164,6 +157,60 @@ int Player::playerAssetsWorth() {
     }
     return totalAssets;
 }
+
+
+    // for conveniance, specify typeof building
+    // vector<string> academicBuildings = {"AL","ML","ECH","PAS","HH","RCH","DWE","CPH""LHI","BMH","OPT","EV1","EV2","EV3","PHYS","B1","B2","EIT","ESC","C2","MC","DC"};
+    // vector<string> residences = {"MKV","UWP","V1","REV"};
+    // vector<string> gyms = {"PAC","CIF"};
+
+    if (OInfo *oinfo = dynamic_cast<OInfo*>(info)) {
+        // Ownable
+        if (AcademicBuildings *ab = dynamic_cast<AcademicBuildings *>(whoFrom)) {
+            // Academic building
+        } else if (Residences *r = dynamic_cast<Residences *>(whoFrom)) {
+            // Residences
+        } else if (Gyms *g = dynamic_cast<Gyms *>(whoFrom)) {
+            // Gyms
+        }
+    } else {
+        // Non-ownable
+        if (cellName == "OCollectOsapSAP") {
+
+        } else if (cellName == "DcTimsLine") {
+
+        } else if (cellName == "GoToTims") {
+
+        } else if (cellName == "CoopFee") {
+
+        } else if (cellName == "Tuiton") {
+
+        } else if (cellName == "SLC") {
+
+        } else if (cellName == "NeedlesHall") {
+
+        }
+    }
+}
+void Player::purchaseProperties(std::shared_ptr<Cell> c) {
+    Info prop = c.getInfo();
+    if (prop.ownedBy == None) {
+        //Pay
+        subFunds(int pop.price);
+
+        //Add to prop vector
+        ownedProperties.insert(ownedProperties.end(), c);
+
+        if (prop.cellName) ==
+    }
+
+
+}
+
+void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
+{}
+
+
 
 
 
