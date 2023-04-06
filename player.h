@@ -51,7 +51,7 @@ public:
     void subtractRollRims();
     void rollMove(int num); //set Pos after Dice Roll
     void purchaseProperties(std::shared_ptr<Cell> c);
-    void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
+    void SellProperties(Player& new_owner, std::shared_ptr<Cell> c);
     void BuyProperties(std::shared_ptr<Cell> c);
     void addFunds(int num);
     void subFunds(int num);
@@ -59,7 +59,8 @@ public:
     void printAssets();
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
-    void TimsJailTurns(); //Handles jail rolls as well as jail turn
+    void TimsJailCell(Player& p); //Handles jail rolls as well as jail turn
+    void setJailTurns(int j);
     void notify(Subject<Info, State> &whoFrom) override;
 };
 #endif //PLAYER_H

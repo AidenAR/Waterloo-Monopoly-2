@@ -71,7 +71,20 @@ public:
     void unMortgage() override;
     void notify(Subject<Info, State> &whoNotified) override;
     bool partMonopoly() override;
+    std::string getFacultyName();
 };
 
 
 #endif //ACADEMICBUILDINGS_H
+
+
+
+//Note:
+std::string getFacultyName(const std::string& buildingName,
+                           const std::map<std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>>& buildings) {
+    auto it = buildings.find(buildingName);
+    if (it != buildings.end()) {
+        return std::get<0>(it->second);
+    }
+    return "Building not found.";
+}
