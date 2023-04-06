@@ -266,8 +266,6 @@ void Player::setJailTurns(int j) {
 }
 
 
-
-void setJailTurns(int j);
 void Player::TimsJailCell(Player& p) {
     // Check if the player is currently in jail
     if (p.timsJail) {
