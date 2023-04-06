@@ -302,5 +302,6 @@ void Player::TimsJailCell(Player& p) {
     } else {
         // Player is not in jail
         p.timsJail = false;
+        p.setJailTurns(0);
     }
 }
