@@ -16,9 +16,9 @@ Player::Player(string playerName, char pieceName, int money, int rollRims, Cell 
     money{startingMoney}, rollRims{rollRims},
     playerPosn{0}, numGyms{0}, numResidences{0},
     jailTurns{0}, timsJail{false},
-    state{StateType::Playing, 0}{
+    state{StateType::Playing, 0} {
+    vector<int> jailRolls{0}
 }
-
 
 char Player::getPieceName() {
     return pieceName;
@@ -84,17 +84,6 @@ void Player::addRollRims() {
         cout << "Congrats! You won a Roll Up the Rim cup" << endl;
     }
 }
-vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
-    return ownedProperties;
-}
-
-// As this is a Player, we will only be notified by Cells, so Cells
-// contain data with their Info attribute; use accessors.
-// Do NOT call State accessors here.
-void notify(Subject<Info, State> *whoFrom) {
-    Info *info = whoFrom->getInfo();
-    string cellname = info->cellName;
-
 
 void Player::subtractRollRims() {
     rollRims = rollRims > 0 ?  rollRims-- : 0;
@@ -121,58 +110,24 @@ void  Player::addFunds(int num) {
     money += num;
 }
 
-
-void Player::printAssets() {
-    cout << "Name: " << playerName << endl;
-    cout << "Character: " << pieceName << endl;
-
-    //Money
-    if (getState().type != StateType::Bankrupt) {
-        cout << cout << "Money: $" << money << endl;
-    } else {
-        cout << "Money: " << playerName << " is Bankrupt!" << endl;
-    }
-
-    //Roll up rim cups
-    if (rollRims > 0) {
-        cout << "Number Roll up Rim Cups: " << rollRims << endl;
-    }
-
-    //properties owned
-    for (auto &cell: ownedProperties) {
-        cout << "Property: " << cell.getInfo().cellName << " : $" << cell.getInfo().price << endl;
-    }
+vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
+    return ownedProperties;
 }
 
-
-//Deals with bankrupt
-int Player::playerAssetsWorth() {
-    int totalAssets = 0;
-    for (auto &cell: ownedProperties) {
-        totalAssets += cell.getInfo().price;
-    }
-    totalAssets += money;
-    if (money <= 0) {
-        SetState{StateType::Bankrupt};
-    }
-    return totalAssets;
-}
-
-
+// As this is a Player, we will only be notified by Cells, so Cells
+// contain data with their Info attribute; use accessors.
+// Do NOT call State accessors here.
+void Player::notify(Subject<Info, State> *whoFrom) {
+    Info info = whoFrom->getInfo();
+    string cellname = info->cellName;
     // for conveniance, specify typeof building
     // vector<string> academicBuildings = {"AL","ML","ECH","PAS","HH","RCH","DWE","CPH""LHI","BMH","OPT","EV1","EV2","EV3","PHYS","B1","B2","EIT","ESC","C2","MC","DC"};
     // vector<string> residences = {"MKV","UWP","V1","REV"};
     // vector<string> gyms = {"PAC","CIF"};
 
-    if (OInfo *oinfo = dynamic_cast<OInfo*>(info)) {
+    if (info.ownable) {
         // Ownable
-        if (AcademicBuildings *ab = dynamic_cast<AcademicBuildings *>(whoFrom)) {
-            // Academic building
-        } else if (Residences *r = dynamic_cast<Residences *>(whoFrom)) {
-            // Residences
-        } else if (Gyms *g = dynamic_cast<Gyms *>(whoFrom)) {
-            // Gyms
-        }
+        
     } else {
         // Non-ownable
         if (cellName == "OCollectOsapSAP") {
@@ -192,23 +147,110 @@ int Player::playerAssetsWorth() {
         }
     }
 }
-void Player::purchaseProperties(std::shared_ptr<Cell> c) {
-    Info prop = c.getInfo();
-    if (prop.ownedBy == None) {
-        //Pay
-        subFunds(int pop.price);
 
-        //Add to prop vector
-        ownedProperties.insert(ownedProperties.end(), c);
+void Player::printAssets() {
+    cout << "Name: " << playerName << endl;
+    cout << "Character: " << pieceName << endl;
 
-        if (prop.cellName) ==
+    //Money
+    // if (getState().type != StateType::Bankrupt) {
+    //     cout << cout << "Money: $" << money << endl;
+    // } else {
+    //     cout << "Money: " << playerName << " is Bankrupt!" << endl;
+    // }
+    //@aiden
+
+    //Roll up rim cups
+    if (rollRims > 0) {
+        cout << "Number Roll up Rim Cups: " << rollRims << endl;
     }
 
-
+    //properties owned
+    for (auto &cell: ownedProperties) {
+        cout << "Property: " << cell.getInfo().cellName << " : $" << cell.getInfo().price << endl;
+    }
 }
 
-void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
-{}
+//Deals with bankrupt
+int Player::playerAssetsWorth() {
+    int totalAssets = 0;
+    for (auto &cell: ownedProperties) {
+        totalAssets += cell.getInfo().price;
+    }
+    totalAssets += money;
+    // if (money <= 0) {
+    //     SetState{StateType::Bankrupt};
+    // }
+    //@aiden
+    return totalAssets;
+}
+
+
+// this function is called when:
+// 1. Player has enough money to purchase
+// 2. Cell is unowned
+// 3. Call fn after we have notofied cell that it is being purchased, and cell reponded with "successful" purchase reply.
+void Player::purchaseProperties(std::shared_ptr<Cell> c) {
+    Info oprop = c->getInfo();
+
+    if (oprop.ownable) {
+        if (oprop->ownedBy == nullptr) {
+            // Pay
+            subFunds(oprop.price);
+
+            // Add to prop vector
+            ownedProperties.push_back(c);
+
+            // Increment counter based on property type
+            if (oprop.otype == OwnableType::Gym) {
+                numGyms++;
+            } else if (oprop.otype == OwnableType::Residence) {
+                numResidences++;
+            } else if (oprop.otype == OwnableType::Academic) {
+
+                // Update FacultyMap
+                auto academic = dynamic_cast<AcademicBuildings*>(c.get());
+                FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]++;
+            }
+        }
+    }
+}
+
+
+
+void Player::sellProperty(Player& new_owner, std::shared_ptr<Cell> c) {
+    auto oprop = std::dynamic_pointer_cast<OInfo>(c->getInfo());
+    if (oprop && oprop->ownedBy == this) {
+        // Transfer ownership
+        oprop->ownedBy = &new_owner;
+        new_owner.ownedProperties.push_back(c);
+
+        //Payment
+        new_owner.subFunds(oprop->price);
+
+        // Add funds to seller
+        addFunds(oprop->price);
+
+        // Remove from current owner's property vector
+        auto it = std::find(ownedProperties.begin(), ownedProperties.end(), c);
+        if (it != ownedProperties.end()) {
+            ownedProperties.erase(it);
+        }
+
+        // Decrement counter based on property type
+        if (dynamic_cast<Gym*>(c.get())) {
+            numGyms--;
+        } else if (dynamic_cast<Residences*>(c.get())) {
+            numResidences--;
+        } else if (auto academic = dynamic_cast<AcademicBuildings*>(c.get())) {
+            // Update FacultyMap
+            FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]--;
+
+            // Update new owner's FacultyMap
+            new_owner.FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]++;
+        }
+    }
+}
 
 
 

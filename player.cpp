@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 
-using namespace std
+using namespace std;
 #include <cstdlib>
 #include <iostream>
 
@@ -37,7 +37,7 @@ int Player::getMoney() {
 
 
 int Player::getPlayerPosn() {
-    return  playerPosn;
+    return playerPosn;
 }
 
 

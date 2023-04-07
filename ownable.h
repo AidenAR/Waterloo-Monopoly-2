@@ -22,7 +22,6 @@ public:
     virtual void mortgage() = 0;
     virtual void unMortgage() = 0;
     virtual void notify(Subject<Info, State> &whoNotified) = 0;
-    Info getInfo() const;
     virtual bool partMonopoly() = 0;
     void auction();
 };

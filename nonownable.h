@@ -9,7 +9,6 @@ class State;
 class NonOwnable: public Cell {
     public:
         virtual void notify(Subject<Info, State> &whoNotified) = 0;
-        Info getInfo() const;
 };
 
 #endif

@@ -4,18 +4,23 @@
 #include <string>
 #include "player.h"
 
-class Reply;
+enum OwnableType{Academic, Residence, Gym};
 
-// Only non-ownable properties will use this object; ownable should use OInfo.
 struct Info {
-    std::string cellName;
-};
+    // This is s general property. Use case is whenever player sends some notification to cell or tells it to do something, if task was successful we convey it through here. 
+    // eg, for Mortgage/Unmortgage,Trade,etc
+    bool wasSuccesful;
 
-// Only ownable properties will use this object; non-ownable should use Info.
-struct OInfo : public Info {
+    bool ownable;
+    std::string cellName;
+    int posn;
+
+    // Only ownable properties will use the following attributes; non-ownable should use just cellName and posn, and the Player obj decides what to do from there.
+    OwnableType otype;
     Player *ownedBy;
     int improveCount;
     int price;
+    bool isMortgaged = false;
 };
 
 #endif
