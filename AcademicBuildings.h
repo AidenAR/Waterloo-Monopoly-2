@@ -10,7 +10,7 @@
 #include "player.h"
 
 
-class AcademicBuildings: public Ownable{
+class AcademicBuildings: public Ownable {
 protected:
     std::map<std::string, std::tuple<std::string,
     int, int, int, int, int, int, int, int>> academic_buildings = {
@@ -74,11 +74,6 @@ public:
     std::string getFacultyName();
 };
 
-
-#endif //ACADEMICBUILDINGS_H
-
-
-
 //Note:
 std::string getFacultyName(const std::string& buildingName,
                            const std::map<std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>>& buildings) {
@@ -88,3 +83,5 @@ std::string getFacultyName(const std::string& buildingName,
     }
     return "Building not found.";
 }
+
+#endif //ACADEMICBUILDINGS_H

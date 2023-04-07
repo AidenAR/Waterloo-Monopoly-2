@@ -19,4 +19,3 @@ template <typename InfoType, typename StateType>
 void Subject<InfoType, StateType>::notifyObservers() {
   for (auto &ob : observers) ob->notify(*this);
 }
-
