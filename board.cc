@@ -48,11 +48,49 @@ bool Board::findinVector(vector<string> v, string s) {
 }
 
 void Board::initializeCells() {
-    Cells.emplace_back(make_shared<CollectOsap>(this, "Collect OSAP", 0));
+    Cells.emplace_back(make_shared<CollectOsap>(this, "COLLECT OSAP", 0));
     Cells.emplace_back(make_shared<Property>(this, "AL", 1));
     Cells.emplace_back(make_shared<Slc>(this, "SLC", 2));
-    // finish the rest of the cells
-
+    Cells.emplace_back(make_shared<Property>(this, "ML", 3));
+    Cells.emplace_back(make_shared<Tuition>(this, "TUITION", 4));
+    Cells.emplace_back(make_shared<Residences>(this, "MKV", 5));
+    Cells.emplace_back(make_shared<Property>(this, "ECH", 6));
+    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 7));
+    Cells.emplace_back(make_shared<Property>(this, "PAS", 8));
+    Cells.emplace_back(make_shared<Property>(this, "HH", 9));
+    Cells.emplace_back(make_shared<DCTimsLine>(this, "DC TIMS LINE", 10));
+    Cells.emplace_back(make_shared<Property>(this, "RCH", 11));
+    Cells.emplace_back(make_shared<gyms>(this, "PAC", 12));
+    Cells.emplace_back(make_shared<Property>(this, "DWE", 13));
+    Cells.emplace_back(make_shared<Property>(this, "CPH", 14));
+    Cells.emplace_back(make_shared<Residences>(this, "UWP", 15));
+    Cells.emplace_back(make_shared<Property>(this, "LHI", 16));
+    Cells.emplace_back(make_shared<Slc>(this, "SLC", 17));
+    Cells.emplace_back(make_shared<Property>(this, "BMH", 18));
+    Cells.emplace_back(make_shared<Property>(this, "OPT", 19));
+    Cells.emplace_back(make_shared<Goose>(this, "GOOSE NESTING", 20));
+    Cells.emplace_back(make_shared<Property>(this, "EV1", 21));
+    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 22));
+    Cells.emplace_back(make_shared<Property>(this, "EV2", 23));
+    Cells.emplace_back(make_shared<Property>(this, "EV3", 24));
+    Cells.emplace_back(make_shared<Residences>(this, "V1", 25));
+    Cells.emplace_back(make_shared<Property>(this, "PHYS", 26));
+    Cells.emplace_back(make_shared<Property>(this, "B1", 27));
+    Cells.emplace_back(make_shared<gyms>(this, "CIF", 28));
+    Cells.emplace_back(make_shared<Property>(this, "B2", 29));
+    Cells.emplace_back(make_shared<GoToTims>(this, "GO TO TIMS", 30));
+    Cells.emplace_back(make_shared<Property>(this, "EIT", 31));
+    Cells.emplace_back(make_shared<Property>(this, "ESC", 32));
+    Cells.emplace_back(make_shared<Slc>(this, "SLC", 33));
+    Cells.emplace_back(make_shared<Property>(this, "C2", 34));
+    Cells.emplace_back(make_shared<Residences>(this, "REV", 35));
+    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 36));
+    Cells.emplace_back(make_shared<Property>(this, "MC", 37));
+    Cells.emplace_back(make_shared<CoopFee>(this, "COOP FEE", 38));
+    Cells.emplace_back(make_shared<Property>(this, "DC", 39));
+    for int(int i = 0; i < 39; i++) {
+        Cells[i]->attach(td);
+    }
 }
 
 void Board::init() {
