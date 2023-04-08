@@ -10,7 +10,6 @@ struct Info {
     // This is s general property. Use case is whenever player sends some notification to cell or tells it to do something, if task was successful we convey it through here. 
     // eg, for Mortgage/Unmortgage,Trade,etc
     bool wasSuccesful;
-
     bool ownable;
     std::string cellName;
     int posn;
