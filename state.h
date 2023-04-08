@@ -6,9 +6,7 @@
 
 // Purchase:
 // Player initially lands on Cell, Cell responds with its Info object. Player can retrieve cell price and isOwned from that Info.
-// If player has enough money and decides to buy it, then send Purchase request. Cell responds with whether purchase successful or not.
-// if successful, call:
-// void Player::purchase(string proertyName)
+// If player has enough money and decides to buy it, then send Purchase request. 
 
 // Mortgage/Unmortgage:
 // Player specifies cellName that they want to be mortgaged/unmortgaged, and send Mortgage/Unmortgage notification.
@@ -17,7 +15,7 @@
 // which changes player values that store properties and players money
 
 // Trade:
-// Player specifies cellName they want to trade, and sets newOwner to Player who its being transfered to. 
+// Player specifies cellName they want to trade, and sets newOwner to Player who its being transferred to. 
 // Then, set StateType to SellTo. 
 // Cell responds with whether successful trade or not. if successful, update both Players by calling:
 // void Player::successfulTrade(string proertyName)
@@ -43,14 +41,15 @@
 // However, the fact player is moving means they dont have to collect rent when they just moving across cells. 
 // Thus, ownable cells dont do anything. Non-ownable however do sometimes react, ie, for collect-OSAP.
 // Just set playerPosn to new player posn, and StateType to Move. The cell which corrosponds to that posn will automatically respond back.
+// However, if we have to move 4 spots, the first  times we will send a "Move" notification, however, the 4th time, we send a "Landed" notification,
+// which means that is where the player has "Landed" after rolling. 
+// It is at this point Ownable cells will respond with stuff like tuition or wtvr.
 
+enum class StateType{Purchase, Mortgage, Unmortgage, SellTo, SellImprovement, Landed, Move, Playing};
 
-
-enum class StateType{Purchase, Mortgage, Unmortgage, SellTo, SellImprovement, Move, Playing};
-
-class State{
-    StateType type;
-    int playerPosn;
+struct State {
+    StateType type = StateType::Playing;
+    int playerPosn = 0;
     std::string cellName = "";
     Player *newOwner = nullptr;
 };
