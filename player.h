@@ -33,26 +33,27 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     int rollRims;
     int jailTurns;
     std::vector<int> jailRolls;
-    State state;
+    State state = State();
 public:
     Player(std::string playerName, char pieceName,
-           int money, int rollRims, Cell playerPosn);
+           int money, int rollRims, int playerPosn);
+
     char getPieceName();
     std::string getPlayerName();
     int getMoney();
-    Cell getPlayerPosn();
-    State getState();
+    int getPlayerPosn();
+    State *getState() const override;
+    void setState(State state) override;
     int getRollRims();
-    bool getTimsJail;
-    int getNumGyms;
-    int getNumResidences;
-    std::vector<std::shared_ptr<Cell>> getOwnedProperties();
+    bool getTimsJail();
+    int getNumGyms();
+    int getNumResidences();
+    std::vector<std::shared_ptr<Ownable>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
-    void rollMove(int num); //set Pos after Dice Roll
-    void purchaseProperties(std::shared_ptr<Cell> c);
+    void Player::moveForward(bool landed = false);
+    void Player::attemptBuyProperty(std::shared_ptr<Subject<Info, State>> whoFrom)
     void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
-    void BuyProperties(std::shared_ptr<Cell> c);
     void addFunds(int num);
     void subFunds(int num);
     void moveMoney();
@@ -60,6 +61,7 @@ public:
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
     void TimsJailTurns(); //Handles jail rolls as well as jail turn
-    void notify(Subject<Info, State> &whoFrom) override;
+
+    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
 #endif //PLAYER_H
