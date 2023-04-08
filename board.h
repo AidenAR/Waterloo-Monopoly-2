@@ -8,21 +8,6 @@ class Player;
 class Cell;
 
 class Board {
-<<<<<<< HEAD
-
-    const int OsapCell = 0;
-    const int TimsCell = 10;
-    const int goToTimsCell = 30;
-    const int maxPlayers = 8;
-    const int numCells = 40;
-
-    std::vector<Player> playerList;
-    //TextDisplay *td = nullptr; // The text display.
-    std::shared_ptr<TextDisplay> td; // The text display
-    std::vector<Cell> cellList; // The list of cells on the board
-=======
->>>>>>> ahmed-2
-
     const int OsapCell = 0;
     const int TimsCell = 10;
     const int goToTimsCell = 30;

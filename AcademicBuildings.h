@@ -8,12 +8,12 @@
 #include <unordered_map>
 #include "info.h"
 #include "player.h"
+#include <map>
 
 
 class AcademicBuildings: public Ownable {
-protected:
-    std::map<std::string, std::tuple<std::string,
-    int, int, int, int, int, int, int, int>> academic_buildings = {
+public:
+    std::map< std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>> academic_buildings = {
             //name,faculty,purch,improv,imp0,imp1,imp3,imp4,imp5
             //Arts 1
             {"AL", "Arts1", 40, 50, 2, 10, 30, 90, 160, 250},
@@ -53,7 +53,6 @@ protected:
             {"MC", "Math", 350, 200, 35, 175, 500, 1100, 1300, 1500},
             {"DC", "Math", 400, 200, 50, 200, 600, 1400, 1700, 2000}
     };
-public:
     const int NumArts1 = 2;
     const int NumArts3 = 3;
     const int NumEng = 3;
@@ -71,12 +70,12 @@ public:
     void unMortgage() override;
     void notify(Subject<Info, State> &whoNotified) override;
     bool partMonopoly() override;
-    std::string getFacultyName();
+    std::string getFacultyName(const std::string& buildingName, 
+                        const std::map<std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>>& buildings);
 };
 
-//Note:
-std::string getFacultyName(const std::string& buildingName,
-                           const std::map<std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>>& buildings) {
+std::string AcademicBuildings::getFacultyName(const std::string& buildingName,
+                        const std::map<std::string, std::tuple<std::string, int, int, int, int, int, int, int, int>>& buildings) {
     auto it = buildings.find(buildingName);
     if (it != buildings.end()) {
         return std::get<0>(it->second);
