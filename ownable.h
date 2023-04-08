@@ -25,6 +25,7 @@ public:
     virtual void notify(Subject<Info, State> &whoNotified) = 0;
     virtual bool partMonopoly() = 0;
     void auction();
+    void setOwner(Player *p);
 };
 
 #endif //OWNABLE_H

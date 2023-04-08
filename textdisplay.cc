@@ -3,17 +3,43 @@
 #include "board.h"
 #include <fstream>
 #include <string>
-
+#include <vector>
 using namespace std;
 
 class State;
+class Board;
+class Cell;
 
-void TextDisplay::updateDisplay(shared_ptr<Cell> cell, int r, int c) {
-    
+void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
+    int cordI = cell->getI();
+    int cordJ = cell->getJ();
+    int posn = cell->getPosn();
+    int playersOnCell = 0;
+    vector<char> players;
+    for (int i = 0; i < board.getPlayerList().size(); i++) {
+        if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
+            playersOnCell++;
+            players.emplace_back(board.getPlayerList()[i]->getPiece());
+        }
+    }
+    for (int i = 0; i < playersOnCell; i++) {
+        theDisplay[cordI + i + 1][cordJ] = players[i];
+    }
+}
+
+void TextDisplay::updateImprovement(shared_ptr<Cell> cell) {
+    int cordI = cell->getI();
+    int cordJ = cell->getJ();
+    int posn = cell->getPosn();
+    int improveLevel = cell->getInfo().improveCount;
+    for (int i = 0; i < improveLevel; i++) {
+        theDisplay[cordI + i + 1][cordJ + 3] = 'I';
+    }
+
 }
 
 
-TextDisplay::TextDisplay(): {
+TextDisplay::TextDisplay(Board &board): board{board} {
     ifstream board1("board.txt");
     string line;
     while (getline(board1, line)) {
@@ -26,8 +52,24 @@ TextDisplay::TextDisplay(): {
 }
 
 void TextDisplay::notify(Subject<Info, State> &whoNotified) {
-
+    Info info = whoNotified.getInfo();
+    string name = info.name;
+    int posn = info.posn;
+    int improveLevel = info.improveCount;
+    bool ownable = info.ownable;
+    shared_ptr<Cell> cell = board.getCell(posn);
+    // iteratre through players and find the player that is on the cell that notified
+    for (int i = 0; i < board.getPlayerList().size(); i++) {
+        if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
+            updatePlayerPosn(cell);
+        }
+    }
+    if (ownable && improveLevel > 0) {
+        updateImprovement(cell);
+    }
 }
+
+
 
 ostream &operator<<(ostream &out, const TextDisplay &td) {
     for (int i = 0; i < td.theDisplay.size(); i++) {

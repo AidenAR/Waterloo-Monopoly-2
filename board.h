@@ -28,9 +28,12 @@ class Board {
  public:
     ~Board();
 
+    std::vector<std::shared_ptr<Player>> getPlayerList();
+    shared_ptr<Cell> getCell(int i);
+
     void initializeCells();
     void init();
-    int rollDice();
+    vector<int> rollDice();
     Player *currentPlayer();
     void loadGame(std::string f);
     void saveGame(std::string f);

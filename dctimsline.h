@@ -6,7 +6,7 @@ template <typename InfoType, typename StateType> class Subject;
 
 class DCTimsLine: public NonOwnable {
     public:
-        void notify(Subject<Info, State> &whoNotified) override;
+        DCTimsLine(Board &board, std::string name, int pos, int i, int j);
 };
 
 #endif
