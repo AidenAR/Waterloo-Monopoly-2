@@ -25,6 +25,7 @@ public:
     Info getInfo() const;
     virtual bool partMonopoly() = 0;
     void auction();
+    void setOwner(Player *p);
 };
 
 #endif //OWNABLE_H

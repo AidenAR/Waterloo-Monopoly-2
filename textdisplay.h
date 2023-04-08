@@ -10,10 +10,12 @@ class Board;
 
 class TextDisplay: public Observer<Info, State> {
     std::vector<std::vector<char>> theDisplay;
-    void updateDisplay(shared_ptr<Cell> cell, int r, int c);
+    Board &board;
+    void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell);
+    void TextDisplay::updateImprovement(shared_ptr<Cell> cell);
     public:
-        TextDisplay();
-        void notify(Subject<Info, State> &whoNotified) override;
+        TextDisplay(Board &board);
+        void TextDisplay::notify(Subject<Info, State> &whoNotified) override;
         friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

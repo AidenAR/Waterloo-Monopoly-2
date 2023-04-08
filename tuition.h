@@ -6,7 +6,7 @@ template <typename InfoType, typename StateType> class Subject;
 
 class Tuition: public NonOwnable {
     public:
-        void notify(Subject<Info, State> &whoNotified) override;
+        Tuition(Board &board, std::string name, int pos, int i, int j);
 };
 
 #endif

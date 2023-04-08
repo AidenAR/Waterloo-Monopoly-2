@@ -7,16 +7,25 @@
 class Info;
 class State;
 class Player;
+class Board;
 
 
 class Cell: public Subject<Info, State>, public Observer<Info, State> {
     std::string name;
+    int posn;
+    int i;
+    int j;
+    Board &board;
+    Info info;
     public:
-        Cell(std::string name);
+        Cell(Board &board, std::string name, int posn, int i, int j);
         virtual void notify(Subject<Info, State> &whoNotified) = 0;
         virtual Info getInfo() const = 0;
         void notifyObservers();
         std::string getName() const;
+        int getPosn() const;
+        int getI() const;
+        int getJ() const;
 };
 
 

@@ -8,6 +8,7 @@ class State;
 
 class NonOwnable: public Cell {
     public:
+        NonOwnable(Board &board, std::string name, int posn, int i, int j);
         virtual void notify(Subject<Info, State> &whoNotified) = 0;
         Info getInfo() const;
 };
