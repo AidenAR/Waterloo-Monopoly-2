@@ -15,7 +15,7 @@
 // which changes player values that store properties and players money
 
 // Trade:
-// Player specifies cellName they want to trade, and sets newOwner to Player who its being transfered to. 
+// Player specifies cellName they want to trade, and sets newOwner to Player who its being transferred to. 
 // Then, set StateType to SellTo. 
 // Cell responds with whether successful trade or not. if successful, update both Players by calling:
 // void Player::successfulTrade(string proertyName)

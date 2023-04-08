@@ -34,6 +34,10 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     int jailTurns;
     std::vector<int> jailRolls;
     State state = State();
+
+    // When we call notifyObservers() but need the respective cell which responded, we store it here.
+    // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
+    std::shared_ptr<Cell> responseCell = nullptr;
 public:
     Player(std::string playerName, char pieceName,
            int money, int rollRims, int playerPosn);
@@ -45,18 +49,22 @@ public:
     State *getState() const override;
     void setState(State state) override;
     int getRollRims();
-    bool getTimsJail;
-    int getNumGyms;
-    int getNumResidences;
-    std::vector<std::shared_ptr<Ownable>> getOwnedProperties();
+    bool getTimsJail();
+    int getNumGyms();
+    int getNumResidences();
+    std::vector<std::shared_ptr<Cell>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
-    void Player::moveForward(bool landed = false);
-    void Player::attemptBuyProperty(std::shared_ptr<Subject<Info, State>> whoFrom)
-    void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
+
+    void moveForward(bool landed = false);
+
+    // Core player functions
+    void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
+    void sellPropertyTo(std::shared_ptr<Player> newOwner, std::string cellName, int salePrice);
+    void attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std::string recieve);
+    
     void addFunds(int num);
     void subFunds(int num);
-    void moveMoney();
     void printAssets();
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
