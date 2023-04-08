@@ -4,11 +4,18 @@
 #include <vector>
 
 template <typename InfoType, typename StateType> class Subject;
+class Cell;
+class Info;
+class Board;
 
-template <typename InfoType, typename StateType> class TextDisplay: public Observer<Info, State> {
+class TextDisplay: public Observer<Info, State> {
+    std::vector<std::vector<char>> theDisplay;
+    Board &board;
+    void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell);
+    void TextDisplay::updateImprovement(shared_ptr<Cell> cell);
     public:
-        TextDisplay();
-        void notify(Subject<Info, State> &whoNotified) override;
+        TextDisplay(Board &board);
+        void TextDisplay::notify(Subject<Info, State> &whoNotified) override;
         friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

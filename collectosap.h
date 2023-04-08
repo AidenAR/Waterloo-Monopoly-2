@@ -6,8 +6,7 @@ template <typename InfoType, typename StateType> class Subject;
 
 class CollectOsap: public NonOwnable {
     public:
-        CollectOsap::CollectOsap(std::string name, int index);
-        void notify(Subject<Info, State> &whoNotified) override;
-};
+        CollectOsap::CollectOsap(Board &board, std::string name, int pos, int i, int j);
+}
 
 #endif
