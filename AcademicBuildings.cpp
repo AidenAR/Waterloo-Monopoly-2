@@ -186,7 +186,7 @@ void AcademicBuildings::unMortgage(std::string cellName) {
 
 
 
-void notify(Subject<Info, State> &whoNotified) override;
+void AcademicBuildings::notify(Subject<Info, State> &whoNotified);
 
 
 

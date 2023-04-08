@@ -64,6 +64,7 @@ protected:
             {"DC", {"Math", 400, 200, 50, 200, 600, 1400, 1700, 2000}}
     };
 public:
+    /*
     const int NumArts1 = 2;
     const int NumArts3 = 3;
     const int NumEng = 3;
@@ -72,7 +73,9 @@ public:
     const int NumSci1 = 3;
     const int NumSci2 = 3;
     const int NumMath = 2;
-
+*/
+    AcademicBuildings(board &b, std::string name, int pos, int i, int j);
+    AcademicBuildings~();
     void sellImprovement(int improvement) override;
     void buyImprovement() override;
     std::string getFacultyName(const std::string& buildingName)
