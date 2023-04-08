@@ -16,11 +16,11 @@
 
 class AcademicBuildings: public Ownable {
 private:
-    board &b;
-    std::string b_name;
+    Board &board;
+    std::string name;
     int pos;
-    int iCord;
-    int jCord;
+    int i;
+    int j;
 protected:
     std::map<std::string, std::tuple<std::string,
     int, int, int, int, int, int, int, int>> academic_buildings = {

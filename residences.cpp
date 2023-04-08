@@ -14,7 +14,7 @@
 using namespace std;
 
 
-Residences::Residences(board &b, std::string name, int pos, int i, int j):
+Residences::Residences(Board &board, std::string name, int pos, int i, int j):
         Cell(board, name, posn, i, j) {}
 
 

@@ -17,7 +17,7 @@ using namespace std;
 //Bankrupt fn  implemented:
 //Hassan check notifs
 
-AcademicBuildings::AcademicBuildings(board &b, std::string name, int pos, int i, int j):
+AcademicBuildings::AcademicBuildings(Board &board, std::string name, int pos, int i, int j):
     Cell(board, name, posn, i, j) {}
 
 AcademicBuildings::AcademicBuildings~() {}

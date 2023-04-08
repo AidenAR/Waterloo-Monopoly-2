@@ -13,17 +13,16 @@
 #include "info.h"
 #include "observer.h"
 #include "subject.h"
-#include <tuple>
 //Note: Num Resi owned is in player
 //Also this has acess to info since it inherits from Ownable
 
 class Residences: public Ownable{
 private:
-    board &b;
-    std::string b_name;
+    Board &board;
+    std::string name;
     int pos;
-    int iCord;
-    int jCord;
+    int i;
+    int j;
     //int res_cost = $200; [from Info]
 public:
     const int oneResRent = 25;
