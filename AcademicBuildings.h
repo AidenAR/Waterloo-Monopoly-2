@@ -75,11 +75,11 @@ public:
 
     void sellImprovement(int improvement) override;
     void buyImprovement() override;
-    void payTuition() override;
-    void mortgage() override;
-    void unMortgage() override;
-    void notify(Subject<Info, State> &whoNotified) override;
     std::string getFacultyName(const std::string& buildingName)
+    void payTuition(Player *p) override;
+    void mortgage(std::string cellName) override;
+    void unMortgage(std::string cellName) override;
+    void notify(Subject<Info, State> &whoNotified) override;
 };
 
 

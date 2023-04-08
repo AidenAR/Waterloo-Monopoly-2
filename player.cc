@@ -105,6 +105,15 @@ void Player::subFunds(int num) {
     money -= num;
 }
 
+bool Player::getIsBankrupt() {
+    return isBankrupt;
+}
+
+
+bool Player::setIsBankrupt(bool bankrupt ) {
+    isBankrupt = bankrupt;
+}
+
 
 void  Player::addFunds(int num) {
     money += num;

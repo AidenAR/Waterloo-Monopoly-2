@@ -32,6 +32,7 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     bool timsJail;
     int rollRims;
     int jailTurns;
+    bool isBankrupt = false;
     std::vector<int> jailRolls;
     State state;
 public:
@@ -57,6 +58,8 @@ public:
     void subFunds(int num);
     void moveMoney();
     void printAssets();
+    bool getIsBankrupt();
+    void setIsBankrupt();
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
     void TimsJailTurns(); //Handles jail rolls as well as jail turn
