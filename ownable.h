@@ -10,6 +10,7 @@ template <typename InfoType, typename StateType> class Subject;
 class Info;
 class State;
 
+
 class Ownable: public Cell {
 protected:
     Info info;

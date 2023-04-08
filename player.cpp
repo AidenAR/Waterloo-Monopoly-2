@@ -11,7 +11,7 @@ using namespace std;
 #include <iostream>
 
 
-Player::Player(string playerName, char pieceName, int money, int rollRims, Cell playerPosn):
+Player::Player(string playerName, char pieceName, int money, int rollRims, int playerPosn):
     playerName{playerName}, pieceName{pieceName},
     money{startingMoney}, rollRims{rollRims},
     playerPosn{0}, numGyms{0}, numResidences{0},
@@ -254,7 +254,9 @@ void Player::sellProperty(Player& new_owner, std::shared_ptr<Cell> c) {
             FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]--;
 
             // Update new owner's FacultyMap
-            new_owner.FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]++;
+            new_owner.FacultyMap[std::get<1>
+                    (academic_buildings[academic->getFacultyName
+                    (std::get<1>(academic_buildings,academic_buildings)])]++;
         }
     }
 }
