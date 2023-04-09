@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "roll") {
                 vector <int> dice = b.rollDice();
                 cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
-                int diceRollCount = 0;
+                int diceRollCount = 1;
                 int diceTotal = dice[0] + dice[1];
                 while (dice[0] == dice[1]) {
                     diceRollCount++;
@@ -49,7 +49,11 @@ int main(int argc, char *argv[]) {
                     cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
                 }
                 int newPosn = (p->getPlayerPosn() + diceTotal) % 40;
-                p->placePlayerHere(newPosn);
+                for (int i=0; i<newPosn-1; i++) {
+                    p->moveForward();
+                }
+                p->moveForward(true);
+                
             } else if (cmd == "next") {
                 currentPlayer++;
                 p = players[currentPlayer];
@@ -61,6 +65,11 @@ int main(int argc, char *argv[]) {
                 cout << name << "enter accept/reject" << endl;
                 string response;
                 cin >> response;
+                while (response != "accept" && response != "reject") {
+                    cout << "Invalid response, trade rejected!" << endl;
+                    cout << name << "enter accept/reject" << endl;
+                    cin >> response;
+                }
                 if (response == "accept") {
                     cout << "Trade accepted!" << endl;
                     shared_ptr<Player> tradeTo = nullptr;
@@ -72,14 +81,13 @@ int main(int argc, char *argv[]) {
                     p->attemptTrade(tradeTo, give, receive);
                 } else if (response == "reject") {
                     cout << "Trade rejected!" << endl;
-                } else {
-                    cout << "Invalid response, trade rejected!" << endl;
+                    continue;
                 }
             } else if (cmd == "improve") {
                 string property, buySell;
                 cin >> property >> buySell;
-                shared_ptr<AcademicBuildings> c = nullptr;
-                std::vector<std::shared_ptr<AcademicBuildings>> ownedProperties = p->getOwnedProperties();
+                shared_ptr<Ownable> c = nullptr;
+                std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
                         c = ownedProperties[i];
@@ -88,12 +96,14 @@ int main(int argc, char *argv[]) {
                 if (c == nullptr) {
                     cout << "You do not own this property, you cannot improve it." << endl;
                 } else {
+                    while (buySell != "buy" && buySell != "sell") {
+                        cout << "Invalid command, please enter a valid command." << endl;
+                        cin >> buySell;
+                    }
                     if (buySell == "buy") {
                         c->buyImprovement();
                     } else if (buySell == "sell") {
                         c->sellImprovement();
-                    } else {
-                        cout << "Invalid command, please enter a valid command." << endl;
                     }
                 }
             } else if (cmd == "mortgage") {
