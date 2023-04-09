@@ -490,21 +490,21 @@ void Player::addProperty(shared_ptr<Ownable> c) {
 
 void Player::TimsJailCell(Player& p) {
     // Check if the player is currently in jail
-    if (p.timsJail) {
+    if (p.getTimsJail()) {
         // Check if it is the player's third turn in jail
         if (p.getJailTurns() == 3) {
             // Player must pay $50 or use a Roll Up the Rim cup to get out of jail
             if (p.getRollRims() > 0) {
                 // Use Roll Up the Rim cup to get out of jail
                 p.subtractRollRims();
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else if (p.getMoney() >= 50) {
                 // Pay $50 to get out of jail
                 p.subFunds(50);
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else {
                 // Player doesn't have enough money to get out of jail
-                p.timsJail = true;
+                p.setTimsJail(true);
             }
         } else {
             //in main or board???
@@ -514,16 +514,16 @@ void Player::TimsJailCell(Player& p) {
             if (diceRoll1 == diceRoll2) {
                 // Player rolled doubles and gets out of jail
                 p.setJailTurns(0);
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else {
                 // Player did not roll doubles
                 p.setJailTurns(p.getJailTurns() + 1);
-                p.timsJail = true;
+                p.setTimsJail(true);
             }
         }
     } else {
         // Player is not in jail
-        p.timsJail = false;
+        p.setTimsJail(false);
         p.setJailTurns(0);
     }
 }
