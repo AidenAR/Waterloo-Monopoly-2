@@ -1,8 +1,8 @@
 //
-// Created by aiden on 04/04/2023.
+// Created by aiden on 03/04/2023.
 //
 
-#include "gyms.h"
+#include "residences.h"
 #include "ownable.h"
 #include <unordered_map>
 #include "info.h"
@@ -11,48 +11,50 @@
 #include "info.h"
 #include "observer.h"
 #include "subject.h"
-#include "board.h"
 #include <iostream>
 using namespace std;
 
-Gyms::Gyms(Board &board, int name, int pos, int i, int j) :
-    Cell(board, name, posn, i, j) {}
+
+Residences::Residences(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price) :
+    Ownable(board, name, posn, i, j, ownable, otype, price) {}
 
 
-Gyms::~Gyms() {}
-
-Board Gyms::getBoard(Gyms& g) {
-    return g.board;
-}
+Residences::~Residences() {}
 
 
-//Pay Gym Memberswhip
-void Gyms::payTuition(Player *p) {
+//Pay Rent
+void Residences::payTuition(Player *p) {
     Player *owner = info.ownedBy;
-    int numGymsOwned = owner->getNumGyms();
-    if (numGymsOwned <= 0) {
-        cout << "Not owned: No Membership" << endl;
+    int numResOwned = owner->getNumResidences();
+    if (numResOwned <= 0) {
+        cout << "Not owned: No Rent" << endl;
         return;
     }
-    if (numGymsOwned == 1) {
-        int die1 = getBoard().rollDice()[0];
-        int die2 = getBoard().rollDice()[1];
-        int sumDie = die1 + die2;
-        int membership = oneGym * sumDie;
-        cout << "Membership to be paid:$ " << membership << endl;
-        owner->addFunds(membership);
-        p->subFunds(membership);
+    if (numResOwned == 1) {
+        cout << "Rent to be paid:$ " << oneResRent << endl;
+        owner->addFunds(oneResRent);
+        p->subFunds(oneResRent);
         if (p->getMoney() < 0) {
             p->setIsBankrupt(true);
         }
-    } else if (numGymsOwned == 2) {
-        int die1 = getBoard().rollDice()[0];
-        int die2 = getBoard().rollDice()[1];
-        int sumDie = die1 + die2;
-        int membershipTwo = twoGym * sumDie;
-        cout << "Membership to be paid:$ " << membershipTwo << endl;
-        owner->addFunds(membershipTwo);
-        p->subFunds(membershipTwo);
+    } else if (numResOwned == 2) {
+        cout << "Rent to be paid:$ " << twoResRent << endl;
+        owner->addFunds(twoResRent);
+        p->subFunds(twoResRent);
+        if (p->getMoney() < 0) {
+            p->setIsBankrupt(true);
+        }
+    } else if (numResOwned == 3) {
+        cout << "Rent to be paid:$ " << threeResRent << endl;
+        owner->addFunds(threeResRent);
+        p->subFunds(threeResRent);
+        if (p->getMoney() < 0) {
+            p->setIsBankrupt(true);
+        }
+    } else if (numResOwned == 4) {
+        cout << "Rent to be paid:$ " << fourResRent << endl;
+        owner->addFunds(fourResRent);
+        p->subFunds(fourResRent);
         if (p->getMoney() < 0) {
             p->setIsBankrupt(true);
         }
@@ -60,7 +62,7 @@ void Gyms::payTuition(Player *p) {
 }
 
 
-void Gyms::mortgage() {
+void Residences::mortgage() {
     string cellName = info.cellName;
     Player *owner = info.ownedBy;
     if (info.isMortgaged) {
@@ -69,7 +71,7 @@ void Gyms::mortgage() {
     }
     if (owner) {
         //give owner half of cost
-        int mortgageMoney = gym_cost * 0.5;
+        int mortgageMoney = resCost * 0.5;
         owner->addFunds(mortgageMoney);
         info.isMortgaged = true;
         info.wasSuccesful = true;
@@ -82,7 +84,7 @@ void Gyms::mortgage() {
 }
 
 
-void Gyms::unMortgage() {
+void Residences::unMortgage() {
     string cellName = info.cellName;
     Player *owner = info.ownedBy;
     if (!info.isMortgaged) {
@@ -92,7 +94,7 @@ void Gyms::unMortgage() {
     if (owner) {
         if (info.isMortgaged) {
             // owner pay 60% of cost
-            int moneyOwed = (gym_cost * 0.6);
+            int moneyOwed = (resCost * 0.6);
             cout << "Pay to unmortgage:$ " << moneyOwed << endl;
             if (owner->getMoney() > moneyOwed) {
                 owner->subFunds(moneyOwed);
@@ -109,8 +111,7 @@ void Gyms::unMortgage() {
 }
 
 
-
-void Gyms::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     
@@ -149,7 +150,7 @@ void Gyms::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
         unMortgage();
         break;
     case StateType::SellTo:
-        // Player side things are handlded by player.cc
+        // Fund transactions are handlded by player.cc
         info.ownedBy = state.newOwner;
         break;
     case StateType::Landed:

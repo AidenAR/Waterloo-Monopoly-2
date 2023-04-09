@@ -13,9 +13,9 @@ class State;
 
 class Ownable: public Cell {
 protected:
-    Info info;
     bool isMortgage = false;
 public:
+    Ownable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
     virtual int improvementCost() = 0;
     virtual void sellImprovement() = 0;
     virtual void buyImprovement() = 0;

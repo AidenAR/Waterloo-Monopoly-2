@@ -24,7 +24,7 @@ public:
     const int threeResRent = 100;
     const int fourResRent = 200;
     const int resCost = 200;
-    Residences(Board &b, std::string name, int pos, int i, int j);
+    Residences(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     ~Residences();
     void payTuition(Player *p) override; //payRent is like payTuition
     void mortgage() override;

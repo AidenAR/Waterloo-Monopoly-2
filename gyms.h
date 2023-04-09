@@ -25,7 +25,7 @@ public:
     const int gym_cost = 150;
     const int oneGym = 4;
     const int twoGym = 10;
-    Gyms(Board &b, std::string name, int pos, int i, int j);
+    Gyms(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     Board getBoard(Gyms& g);
     ~Gyms();
     void payTuition(Player *p) override; //payMembership is like payTuition

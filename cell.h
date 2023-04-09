@@ -9,7 +9,7 @@ class State;
 class Player;
 class Board;
 
-enum OwnableType{Academic, Residence, Gym};
+enum OwnableType{Academic, Residence, Gym, NonOwnable};
 
 
 class Cell: public Subject<Info, State>, public Observer<Info, State> {

@@ -6,7 +6,7 @@ template <typename InfoType, typename StateType> class Subject;
 
 class CollectOsap: public NonOwnable {
     public:
-        CollectOsap::CollectOsap(Board &board, std::string name, int pos, int i, int j);
+        CollectOsap::CollectOsap(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
 };
 
 #endif

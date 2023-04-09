@@ -4,7 +4,8 @@
 template <typename InfoType, typename StateType> class Subject;
 
 
-NonOwnable::NonOwnable(Board &board, std::string name, int posn, int i, int j): Cell(board, name, posn, i, j) {}
+NonOwnable::NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price): 
+    Cell(board, name, posn, i, j, ownable, otype, price) {}
 
 void NonOwnable::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     
