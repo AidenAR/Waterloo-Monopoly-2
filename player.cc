@@ -24,6 +24,22 @@ Player::Player(string playerName, char pieceName, int money, int rollRims, int p
     vector<int> jailRolls{0};
 }
 
+// Takes in new position newPosn we place the player in that position.
+// notifyCell controls whether the cell upon which we just placed the Player should be notified of this.
+// Eg, during instantiation when we place each player, dont want to notify cell.
+void Player::placePlayerHere(int newPosn, bool notifyCell = true) {
+    playerPosn = newPosn;
+
+    if (notifyCell) {
+        state.playerPosn = playerPosn;
+        state.type = StateType::Landed;
+        state.cellName = "";
+        state.newOwner = nullptr;
+        notifyObservers();
+    }
+}
+
+
 char Player::getPieceName() {
     return pieceName;
 }
@@ -333,9 +349,8 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
 
     cout << "Successfully purchased cell!" << endl;
     // setting up and sending notification to all cells; ie, attempting the purchase
-    State newS = State();
-    newS.type = StateType::Purchase;
-    state = newS;
+    state.type = StateType::Purchase;
+    state.newOwner = "";
     notifyObservers();
 }
 

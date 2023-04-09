@@ -57,7 +57,9 @@ public:
     void addRollRims();
     void subtractRollRims();
 
+    // Movement related
     void moveForward(bool landed = false);
+    void placePlayerHere(int newPosn, bool notifyCell);
 
     // Core player functions
     void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
@@ -69,10 +71,11 @@ public:
     void printAssets();
     bool getIsBankrupt();
     void setIsBankrupt();
-    int playerAssetsWorth(); //Deals with bankrupt
+    int playerAssetsWorth(); // Deals with bankrupt
     int getJailTurns();
-    void TimsJailTurns(); //Handles jail rolls as well as jail turn
+    void TimsJailTurns(); // Handles jail rolls as well as jail turn
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
+
 #endif //PLAYER_H
