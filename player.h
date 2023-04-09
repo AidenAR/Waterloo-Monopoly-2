@@ -23,21 +23,35 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     int money;
     int playerPosn;
     std::vector<std::shared_ptr<Cell>> ownedProperties;
-    std::unordered_map<std::string, int> FacultyMap =
-            {{"Arts1", 0}, {"Arts2", 0}, {"Eng", 0},
-             {"Health", 0}, {"Env", 0}, {"Sci1", 0},
-             {"Sci2", 0}, {"Math", 0}};
+    std::unordered_map<std::string, std::pair<int, bool>> FacultyMap =
+            {{"Arts1", {0, false}}, {"Arts2", {0, false}}, {"Eng", {0, false}},
+             {"Health", {0, false}}, {"Env", {0, false}}, {"Sci1", {0, false}},
+             {"Sci2", {0, false}}, {"Math", {0, false}}};
     int numGyms;
     int numResidences;
     bool timsJail;
     int rollRims;
     int jailTurns;
+    bool isBankrupt = false;
     std::vector<int> jailRolls;
     State state = State();
+
+    // When we call notifyObservers() but need the respective cell which responded, we store it here.
+    // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
+    std::shared_ptr<Cell> responseCell = nullptr;
 public:
+    const int NumArts1 = 2;
+    const int NumArts3 = 3;
+    const int NumEng = 3;
+    const int NumHealth = 3;
+    const int NumEnv = 3;
+    const int NumSci1 = 3;
+    const int NumSci2 = 3;
+    const int NumMath = 2;
+
     Player(std::string playerName, char pieceName,
            int money, int rollRims, int playerPosn);
-
+    void partMonopoly();
     char getPieceName();
     std::string getPlayerName();
     int getMoney();
@@ -48,21 +62,29 @@ public:
     bool getTimsJail();
     int getNumGyms();
     int getNumResidences();
-    std::vector<std::shared_ptr<Ownable>> getOwnedProperties();
+    std::vector<std::shared_ptr<Cell>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
-    void Player::moveForward(bool landed = false);
-    void Player::attemptBuyProperty(std::shared_ptr<Subject<Info, State>> whoFrom)
-    void SellProperties(Player *new_owner, std::shared_ptr<Cell> c);
+    void setTimsJail(bool j);
+    void moveForward(bool landed = false);
+
+    // Core player functions
+    void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
+    void sellPropertyTo(std::shared_ptr<Player> newOwner, std::string cellName, int salePrice);
+    void attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std::string recieve);
+    
     void addFunds(int num);
     void subFunds(int num);
-    void moveMoney();
     void printAssets();
+    bool getIsBankrupt();
+    void setIsBankrupt();
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
     void TimsJailTurns(); //Handles jail rolls as well as jail turn
     void placePlayerHere(int newPosn, bool notifyCell = true);
     void addProperty(std::shared_ptr<Ownable> c);
+    void setJailTurns(int j);
+    void TimsJailCell(Player& p);
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
