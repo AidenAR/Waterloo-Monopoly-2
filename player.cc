@@ -486,6 +486,23 @@ void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve
     }
 }
 
+
+// Helper function to update FacultyMap for an academic property
+void updateFacultyMap(std::unordered_map<std::string, std::pair<int, bool>>& facultyMap,
+                      const std::shared_ptr<Cell>& cell, std::shared_ptr<Player> player) {
+    auto academic = std::dynamic_pointer_cast<AcademicBuildings>(cell);
+
+    if (academic) {
+        auto facultyName = academic->getFacultyName(cell->getInfo()->cellName);
+        auto& facultyPair = academic->academic_buildings[facultyName];
+
+        player->FacultyMap[std::get<1>(facultyPair->first)]++;
+        facultyMap[std::get<1>(facultyPair->first)]--;
+    }
+}
+
+
+
 // Helpful for anything around selling properties. 
 // If newOwner is not provided, means we arent selling it to anybody
 // newOwner represents person property is sold to.

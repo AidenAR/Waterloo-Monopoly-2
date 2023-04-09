@@ -16,7 +16,7 @@ using namespace std;
 
 
 Residences::Residences(Board &board, std::string name, int pos, int i, int j):
-        Cell(board, name, posn, i, j) {}
+        Ownable(board, name, posn, i, j) {}
 
 
 Residences::~Residences() {}
@@ -35,28 +35,28 @@ void Residences::payTuition(Player *p) {
         owner->addFunds(oneResRent);
         p->subFunds(oneResRent);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            // p->setIsBankrupt(true);
         }
     } else if (numResOwned == 2) {
         cout << "Rent to be paid:$ " << twoResRent << endl;
         owner->addFunds(twoResRent);
         p->subFunds(twoResRent);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            // p->setIsBankrupt(true);
         }
     } else if (numResOwned == 3) {
         cout << "Rent to be paid:$ " << threeResRent << endl;
         owner->addFunds(threeResRent);
         p->subFunds(threeResRent);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            // p->setIsBankrupt(true);
         }
     } else if (numResOwned == 4) {
         cout << "Rent to be paid:$ " << fourResRent << endl;
         owner->addFunds(fourResRent);
         p->subFunds(fourResRent);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            // p->setIsBankrupt(true);
         }
     }
 }
@@ -154,8 +154,8 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
         info.ownedBy = state.newOwner;
         break;
     case StateType::Landed:
-        if (info.ownedBy != whoFrom) {
-            payTuition(whoFrom);
+        if (info.ownedBy != whoFrom.get()) {
+            payTuition(dynamic_cast<Player *>(whoFrom.get()));
         }
         break;
     default:

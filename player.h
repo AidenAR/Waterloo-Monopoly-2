@@ -23,10 +23,12 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     int money;
     int playerPosn;
     std::vector<std::shared_ptr<Cell>> ownedProperties;
+    /*
     std::unordered_map<std::string, std::pair<int, bool>> FacultyMap =
             {{"Arts1", {0, false}}, {"Arts2", {0, false}}, {"Eng", {0, false}},
              {"Health", {0, false}}, {"Env", {0, false}}, {"Sci1", {0, false}},
              {"Sci2", {0, false}}, {"Math", {0, false}}};
+             */
     int numGyms;
     int numResidences;
     bool timsJail;
@@ -53,6 +55,10 @@ public:
     const int NumSci1 = 3;
     const int NumSci2 = 3;
     const int NumMath = 2;
+    std::unordered_map<std::string, std::pair<int, bool>> FacultyMap =
+            {{"Arts1", {0, false}}, {"Arts2", {0, false}}, {"Eng", {0, false}},
+             {"Health", {0, false}}, {"Env", {0, false}}, {"Sci1", {0, false}},
+             {"Sci2", {0, false}}, {"Math", {0, false}}};
 
     char getPieceName();
     std::string getPlayerName();
