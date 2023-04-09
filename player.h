@@ -15,6 +15,9 @@
 #include <unordered_map>
 #include "AcademicBuildings.h"
 
+class Ownable;
+
+
 class Player : public Subject<State> , public Observer<State>{
     char pieceName;
     const int startingMoney = 1500;
@@ -40,7 +43,7 @@ class Player : public Subject<State> , public Observer<State>{
 
     // When we call notifyObservers() but need the respective cell which responded, we store it here.
     // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
-    std::shared_ptr<Cell> responseCell = nullptr;
+
 public:
     const int NumArts1 = 2;
     const int NumArts3 = 3;
@@ -54,14 +57,7 @@ public:
     Player(Board *board, std::string playerName, char pieceName,
            int money, int rollRims, int playerPosn);
 
-    const int NumArts1 = 2;
-    const int NumArts3 = 3;
-    const int NumEng = 3;
-    const int NumHealth = 3;
-    const int NumEnv = 3;
-    const int NumSci1 = 3;
-    const int NumSci2 = 3;
-    const int NumMath = 2;
+    
     std::unordered_map<std::string, std::pair<int, bool>> FacultyMap =
             {{"Arts1", {0, false}}, {"Arts2", {0, false}}, {"Eng", {0, false}},
              {"Health", {0, false}}, {"Env", {0, false}}, {"Sci1", {0, false}},

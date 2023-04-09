@@ -3,8 +3,8 @@
 #include "observer.h"
 #include "subject.h"
 #include <string>
+#include "state.h"
 
-class State;
 class Player;
 class Board;
 

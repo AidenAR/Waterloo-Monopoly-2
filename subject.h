@@ -46,7 +46,7 @@ void Subject<StateType>::setState(StateType newS) { state = newS; }
 
 template <typename StateType>
 StateType *Subject<StateType>::getState() {
-    return StateType();
+    return nullptr;
 }
 #endif
 
