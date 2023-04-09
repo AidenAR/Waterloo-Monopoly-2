@@ -202,7 +202,7 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
                     string response;
                     cin >> response;
                     if (response == "roll") {
-                        vector<int> roll{Board.rollDice()};
+                        vector<int> roll{Board().rollDice()};
                         if (roll[0] == roll[1]) {
                             
                         } else{
