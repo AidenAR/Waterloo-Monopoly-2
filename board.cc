@@ -210,3 +210,4 @@ void Board::loadGame(std::string f) {
         }
     }
 }
+

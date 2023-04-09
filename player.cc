@@ -507,3 +507,31 @@ void Player::TimsJailCell(Player& p) {
         p.setJailTurns(0);
     }
 }
+
+
+void Player::partMonopoly() {
+    if (FacultyMap["Arts1"].first == NumArts1) {
+        FacultyMap["Arts1"].second = true;
+    }
+    if (FacultyMap["Arts2"].first == NumArts3) {
+        FacultyMap["Arts2"].second = true;
+    }
+    if (FacultyMap["Eng"].first == NumEng) {
+        FacultyMap["Eng"].second = true;
+    }
+    if (FacultyMap["Health"].first == NumHealth) {
+        FacultyMap["Health"].second = true;
+    }
+    if (FacultyMap["Env"].first == NumEnv) {
+        FacultyMap["Env"].second = true;
+    }
+    if (FacultyMap["Sci1"].first == NumSci1) {
+        FacultyMap["Sci1"].second = true;
+    }
+    if (FacultyMap["Sci2"].first == NumSci2) {
+        FacultyMap["Sci2"].second = true;
+    }
+    if (FacultyMap["Math"].first == NumMath) {
+        FacultyMap["Math"].second = true;
+    }
+}

@@ -38,6 +38,7 @@ class Board {
     void loadGame(std::string f);
     void saveGame(std::string f);
     std::string getWinner();
+    void auction(string cellName);
 };
 
 #endif
