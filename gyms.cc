@@ -32,8 +32,8 @@ void Gyms::payTuition(Player *p) {
         return;
     }
     if (numGymsOwned == 1) {
-        int die1 = getBoard().rollDice()[0];
-        int die2 = getBoard().rollDice()[1];
+        int die1 = board.rollDice()[0];
+        int die2 = board.rollDice()[1];
         int sumDie = die1 + die2;
         int membership = oneGym * sumDie;
         cout << "Membership to be paid:$ " << membership << endl;
@@ -64,10 +64,10 @@ void Gyms::mortgage() {
         cout << "mortgaged property already." << endl;
         return;
     }
-    if (owner) {
+    if (getOwnedBy()) {
         //give owner half of cost
         int mortgageMoney = gym_cost * 0.5;
-        owner->addFunds(mortgageMoney);
+        getOwnedBy()->addFunds(mortgageMoney);
         setMortgaged(true);
         setSuccesful(true);
         cout << "Successfully mortgaged" << endl;

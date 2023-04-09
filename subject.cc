@@ -12,7 +12,7 @@ void Subject<StateType>::attach(shared_ptr<Observer<StateType>> o) {
 }
 
 template <typename StateType>
-void Subject<StateType>::detach(shared_ptr<Observer<State>> o) {
+void Subject<StateType>::detach(shared_ptr<Observer<StateType>> o) {
     for (auto it = observers.begin(); it != observers.end(); ++it) {
         if (*it == o) {
             observers.erase(it);
@@ -27,7 +27,7 @@ void Subject<StateType>::notifyObservers() {
 }
 
 template <typename StateType>
-StateType Subject<StateType>::getState() const {
+StateType *Subject<StateType>::getState() {
     return StateType();
 }
 

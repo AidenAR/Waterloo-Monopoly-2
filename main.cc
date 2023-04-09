@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
                     diceRollCount++;
                     if (diceRollCount == 3) {
                         cout << "You rolled three doubles in a row, you are sent to DC Tims Line." << endl;
-                        p->placePlayerHere(10);
+                        p->placePlayerHere(10, true);
                         p->setTimsJail(true);
                         break;
                     }
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
                             tradeTo = players[i];
                         }
                     }
-                    p->attemptTrade(tradeTo, give, receive);
+                    p->attemptTrade(tradeTo.get(), give, receive);
                 } else if (response == "reject") {
                     cout << "Trade rejected!" << endl;
                     continue;
@@ -87,10 +87,10 @@ int main(int argc, char *argv[]) {
                 string property, buySell;
                 cin >> property >> buySell;
                 shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
+                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = ownedProperties[i];
+                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {
@@ -110,10 +110,10 @@ int main(int argc, char *argv[]) {
                 string property;
                 cin >> property;
                 shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
+                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = ownedProperties[i];
+                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {
@@ -125,10 +125,10 @@ int main(int argc, char *argv[]) {
                 string property;
                 cin >> property;
                 shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
+                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = ownedProperties[i];
+                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {

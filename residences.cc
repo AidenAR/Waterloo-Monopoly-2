@@ -125,8 +125,8 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
             setSuccesful(false);
             break;
         }
-        this->getOwnedBy() = state.newOwner;
-        this->getSuccesful(true);
+        setOwnedBy(state.newOwner);
+        setSuccesful(true);
 
         break;
     case StateType::Mortgage:

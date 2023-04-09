@@ -1,14 +1,14 @@
-#include "board.h"
-#include "nonownable.h"
-#include "ownable.h"
-#include "player.h"
-#include <iostream>
-#include "cell.h"
 #include <fstream>
 #include <string>
 #include <vector>
 #include "textdisplay.h"
 #include <sstream>
+#include <iostream>
+#include "board.h"
+#include "nonownable.h"
+#include "ownable.h"
+#include "player.h"
+#include "cell.h"
 
 
 class CollectOsap;

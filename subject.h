@@ -18,7 +18,7 @@ public:
     // Subject.cc for now will implement dummy methods that dont do anything useful.
 
 
-    virtual StateType *getState() const;
+    virtual StateType *getState();
     virtual void setState(StateType state);
 
     void attach(std::shared_ptr<Observer<StateType>> o);
