@@ -11,7 +11,6 @@
 #include <sstream>
 
 
-
 class CollectOsap;
 class GoToTims;
 class Slc;
@@ -57,6 +56,18 @@ bool Board::findinVector(vector<string> v, string s) {
         }
     }
     return false;
+}
+
+void Board::addToTotalCups() {
+    totalCups++;
+}
+
+void Board::removeFromTotalCups() {
+    totalCups--;
+}
+
+int Board::getTotalCups() {
+    return totalCups;
 }
 
 void Board::initializeCells() {
@@ -135,7 +146,7 @@ void Board::init() {
         while(findinVector(chosenPieces, piece)) {
             cout << piece << " has already been choesen, please select a different piece!" << endl;
         }
-        shared_ptr<Player> p = make_shared<Player>(name, pieceSymbol(piece), 1500, 0, 0);
+        shared_ptr<Player> p = make_shared<Player>(*this, name, pieceSymbol(piece), 1500, 0, 0);
         playerList.emplace_back(p);
     }
 }
@@ -169,7 +180,7 @@ void Board::saveGame(std::string f) {
         file << playerList[i]->getPlayerName() << " " << playerList[i]->getPieceName() << " " << playerList[i]->getMoney() << " " << playerList[i]->getPlayerPosn() << " " << playerList[i]->getRollRims() << endl;
         // add if player in jail or not
         if (playerList[i]->getTimsJail()) {
-            file << "true" << playerList[i]->getJailTurns()<< endl;
+            file << "true" << playerList[i]->getJailTurns() << endl;
         } else {
             file << "false" << endl;
         }

@@ -16,7 +16,7 @@ using namespace std;
 void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
     int cordI = cell->getInfo()->i;
     int cordJ = cell->getInfo()->j;
-    int posn = cell->getPosn();
+    int posn = cell->getInfo()->posn;
     int playersOnCell = 0;
     vector<char> players;
     for (int i = 0; i < board.getPlayerList().size(); i++) {
@@ -33,7 +33,7 @@ void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
 void TextDisplay::updateImprovement(shared_ptr<Cell> cell) {
     int cordI = cell->getInfo()->i;
     int cordJ = cell->getInfo()->j;
-    int posn = cell->getPosn();
+    int posn = cell->getInfo()->posn;
     int improveLevel = cell->getInfo()->improveCount;
     for (int i = 0; i < improveLevel; i++) {
         theDisplay[cordI + i + 1][cordJ + 3] = 'I';

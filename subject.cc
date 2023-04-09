@@ -1,6 +1,10 @@
 #include "subject.h"
 #include "observer.h"
-
+#include <iostream>
+#include "info.h"
+#include "state.h"
+#include <memory>
+#include <vector>
 using namespace std;
 
 template <typename InfoType, typename StateType>

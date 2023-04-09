@@ -35,13 +35,14 @@ class Player : public Subject<Info, State> , public Observer<Info, State>{
     bool isBankrupt = false;
     std::vector<int> jailRolls;
     State state = State();
+    Board *board;
 
 
     // When we call notifyObservers() but need the respective cell which responded, we store it here.
     // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
     std::shared_ptr<Cell> responseCell = nullptr;
 public:
-    Player(std::string playerName, char pieceName,
+    Player(Board *board, std::string playerName, char pieceName,
            int money, int rollRims, int playerPosn);
 
     const int NumArts1 = 2;

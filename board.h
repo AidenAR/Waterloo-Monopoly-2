@@ -19,17 +19,20 @@ class Board {
 
     std::vector<std::shared_ptr<Player>> playerList;
     //TextDisplay *td = nullptr; // The text display.
-    std::shared_ptr<TextDisplay> td; // The text display
+    shared_ptr<TextDisplay> td; // The text display
     std::vector<std::shared_ptr<Cell>> Cells; // The list of cells on the board
 
     char pieceSymbol(std::string pieceName);
     bool findinVector(std::vector<std::string> v, std::string s);
+    int totalCups = 0;
 
  public:
-    ~Board();
 
     std::vector<std::shared_ptr<Player>> getPlayerList();
     shared_ptr<Cell> getCell(int i);
+    void addToTotalCups();
+    void removeFromTotalCups();
+    int getTotalCups();
 
     void initializeCells();
     void init();
