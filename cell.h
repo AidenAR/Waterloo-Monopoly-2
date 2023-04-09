@@ -9,6 +9,8 @@ class State;
 class Player;
 class Board;
 
+enum OwnableType{Academic, Residence, Gym};
+
 
 class Cell: public Subject<Info, State>, public Observer<Info, State> {
 protected:
@@ -27,14 +29,14 @@ protected:
     int price;
     bool isMortgaged = false;
     public:
-        Cell(Board &board, std::string name, int posn, int i, int j);
+        Cell(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
         // //virtual void notify(Subject<Info, State> &whoNotified) = 0;
         // void notifyObservers();
         Player *getOwnedBy();
+        OwnableType getOtype();
         void setOwnedBy(Player *ownedBy);
         string getName();
         int getPosn();
-        void setPosn(int posn);
         int getI();
         int getJ();
         bool getSuccesful();

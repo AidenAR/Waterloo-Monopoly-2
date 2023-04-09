@@ -14,6 +14,10 @@ Player *Cell::getOwnedBy() {
     return ownedBy;
 }
 
+OwnableType Cell::getOtype() {
+    return otype;
+}
+
 void Cell::setOwnedBy(Player *ownedBy) {
     this->ownedBy = ownedBy;
 }
