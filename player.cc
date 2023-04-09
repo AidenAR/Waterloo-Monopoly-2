@@ -51,7 +51,7 @@ int Player::getRollRims() {
 }
 
 
-State *Player::getState() const {
+State *Player::getState() {
     return &state;
 }
 
@@ -151,11 +151,14 @@ void  Player::addFunds(int num) {
 // As this is a Player, we will only be notified by Cells, so Cells contain data with their Info attribute; use Info accessors.
 // Do NOT call State accessors here.
 // The only cells which will be notifying us are those who want the player to do smth (ie, pay tuiton)
+// Requirements:
+// whoFrom is a Cell
 void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     // should do nothing if it isnt this Players turn
 
     Info *info = whoFrom->getInfo();
-    this->responseCell = whoFrom;
+    shared_ptr<Cell> whoFromCell = dynamic_pointer_cast<Cell>(whoFrom);
+    this->responseCell = whoFromCell;
 
     string cellName = info->cellName;
     
@@ -192,7 +195,7 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
 
             while (true) {
                 if (response == "y") {
-                    attemptBuyProperty(whoFrom);
+                    attemptBuyProperty(whoFromCell);
                     break;
                 } else if (response == "n") {
                     cout << "Auctioning time!" << endl;
@@ -237,7 +240,7 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
                             if (roll[0] == roll[1]) {
                                 freePlayerFromTimsJail();
                             } else{
-                                cout << "Unfortunatley didnt roll doubles, sstaying in Jail );"
+                                cout << "Unfortunatley didnt roll doubles, sstaying in Jail );";
                             }
                             break;
                         } else if (response == "pay") {
@@ -349,7 +352,7 @@ void Player::printAssets() {
 int Player::playerAssetsWorth() {
     int totalAssets = 0;
     for (auto &cell: ownedProperties) {
-        totalAssets += cell->getInfo().price;
+        totalAssets += cell->getInfo()->price;
     }
     totalAssets += money;
     return totalAssets;
@@ -420,8 +423,8 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
     } else if (otype == OwnableType::Academic) {
         // Update FacultyMap
         // god knows how this works bruh pls ask aiden again
-        auto academic = dynamic_cast<AcademicBuildings*>(whoFrom.get());
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
+        // auto academic = dynamic_cast<AcademicBuildings*>(whoFrom.get());
+        // FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]++;
     }
 
     cout << "Successfully purchased cell!" << endl;
@@ -445,7 +448,7 @@ bool isNum(string str) {
 // Attempt trade from current player to name, where we give smth and recieve smth.
 // Requirements:
 // - we are assured that tradeTo is the player to whom we will be trading to (main function problem).
-void Player::attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std::string recieve) {
+void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve) {
     // Three cases:
     // give money, recieve property
     if (isNum(give)) {
@@ -491,7 +494,7 @@ void Player::attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std
 // else, we are sold the property for the amount salePrice. 
 // Requirements:
 // None
-void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string cellName, int salePrice = -1) {
+void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int salePrice = -1) {
     // Before selling property, lets verify funds.
 
     if (salePrice > newOwner->money) {
@@ -546,9 +549,9 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
 
         // Update FacultyMap
         auto academic = dynamic_cast<AcademicBuildings*>(responseCell.get());
-
-        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]++;
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]--;
+        //TODO:
+        // newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]++;
+        // FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]--;
     }
 }
 
@@ -586,8 +589,8 @@ void Player::TimsJailCell(Player& p) {
         } else {
             //in main or board???
             // Player must roll the dice to try to get doubles
-            int diceRoll1 = rollDice();
-            int diceRoll2 = rollDice();
+            int diceRoll1 = board->rollDice()[0];
+            int diceRoll2 = board->rollDice()[1];
             if (diceRoll1 == diceRoll2) {
                 // Player rolled doubles and gets out of jail
                 p.setJailTurns(0);

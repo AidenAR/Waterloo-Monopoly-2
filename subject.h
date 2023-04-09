@@ -20,9 +20,9 @@ public:
 
     // Subject.cc for now will implement dummy methods that dont do anything useful.
 
-    virtual InfoType *getInfo() const;
+    virtual InfoType *getInfo();
     virtual void setInfo(InfoType info);
-    virtual StateType *getState() const;
+    virtual StateType *getState();
     virtual void setState(StateType state);
 
     void attach(std::shared_ptr<Observer<InfoType, StateType>> o);

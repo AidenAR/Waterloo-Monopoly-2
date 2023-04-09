@@ -58,7 +58,7 @@ public:
     std::string getPlayerName();
     int getMoney();
     int getPlayerPosn();
-    State *getState() const override;
+    State *getState() override;
     void setState(State state) override;
 
     // Tims jail related
@@ -81,8 +81,8 @@ public:
 
     // Core player functions
     void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
-    void sellPropertyTo(std::shared_ptr<Player> newOwner, std::string cellName, int salePrice);
-    void attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std::string recieve);
+    void sellPropertyTo(Player *newOwner, std::string cellName, int salePrice);
+    void attemptTrade(Player *tradeTo, std::string give, std::string recieve);
     
     // Ownable property actions
     void attemptAddImprovement(std::string cellName);
