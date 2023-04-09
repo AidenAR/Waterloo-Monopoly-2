@@ -4,7 +4,7 @@
 template <typename InfoType, typename StateType> class Observer;
 
 template <typename InfoType, typename StateType> class Subject {
-    std::vector<Observer<InfoType, StateType>*> observers;
+    std::vector<Observer<InfoType, StateType> *> observers;
 
 public:
     // Idt its a good idea to require Subjects to have an
@@ -15,14 +15,15 @@ public:
     // as the notify methods for Cell and Player take in 
     // a Subject and need some way to access Info and State.
 
-    // (working with pointers to prevent object slicing)
-    InfoType *getInfo();
-    void setInfo(InfoType *info);
-    StateType *getState();
-    void setState(StateType *state);
+    // Subject.cc for now will implement dummy methods that dont do anything useful.
 
-    void attach(Observer<InfoType, StateType> *o);
-    void detach(Observer<InfoType, StateType> *o);
+    virtual InfoType *getInfo() const;
+    virtual void setInfo(InfoType info);
+    virtual StateType *getState() const;
+    virtual void setState(StateType state);
+
+    void attach(std::shared_ptr<Object<Info, State> *> o);
+    void detach(std::shared_ptr<Object<Info, State> *> o);
     void notifyObservers();
 };
 

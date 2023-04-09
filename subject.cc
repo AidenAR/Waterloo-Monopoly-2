@@ -19,3 +19,21 @@ template <typename InfoType, typename StateType>
 void Subject<InfoType, StateType>::notifyObservers() {
   for (auto &ob : observers) ob->notify(*this);
 }
+
+// Workaround for the Info vs State issue
+
+template <typename InfoType, typename StateType>
+InfoType Subject<InfoType, StateType>::getInfo() const {
+    return InfoType();
+}
+
+template <typename InfoType, typename StateType>
+void Subject<InfoType, StateType>::setInfo(InfoType info) {}
+
+template <typename InfoType, typename StateType>
+StateType Subject<InfoType, StateType>::getState() const {
+    return StateType();
+}
+
+template <typename InfoType, typename StateType>
+void Subject<InfoType, StateType>::setState(StateType state) {}

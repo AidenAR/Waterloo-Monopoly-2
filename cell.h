@@ -11,6 +11,7 @@ class Board;
 
 
 class Cell: public Subject<Info, State>, public Observer<Info, State> {
+protected:
     std::string name;
     int posn;
     int i;
@@ -19,8 +20,7 @@ class Cell: public Subject<Info, State>, public Observer<Info, State> {
     Info info;
     public:
         Cell(Board &board, std::string name, int posn, int i, int j);
-        virtual void notify(Subject<Info, State> &whoNotified) = 0;
-        //virtual Info getInfo() const;
+        //virtual void notify(Subject<Info, State> &whoNotified) = 0;
         void notifyObservers();
 };
 
