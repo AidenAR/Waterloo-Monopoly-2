@@ -104,11 +104,12 @@ void Player::subtractRollRims() {
 // This will notify all observers that Player is moving forward by 1 (Move notif). 
 // On the 5th moving, specify that player has landed on that spot with landed=true (Landed notif).
 void Player::moveForward(bool landed = false) {
+    if (this->timsJail) return;
+
     playerPosn++;
 
-    State newS = State();
-    newS.type = landed ? StateType::Landed : StateType::Move;
-    newS.playerPosn = playerPosn;
+    state.type = landed ? StateType::Landed : StateType::Move;
+    state.playerPosn = playerPosn;
 
     this->notifyObservers();
 }
@@ -123,7 +124,10 @@ void  Player::addFunds(int num) {
 
 // As this is a Player, we will only be notified by Cells, so Cells contain data with their Info attribute; use Info accessors.
 // Do NOT call State accessors here.
+// The only cells which will be notifying us are those who want the player to do smth (ie, pay tuiton)
 void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+    // should do nothing if it isnt this Players turn
+
     Info *info = whoFrom->getInfo();
     this->responseCell = whoFrom;
 
@@ -154,6 +158,9 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
         } else if (info->ownedBy == this) {
             cout << "Cell owned by you!" << endl;
             //TODO?? lol not rly sure if anything neesd to be done here
+        } else {
+            cout << "Cell not owned by you... gotta pay up!" << endl;
+
         }
 
         OwnableType otype = info->otype;
@@ -285,38 +292,6 @@ void Player::attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std
             // I am paying money for other guys property
 
             tradeTo->sellPropertyTo(this, recieve, giveInt);
-            
-            // // Setting up State
-            // State *newS = tradeTo->getState();
-            // newS->type = StateType::SellTo;
-            // newS->cellName = recieve;
-            // newS->newOwner = this;
-
-            // // Since property is owned by other dude, they should be the one who notifies their cell of being sold.
-            // // We then attempt to purchase.
-            // tradeTo->notifyObservers();
-
-            // Info *cellInfo = tradeTo->responseCell->getInfo();
-            // if (cellInfo->wasSuccesful) {
-            //     // Since trade succesful, we now transact funds for each person and handle owned properties.
-
-            //     // Remove from current owner's property vector and give them money
-            //     std::vector<std::shared_ptr<Ownable>> traderProps = tradeTo->getOwnedProperties();
-            //     auto it = std::find(traderProps.begin(), traderProps.end(), tradeTo->responseCell);
-            //     if (it != traderProps.end()) {
-            //         traderProps.erase(it);
-            //     }
-            //     tradeTo->addFunds(giveInt);
-
-            //     // Add to our property vector and remove funds
-            //     ownedProperties.push_back(tradeTo->responseCell);
-            //     subFunds(giveInt);
-
-            //     // Resetting responseCell to nullptr
-            //     tradeTo->responseCell = nullptr;
-            // } else {
-            //     cout << "Trade unsuccesfsful." << endl;
-            // }
         }
     } else {
         if (isNum(recieve)) {
@@ -329,43 +304,6 @@ void Player::attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std
             }
 
             sellPropertyTo(tradeTo, give, recieveInt);
-
-
-            // // First lets attempt to trade by notifying the cell
-
-            // // Setting up State
-            // State newS;
-            // newS.type = StateType::SellTo;
-            // newS.cellName = give;
-            // newS.newOwner = tradeTo; // argh casting issues
-            // state = newS;
-
-            // // We attempt to do this trade
-            // notifyObservers();
-
-            // // After this is called, the cell in question would have responded and responseCell is updated.
-            // Info *cellInfo = responseCell->getInfo();
-            // if (cellInfo->wasSuccesful) {
-            //     // Since trade succesful, we now transact funds for each person and handle owned properties.
-
-            //     // Remove from current owner's property vector and give them money
-            //     std::vector<std::shared_ptr<Cell>> traderProps = tradeTo->getOwnedProperties();
-            //     traderProps.push_back(responseCell);
-            //     tradeTo->subFunds(recieveNum);
-                
-            //     // Add to our property vector and remove funds
-            //     ownedProperties.push_back(tradeTo->responseCell);
-            //     auto it = std::find(ownedProperties.begin(), ownedProperties.end(), responseCell);
-            //     if (it != ownedProperties.end()) {
-            //         ownedProperties.erase(it);
-            //     }
-            //     this->addFunds(recieveNum);
-
-            //     // Resetting responseCell to nullptr
-            //     tradeTo->responseCell = nullptr;
-            // } else {
-            //     cout << "Trade unsuccesfsful." << endl;
-            // }
         } else {
             // I am trading property with the other guy
             sellPropertyTo(tradeTo, give, 0);
@@ -444,39 +382,7 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
 
 }
 
-// void Player::sellPropertyTo(Player& new_owner, std::shared_ptr<Cell> c) {
-//     auto oprop = std::dynamic_pointer_cast<OInfo>(c->getInfo());
-//     if (oprop && oprop->ownedBy == this) {
-//         // Transfer ownership
-//         oprop->ownedBy = &new_owner;
-//         new_owner.ownedProperties.push_back(c);
 
-//         //Payment
-//         new_owner.subFunds(oprop->price);
-
-//         // Add funds to seller
-//         addFunds(oprop->price);
-
-//         // Remove from current owner's property vector
-//         auto it = std::find(ownedProperties.begin(), ownedProperties.end(), c);
-//         if (it != ownedProperties.end()) {
-//             ownedProperties.erase(it);
-//         }
-
-//         // Decrement counter based on property type
-//         if (dynamic_cast<Gym*>(c.get())) {
-//             numGyms--;
-//         } else if (dynamic_cast<Residences*>(c.get())) {
-//             numResidences--;
-//         } else if (auto academic = dynamic_cast<AcademicBuildings*>(c.get())) {
-//             // Update FacultyMap
-//             FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]--;
-
-//             // Update new owner's FacultyMap
-//             new_owner.FacultyMap[std::get<1>(academic_buildings[academic->getFacultyName()])]++;
-//         }
-//     }
-// }
 
 
 //Handles jail rolls as well as jail turns

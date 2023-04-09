@@ -11,6 +11,7 @@
 #include "info.h"
 #include "observer.h"
 #include "subject.h"
+#include <iostream>
 using namespace std;
 
 
@@ -18,13 +19,12 @@ Residences::Residences(Board &board, std::string name, int pos, int i, int j):
         Cell(board, name, posn, i, j) {}
 
 
-Residences::Residences~() {}
+Residences::~Residences() {}
 
 
 //Pay Rent
 void Residences::payTuition(Player *p) {
-    Info info2 = this->getInfo();
-    Player *owner = info2.ownedBy;
+    Player *owner = info.ownedBy;
     int numResOwned = owner->getNumResidences();
     if (numResOwned <= 0) {
         cout << "Not owned: No Rent" << endl;
@@ -62,10 +62,10 @@ void Residences::payTuition(Player *p) {
 }
 
 
-void Residences::mortgage(std::string cellName) {
-    Info info3 = this->getInfo();
-    Player *owner = info3.ownedBy;
-    if (info3.isMortgaged) {
+void Residences::mortgage() {
+    string cellName = info.cellName;
+    Player *owner = info.ownedBy;
+    if (info.isMortgaged) {
         cout << "mortgaged property already." << endl;
         return;
     }
@@ -73,33 +73,33 @@ void Residences::mortgage(std::string cellName) {
         //give owner half of cost
         int mortgageMoney = resCost * 0.5;
         owner->addFunds(mortgageMoney);
-        info3.isMortgaged = true;
-        info3.wasSuccesful = true;
+        info.isMortgaged = true;
+        info.wasSuccesful = true;
         cout << "Successfully mortgaged" << endl;
     } else {
         cout << "Not Owned: unsuccessfully mortgaged" << endl;
-        info3.isMortgaged = false;
-        info3.wasSuccesful = false;
+        info.isMortgaged = false;
+        info.wasSuccesful = false;
     }
 }
 
 
-void Residences::unMortgage(std::string cellName) {
-    Info info4 = this->getInfo();
-    Player *owner = info4.ownedBy;
-    if (!info4.isMortgaged) {
+void Residences::unMortgage() {
+    string cellName = info.cellName;
+    Player *owner = info.ownedBy;
+    if (!info.isMortgaged) {
         cout << "property not mortgaged." << endl;
         return;
     }
     if (owner) {
-        if (info4.isMortgaged) {
+        if (info.isMortgaged) {
             // owner pay 60% of cost
             int moneyOwed = (resCost * 0.6);
             cout << "Pay to unmortgage:$ " << moneyOwed << endl;
             if (owner->getMoney() > moneyOwed) {
                 owner->subFunds(moneyOwed);
-                info4.isMortgaged = false;
-                info4.wasSuccesful = false;
+                info.isMortgaged = false;
+                info.wasSuccesful = false;
                 cout << "Successfully unMortgaged" << endl;
             } else {
                 cout << "Not Enough Money to unMortgage" << endl;
@@ -111,4 +111,57 @@ void Residences::unMortgage(std::string cellName) {
 }
 
 
-void Residences::notify(Subject<Info, State> &whoNotified);
+void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+    State state = *(whoFrom->getState());
+    StateType type = state.type;
+    
+    // cellName != "" means notif directed for cell which is not the one Player is on, so gotta check if cellName matches.
+    if (!((state.cellName == this->name) || (state.playerPosn == this->posn))) {
+        return;
+    }
+
+    // As cellName matches, means notif directed for this cell. 
+    switch (type)
+    {
+    case StateType::Purchase:
+        if (info.ownedBy != nullptr) {
+            info.wasSuccesful = false;
+            break;
+        }
+        this->info.ownedBy = state.newOwner;
+        this->info.wasSuccesful = true;
+
+        break;
+    case StateType::Mortgage:
+        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
+            info.wasSuccesful = false;
+            break;
+        }
+
+        mortgage();
+
+        break;
+    case StateType::Unmortgage:
+        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
+            info.wasSuccesful = false;
+            break;
+        }
+
+        unMortgage();
+        break;
+    case StateType::SellTo:
+        // Fund transactions are handlded by player.cc
+        info.ownedBy = state.newOwner;
+        break;
+    case StateType::Landed:
+        if (info.ownedBy != whoFrom) {
+            payTuition(whoFrom);
+        }
+        break;
+    default:
+        return;
+    }
+
+    notifyObservers();
+    
+}

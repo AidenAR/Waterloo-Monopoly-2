@@ -16,8 +16,8 @@ struct Info {
 
     // Only ownable properties will use the following attributes; non-ownable should use just cellName and posn, and the Player obj decides what to do from there.
     OwnableType otype;
-    Player *ownedBy;
-    int improveCount;
+    Player *ownedBy = nullptr;
+    int improveCount = 0;
     int price;
     bool isMortgaged = false;
 };

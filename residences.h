@@ -16,13 +16,7 @@
 //Note: Num Resi owned is in player
 //Also this has acess to info since it inherits from Ownable
 
-class Residences: public Ownable{
-private:
-    Board &board;
-    std::string name;
-    int pos;
-    int i;
-    int j;
+class Residences: public Ownable {
     //int res_cost = $200; [from Info]
 public:
     const int oneResRent = 25;
@@ -30,12 +24,12 @@ public:
     const int threeResRent = 100;
     const int fourResRent = 200;
     const int resCost = 200;
-    Residences(board &b, std::string name, int pos, int i, int j);
-    Residences~();
+    Residences(Board &b, std::string name, int pos, int i, int j);
+    ~Residences();
     void payTuition(Player *p) override; //payRent is like payTuition
-    void mortgage(std::string cellName) override;
-    void unMortgage(std::string cellName) override;
-    void notify(Subject<Info, State> &whoNotified) override;
+    void mortgage() override;
+    void unMortgage() override;
+    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
 
 
