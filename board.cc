@@ -210,3 +210,49 @@ void Board::loadGame(std::string f) {
         }
     }
 }
+
+
+
+void Board::auction(std::string cellName) {
+    std::cout << "Auctioning " << cellName << std::endl;
+    std::vector<std::shared_ptr<Player>> pl = getPlayerList();
+    int numPlayers = pl.size();
+    int currentBid = 0;
+    int numBids = 0;
+    std::shared_ptr<Player> highestBidder = nullptr;
+
+    while (numPlayers > 1) {
+        std::shared_ptr<Player> currentBidder = pl[0];
+        cout << "Player " << currentBidder->getName() << ": Would you like to raise or withdraw? ";
+        string y;
+        if (!(cin >> y)) continue;
+        if (y == "withdraw") {
+            pl.erase(pl.begin());
+            numPlayers--;
+        } else {
+            std::cout << currentBidder->getName() << ", enter your bid: ";
+            int bid;
+            std::cin >> bid;
+            if (bid < currentBid) {
+                std::cout << "Bid must be greater than the current bid of " << currentBid << std::endl;
+                continue;
+            }
+            currentBid = bid;
+            highestBidder = currentBidder;
+            numBids++;
+            pl.erase(pl.begin());
+            pl.push_back(currentBidder);
+        }
+    }
+
+    if (numBids == 0) {
+        std::cout << "No one bid on " << cellName << std::endl;
+        return;
+    }
+
+    std::cout << highestBidder->getName() << " won " << cellName << " for " << currentBid << std::endl;
+
+    highestBidder->subFunds(currentBid);
+    //how do I change ownership
+}
+

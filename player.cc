@@ -100,8 +100,8 @@ void Player::subtractRollRims() {
     totalCups = totalCups > 0 ?  totalCups-- : 0;
     jailTurns = 0;
     timsJail = false;
-    jailRolls.clear()
-    rollMove();
+    jailRolls.clear();
+    //rollMove();
 }
 
 // Takes in new position newPosn we place the player in that position.
@@ -335,6 +335,7 @@ void Player::freePlayerFromTimsJail() {
     jailRolls.clear();
 }
 
+
 void Player::printAssets() {
     cout << "Name: " << playerName << endl;
     cout << "Character: " << pieceName << endl;
@@ -347,7 +348,7 @@ void Player::printAssets() {
 
     //properties owned
     for (auto &cell: ownedProperties) {
-        cout << "Property: " << cell.getInfo()->cellName << " : $" << cell.getInfo()->price << endl;
+        cout << "Property: " << cell->getInfo()->cellName << " : $" << cell->getInfo()->price << endl;
     }
 }
 
@@ -355,7 +356,7 @@ void Player::printAssets() {
 int Player::playerAssetsWorth() {
     int totalAssets = 0;
     for (auto &cell: ownedProperties) {
-        totalAssets += cell.getInfo().price;
+        totalAssets += cell->getInfo().price;
     }
     totalAssets += money;
     return totalAssets;
@@ -427,7 +428,7 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
         // Update FacultyMap
         // god knows how this works bruh pls ask aiden again
         auto academic = dynamic_cast<AcademicBuildings*>(whoFrom.get());
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
     }
 
     cout << "Successfully purchased cell!" << endl;
@@ -553,8 +554,8 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
         // Update FacultyMap
         auto academic = dynamic_cast<AcademicBuildings*>(responseCell.get());
 
-        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]++;
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]--;
+        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]--;
     }
 
 }
@@ -567,24 +568,28 @@ void Player::setJailTurns(int j) {
     jailTurns = j;
 }
 
+void Player::addProperty(shared_ptr<Ownable> c) {
+    ownedProperties.push_back(c);
+}
+
 
 void Player::TimsJailCell(Player& p) {
     // Check if the player is currently in jail
-    if (p.timsJail) {
+    if (p.getTimsJail()) {
         // Check if it is the player's third turn in jail
         if (p.getJailTurns() == 3) {
             // Player must pay $50 or use a Roll Up the Rim cup to get out of jail
             if (p.getRollRims() > 0) {
                 // Use Roll Up the Rim cup to get out of jail
                 p.subtractRollRims();
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else if (p.getMoney() >= 50) {
                 // Pay $50 to get out of jail
                 p.subFunds(50);
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else {
                 // Player doesn't have enough money to get out of jail
-                p.timsJail = true;
+                p.setTimsJail(true);
             }
         } else {
             //in main or board???
@@ -594,16 +599,44 @@ void Player::TimsJailCell(Player& p) {
             if (diceRoll1 == diceRoll2) {
                 // Player rolled doubles and gets out of jail
                 p.setJailTurns(0);
-                p.timsJail = false;
+                p.setTimsJail(false);
             } else {
                 // Player did not roll doubles
                 p.setJailTurns(p.getJailTurns() + 1);
-                p.timsJail = true;
+                p.setTimsJail(true);
             }
         }
     } else {
         // Player is not in jail
-        p.timsJail = false;
+        p.setTimsJail(false);
         p.setJailTurns(0);
+    }
+}
+
+
+void Player::partMonopoly() {
+    if (FacultyMap["Arts1"].first == NumArts1) {
+        FacultyMap["Arts1"].second = true;
+    }
+    if (FacultyMap["Arts2"].first == NumArts3) {
+        FacultyMap["Arts2"].second = true;
+    }
+    if (FacultyMap["Eng"].first == NumEng) {
+        FacultyMap["Eng"].second = true;
+    }
+    if (FacultyMap["Health"].first == NumHealth) {
+        FacultyMap["Health"].second = true;
+    }
+    if (FacultyMap["Env"].first == NumEnv) {
+        FacultyMap["Env"].second = true;
+    }
+    if (FacultyMap["Sci1"].first == NumSci1) {
+        FacultyMap["Sci1"].second = true;
+    }
+    if (FacultyMap["Sci2"].first == NumSci2) {
+        FacultyMap["Sci2"].second = true;
+    }
+    if (FacultyMap["Math"].first == NumMath) {
+        FacultyMap["Math"].second = true;
     }
 }

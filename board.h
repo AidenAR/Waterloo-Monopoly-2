@@ -2,6 +2,7 @@
 #define BOARD_H
 #include <vector>
 #include <memory>
+#include <string>
 
 class TextDisplay;
 class Player;
@@ -38,6 +39,9 @@ class Board {
     void loadGame(std::string f);
     void saveGame(std::string f);
     std::string getWinner();
+    bool isGameOver();
+    void auction(std::string cellName);
+    friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
 #endif

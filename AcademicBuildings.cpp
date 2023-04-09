@@ -293,12 +293,7 @@ bool Player:: partMonopoly(std::unordered_map<std::string) {
 }
 */
 
-
-std::unordered_map<std::string, std::pair<int, bool>> FacultyMap =
-        {{"Arts1", {0, false}}, {"Arts2", {0, false}}, {"Eng", {0, false}},
-         {"Health", {0, false}}, {"Env", {0, false}}, {"Sci1", {0, false}},
-         {"Sci2", {0, false}}, {"Math", {0, false}}};
-
+/*
 const int NumArts1 = 2;
 const int NumArts3 = 3;
 const int NumEng = 3;
@@ -334,3 +329,4 @@ void Player:: partMonopoly() {
         FacultyMap["Math"].second = true;
     }
 }
+8/

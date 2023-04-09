@@ -62,6 +62,7 @@ public:
     std::vector<std::shared_ptr<Cell>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
+    void setTimsJail(bool j);
 
     // Movement related
     void moveForward(bool landed = false);
@@ -83,7 +84,11 @@ public:
     void printAssets();
     bool getIsBankrupt();
     void setIsBankrupt();
-    int playerAssetsWorth(); // Deals with bankrupt
+    int playerAssetsWorth(); //Deals with bankrupt
+    
+    void addProperty(std::shared_ptr<Ownable> c);
+    void setJailTurns(int j);
+    void TimsJailCell(Player& p);
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom);
 };
