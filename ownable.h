@@ -6,8 +6,7 @@
 #define OWNABLE_H
 #include "cell.h"
 #include "player.h"
-template <typename InfoType, typename StateType> class Subject;
-class Info;
+template <typename StateType> class Subject;
 class State;
 
 
@@ -15,15 +14,14 @@ class Ownable: public Cell {
 protected:
     bool isMortgage = false;
 public:
-    Ownable(Board &board, std::string name, int posn, int i, int j);
-
+    Ownable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
     virtual int improvementCost() = 0;
     virtual void sellImprovement() = 0;
     virtual void buyImprovement() = 0;
     virtual void payTuition(Player *p) = 0;
     virtual void mortgage() = 0;
     virtual void unMortgage() = 0;
-    virtual void notify(std::shared_ptr<Subject<Info, State>> whoFrom) = 0;
+    virtual void notify(std::shared_ptr<Subject<State>> whoFrom) = 0;
     void auction();
     void setOwner(Player *p);
 };

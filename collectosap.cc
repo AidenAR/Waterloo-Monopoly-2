@@ -4,4 +4,4 @@ class Cell;
 
 
 
-CollectOsap::CollectOsap(Board &board, std::string name, int pos, int i, int j): NonOwnable{board, name, pos, i, j} {}
+CollectOsap::CollectOsap(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price): NonOwnable{board, name, posn, i, j, ownable, otype, price} {}

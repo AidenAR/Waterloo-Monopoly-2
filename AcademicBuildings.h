@@ -66,7 +66,7 @@ public:
     const int NumSci2 = 3;
     const int NumMath = 2;
 */
-    AcademicBuildings(Board &b, std::string name, int pos, int i, int j);
+    AcademicBuildings(Board &b, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     ~AcademicBuildings();
     void sellImprovement() override;
     void buyImprovement() override;
@@ -74,7 +74,7 @@ public:
     void payTuition(Player *p) override;
     void mortgage() override;
     void unMortgage() override;
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
+    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
 };
 
 

@@ -4,15 +4,14 @@
 #include "subject.h"
 #include <string>
 
-class Info;
 class State;
 class Player;
 class Board;
 
-enum OwnableType{Academic, Residence, Gym};
+enum OwnableType{Academic, Residence, Gym, NonOwnable};
 
 
-class Cell: public Subject<Info, State>, public Observer<Info, State> {
+class Cell: public Subject<State>, public Observer<State> {
 protected:
     std::string name;
     int posn;
@@ -35,7 +34,7 @@ protected:
         Player *getOwnedBy();
         OwnableType getOtype();
         void setOwnedBy(Player *ownedBy);
-        string getName();
+        std::string getName();
         int getPosn();
         int getI();
         int getJ();

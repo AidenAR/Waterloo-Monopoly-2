@@ -7,10 +7,8 @@
 
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
-#include "info.h"
 #include "observer.h"
 #include "subject.h"
 //Note: Num Resi owned is in player
@@ -24,12 +22,12 @@ public:
     const int threeResRent = 100;
     const int fourResRent = 200;
     const int resCost = 200;
-    Residences(Board &b, std::string name, int pos, int i, int j);
+    Residences(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     ~Residences();
     void payTuition(Player *p) override; //payRent is like payTuition
     void mortgage() override;
     void unMortgage() override;
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
+    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
 };
 
 

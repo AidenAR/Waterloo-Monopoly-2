@@ -16,8 +16,8 @@ using namespace std;
 //Bankrupt fn  implemented:
 //Hassan check notifs
 
-AcademicBuildings::AcademicBuildings(Board &board, std::string name, int pos, int i, int j) :
-    Cell(board, name, posn, i, j) {}
+AcademicBuildings::AcademicBuildings(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price) :
+    Ownable(board, name, posn, i, j, ownable, otype, price) {}
 
 AcademicBuildings::~AcademicBuildings() {}
 
@@ -189,7 +189,7 @@ void AcademicBuildings::unMortgage() {
 
 
 
-void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     

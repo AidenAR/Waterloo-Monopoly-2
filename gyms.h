@@ -23,13 +23,13 @@ public:
     const int gym_cost = 150;
     const int oneGym = 4;
     const int twoGym = 10;
-    Gyms(Board &b, std::string name, int pos, int i, int j);
+    Gyms(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     Board getBoard(Gyms& g);
     ~Gyms();
     void payTuition(Player *p) override; //payMembership is like payTuition
     void mortgage() override;
     void unMortgage() override;
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
+    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
     // void auction();????
 };
 

@@ -152,9 +152,7 @@ void  Player::addFunds(int num) {
 // As this is a Player, we will only be notified by Cells, so Cells contain data with their Info attribute; use Info accessors.
 // Do NOT call State accessors here.
 // The only cells which will be notifying us are those who want the player to do smth (ie, pay tuiton)
-// Requirements:
-// whoFrom is a Cell
-void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void Player::notify(std::shared_ptr<State>> whoFrom) {
     // should do nothing if it isnt this Players turn
 
     shared_ptr<Cell> whoFromCell = dynamic_pointer_cast<Cell>(whoFrom);

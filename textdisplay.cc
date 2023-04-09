@@ -53,7 +53,7 @@ TextDisplay::TextDisplay(Board &board): board{board} {
     }
 }
 
-void TextDisplay::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void TextDisplay::notify(std::shared_ptr<Subject<State>> whoFrom) {
     // Assume that only cells notify us
     Cell *whoFromCell = dynamic_cast<Cell*>(whoFrom.get());
     if (whoFromCell == nullptr) return;

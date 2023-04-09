@@ -13,8 +13,8 @@
 #include <iostream>
 using namespace std;
 
-Gyms::Gyms(Board &board, int name, int pos, int i, int j) :
-    Cell(board, name, posn, i, j) {}
+Gyms::Gyms(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price) :
+    Ownable(board, name, posn, i, j, ownable, otype, price) {}
 
 
 Gyms::~Gyms() {}
@@ -105,7 +105,7 @@ void Gyms::unMortgage() {
 
 
 
-void Gyms::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void Gyms::notify(std::shared_ptr<Subject<State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     

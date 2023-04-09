@@ -13,8 +13,8 @@
 using namespace std;
 
 
-Residences::Residences(Board &board, std::string name, int pos, int i, int j):
-        Ownable(board, name, posn, i, j) {}
+Residences::Residences(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price) :
+    Ownable(board, name, posn, i, j, ownable, otype, price) {}
 
 
 Residences::~Residences() {}
@@ -108,7 +108,7 @@ void Residences::unMortgage() {
 }
 
 
-void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     
