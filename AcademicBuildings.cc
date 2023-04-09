@@ -65,7 +65,7 @@ void AcademicBuildings::sellImprovement() {
     getImproveCount();
 
     Player *owner = getOwnedBy();
-    string cName = getCellName();
+    string cName = getName();
     if (owner == nullptr) {
         cout << "Not owned: No Improvements to sell" << endl;
         return;
@@ -90,12 +90,12 @@ void AcademicBuildings::sellImprovement() {
 
 
 void AcademicBuildings::payTuition(Player *p) {
-    Player *owner = info.ownedBy;
-    string cName = info.cellName;
+    Player *owner = getOwnedBy();
+    string cName = getName();
     string facName = getFacultyName(cName);
     if (owner) {
         owner->partMonopoly();
-        if (FacultyMap[facName].second && info.improveCount == 0) {
+        if (FacultyMap[facName].second && getImproveCount() == 0) {
             //owner has a monopoly and < 5 built so can buy improvement
             //tuple w costs
             auto building = academic_buildings.find(cName)->second;
@@ -109,8 +109,8 @@ void AcademicBuildings::payTuition(Player *p) {
         } else {
             auto building = academic_buildings.find(cName)->second;
             //reg tuition
-            owner->addFunds(std::get<3 + info.improveCount>(building));
-            p->subFunds(std::get<3 + info.improveCount>(building));
+            owner->addFunds(std::get<3 + getImproveCount()>(building));
+            p->subFunds(std::get<3 + getImproveCount()>(building));
             //make call to Bankrupt
             //Hassan pls
             if (p->getMoney() < 0) {
@@ -126,16 +126,16 @@ void AcademicBuildings::payTuition(Player *p) {
 
 
 void AcademicBuildings::mortgage() {
-    string cellName = info.cellName;
+    string cellName = getName();
     
-    Player *owner = info.ownedBy;
-    if (info.isMortgaged) {
+    Player *owner = getOwnedBy();
+    if (getMortgaged()) {
         cout << "mortgaged property already." << endl;
         return;
     }
     if (owner) {
         //sell off all improvements if existing
-        if (info.improveCount > 0) {
+        if (getImproveCount() > 0) {
             for (int i = 0; i < info.improveCount; i++) {
                 this->sellImprovement();
             }
@@ -145,29 +145,28 @@ void AcademicBuildings::mortgage() {
         auto building = academic_buildings.find(cellName)->second;
         owner->addFunds((std::get<1>(building)) * 0.5);
 
-        info.isMortgaged = true;
-        info.wasSuccesful = true;
+        setMortgaged(true);
+        setSuccesful(true);
         cout << "Successfully mortgaged" << endl;
     } else {
         cout << "Not Owned: unsuccessfully mortgaged" << endl;
-        info.isMortgaged = false;
-        info.wasSuccesful = false;
+        setMortgaged(false);
+        setSuccesful(false);
     }
 }
 
 
 void AcademicBuildings::unMortgage() {
-    string cellName = info.cellName;
+    string cellName = getName();
 
-    Info info = *this->getInfo();
-    Player *owner = info.ownedBy;
-    if (!info.isMortgaged) {
+    Player *owner = getOwnedBy();
+    if (!getMortgaged()) {
         cout << "property not mortgaged." << endl;
-        info.wasSuccesful = false;
+        setSuccesful(false);
         return;
     }
     if (owner) {
-        if (info.isMortgaged) {
+        if (getMortgaged()) {
             //give owner half of cost
             //tuple w costs
             auto building = academic_buildings.find(cellName)->second;
@@ -175,8 +174,8 @@ void AcademicBuildings::unMortgage() {
             cout << "Pay to unmortgage:$ " << moneyOwed << endl;
             if (owner->getMoney() > moneyOwed) {
                 owner->subFunds(moneyOwed);
-                info.isMortgaged = false;
-                info.wasSuccesful = false;
+                setMortgaged(false);
+                setSuccesful(false);
                 cout << "Successfully unMortgaged" << endl;
             } else {
                 cout << "Not Enough Money to unMortgage" << endl;
@@ -202,48 +201,48 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
     switch (type)
     {
     case StateType::Purchase:
-        if (info.ownedBy != nullptr) {
-            info.wasSuccesful = false;
+        if (getOwnedBy() != nullptr) {
+            setSuccesful(false);
             notifyObservers();
             break;
         }
-        this->info.ownedBy = state.newOwner;
-        this->info.wasSuccesful = true;
+        setOwnedBy(state.newOwner);
+        setSuccesful(true);
         notifyObservers();
         break;
     case StateType::Mortgage:
-        if (this->info.isMortgaged) return;
-        if (info.ownedBy != whoFrom.get()) return;
-        if (info.cellName != state.cellName) return;
+        if (getMortgaged()) return;
+        if (getOwnedBy() != whoFrom.get()) return;
+        if (getName() != state.cellName) return;
 
         mortgage();
         break;
     case StateType::Unmortgage:
-        if (this->info.isMortgaged) return;
-        if (info.ownedBy != whoFrom.get()) return;
-        if (info.cellName != state.cellName) return;
+        if (getMortgaged()) return;
+        if (getOwnedBy() != whoFrom.get()) return;
+        if (getName() != state.cellName) return;
 
         unMortgage();
         break;
     case StateType::SellTo:
         // Fund transactions are handlded by player.cc
-        info.ownedBy = state.newOwner;
-        info.wasSuccesful = true;
+        setOwnedBy(state.newOwner);
+        setSuccesful(true);
         notifyObservers();
         break;
     case StateType::SellImprovement:
-        if (state.cellName != info.cellName) return;
+        if (state.cellName != getName()) return;
         sellImprovement();
         break;
     case StateType::AddImprovement:
-        if (state.cellName != info.cellName) return;
+        if (state.cellName != getName()) return;
         buyImprovement();
         break;
     case StateType::Landed:
-        if (info.ownedBy == nullptr) {
+        if (getOwnedBy() == nullptr) {
             // Player now must deicde whether to auction or purchase.
             // Send notif back to player s they can decide.
-        } else if (info.ownedBy != whoFrom.get()) {
+        } else if (getOwnedBy() != whoFrom.get()) {
             payTuition(whoFrom);
         } // Else we own cell, nothing to do.
         break;
