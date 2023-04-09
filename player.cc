@@ -421,6 +421,10 @@ void Player::setJailTurns(int j) {
     jailTurns = j;
 }
 
+void Player::addProperty(shared_ptr<Ownable> c) {
+    ownedProperties.push_back(c);
+}
+
 
 void Player::TimsJailCell(Player& p) {
     // Check if the player is currently in jail

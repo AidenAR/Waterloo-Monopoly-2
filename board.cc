@@ -181,7 +181,7 @@ void Board::loadGame(std::string f) {
         string name, piece;
         int money, playerPosn, rollRims;
         iss >> name >> piece >> money >> playerPosn >> rollRims;
-        shared_ptr<Player> p = make_shared<Player>(name, pieceSymbol(piece), money, posn, rollRims);
+        shared_ptr<Player> p = make_shared<Player>(name, pieceSymbol(piece), money, playerPosn, rollRims);
         playerList.emplace_back(p);
         getline(saved, line);
         istringstream iss2(line);
@@ -203,17 +203,25 @@ void Board::loadGame(std::string f) {
             string propertyName;
             int improveLevel;
             iss4 >> propertyName >> improveLevel;
-            // for (int k = 0; k < Cells.size(); k++) {
-            //     
-            // }
-            // how to set the owner of the property?
+            for (int k = 0; k < Cells.size(); k++) {
+                if (Cells[k]->getName() == propertyName) {
+                    p->ownedProperties.emplace_back(Cells[k]);
+                    Cells[k].getInfo().ownedBy = p;
+                    Cells[k].getInfo().improveLevel = improveLevel;
+                    p->addProperty(Cells[k]);
+                }
+            }
         }
     }
 }
 
-ostream &operator<<(ostream &out, const Grid &g) {
+ostream Board::&operator<<(ostream &out, const Grid &g) {
     out << *(g.td);
     return out;
 }
 
-
+bool Board::isGameOver() {
+    if (playerList.size() == 1) {
+        return true;
+    }
+}
