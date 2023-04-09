@@ -211,3 +211,7 @@ void Board::loadGame(std::string f) {
     }
 }
 
+void Board::auction(std::string cellName) {
+
+
+}

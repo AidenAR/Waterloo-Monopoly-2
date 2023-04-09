@@ -65,7 +65,7 @@ public:
     std::vector<std::shared_ptr<Cell>> getOwnedProperties();
     void addRollRims();
     void subtractRollRims();
-
+    void setTimsJail(bool j);
     void moveForward(bool landed = false);
 
     // Core player functions

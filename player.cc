@@ -77,6 +77,10 @@ int Player::getJailTurns() {
     return jailTurns;
 }
 
+void Player::setTimsJail(bool j) {
+    timsJail = j;
+}
+
 vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
     return ownedProperties;
 }
