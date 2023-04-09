@@ -140,7 +140,7 @@ void AcademicBuildings::mortgage() {
         //sell off all improvements if existing
         if (info.improveCount > 0) {
             for (int i = 0; i < info.improveCount; i++) {
-                this->sellImprovement(i);
+                this->sellImprovement();
             }
         }
         //give owner half of cost
@@ -162,7 +162,7 @@ void AcademicBuildings::mortgage() {
 void AcademicBuildings::unMortgage() {
     string cellName = info.cellName;
 
-    Info info = this->getInfo();
+    Info info = *this->getInfo();
     Player *owner = info.ownedBy;
     if (!info.isMortgaged) {
         cout << "property not mortgaged." << endl;
@@ -207,48 +207,52 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     case StateType::Purchase:
         if (info.ownedBy != nullptr) {
             info.wasSuccesful = false;
+            notifyObservers();
             break;
         }
         this->info.ownedBy = state.newOwner;
         this->info.wasSuccesful = true;
-
+        notifyObservers();
         break;
     case StateType::Mortgage:
-        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
-            info.wasSuccesful = false;
-            break;
-        }
+        if (this->info.isMortgaged) return;
+        if (info.ownedBy != whoFrom.get()) return;
+        if (info.cellName != state.cellName) return;
 
         mortgage();
-
         break;
     case StateType::Unmortgage:
-        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
-            info.wasSuccesful = false;
-            break;
-        }
+        if (this->info.isMortgaged) return;
+        if (info.ownedBy != whoFrom.get()) return;
+        if (info.cellName != state.cellName) return;
 
         unMortgage();
         break;
     case StateType::SellTo:
         // Fund transactions are handlded by player.cc
         info.ownedBy = state.newOwner;
+        info.wasSuccesful = true;
+        notifyObservers();
         break;
     case StateType::SellImprovement:
-        
+        if (state.cellName != info.cellName) return;
         sellImprovement();
         break;
+    case StateType::AddImprovement:
+        if (state.cellName != info.cellName) return;
+        buyImprovement();
+        break;
     case StateType::Landed:
-        if (info.ownedBy != whoFrom) {
+        if (info.ownedBy == nullptr) {
+            // Player now must deicde whether to auction or purchase.
+            // Send notif back to player s they can decide.
+        } else if (info.ownedBy != whoFrom.get()) {
             payTuition(whoFrom);
-        }
+        } // Else we own cell, nothing to do.
         break;
     default:
         return;
     }
-
-    notifyObservers();
-    
 }
 
 

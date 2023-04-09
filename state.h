@@ -36,6 +36,11 @@
 //          set Stateype to SellImprovement. Cell recieving this will remove its improvment and repond w how much money player earns.
 //      if mortgage: call mortgage as usual.
 
+// AddImprovement:
+// If Player decides to add improvement to some place, they can do it with this. 
+// Player will provide cellName.
+// After doing so, rest is just handled by AcademicBuildings::buyImprovement()
+
 // Move:
 // Say a player rolls dice and has to move 4 spots. Essentially, player will move forward 1 spot 3 times. 
 // However, the fact player is moving means they dont have to collect rent when they just moving across cells. 
@@ -45,7 +50,7 @@
 // which means that is where the player has "Landed" after rolling. 
 // It is at this point Ownable cells will respond with stuff like tuition or wtvr.
 
-enum class StateType{Purchase, Mortgage, Unmortgage, SellTo, SellImprovement, Landed, Move, Playing};
+enum class StateType{Purchase, Mortgage, Unmortgage, SellTo, AddImprovement, SellImprovement, Landed, Move, Playing};
 
 struct State {
     StateType type = StateType::Playing;

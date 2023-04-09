@@ -49,8 +49,14 @@ public:
     int getPlayerPosn();
     State *getState() const override;
     void setState(State state) override;
+
+    // Tims jail related
     int getRollRims();
     bool getTimsJail();
+    void freePlayerFromTimsJail();
+    int getJailTurns();
+    void TimsJailTurns(); // Handles jail rolls as well as jail turn
+
     int getNumGyms();
     int getNumResidences();
     std::vector<std::shared_ptr<Cell>> getOwnedProperties();
@@ -66,14 +72,18 @@ public:
     void sellPropertyTo(std::shared_ptr<Player> newOwner, std::string cellName, int salePrice);
     void attemptTrade(std::shared_ptr<Player> tradeTo, std::string give, std::string recieve);
     
+    // Ownable property actions
+    void attemptAddImprovement(std::string cellName);
+    void attemptSellImprovement(std::string cellName);
+    void attemptMortgage(std::string cellname);
+    void attemptUnmortgage(std::string cellname);
+    
     void addFunds(int num);
     void subFunds(int num);
     void printAssets();
     bool getIsBankrupt();
     void setIsBankrupt();
     int playerAssetsWorth(); // Deals with bankrupt
-    int getJailTurns();
-    void TimsJailTurns(); // Handles jail rolls as well as jail turn
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
