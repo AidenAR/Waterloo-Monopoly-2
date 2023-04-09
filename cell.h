@@ -35,7 +35,7 @@ protected:
         Player *getOwnedBy();
         OwnableType getOtype();
         void setOwnedBy(Player *ownedBy);
-        string getName();
+        std::string getName();
         int getPosn();
         int getI();
         int getJ();
