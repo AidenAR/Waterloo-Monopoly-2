@@ -11,10 +11,12 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include "board.h"
+#include <unordered_map>
+#include "AcademicBuildings.h"
+#include "state.h"
+#include "info.h"
+#include "board.h"
 
-class State;
-class Info;
-class Board;
 
 Player::Player(string playerName, char pieceName, int money, int rollRims, int playerPosn):
     playerName{playerName}, pieceName{pieceName},
@@ -554,10 +556,9 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
         // Update FacultyMap
         auto academic = dynamic_cast<AcademicBuildings*>(responseCell.get());
 
-        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]--;
+        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]--;
     }
-
 }
 
 

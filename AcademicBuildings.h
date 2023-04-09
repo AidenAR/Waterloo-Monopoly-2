@@ -16,7 +16,7 @@
 
 
 class AcademicBuildings: public Ownable {
-protected:
+public:
     std::map<std::string, std::tuple<std::string,
     int, int, int, int, int, int, int, int>> academic_buildings = {
             //name,faculty,purch,improv,imp0,imp1,imp3,imp4,imp5
@@ -58,7 +58,6 @@ protected:
             {"MC", {"Math", 350, 200, 35, 175, 500, 1100, 1300, 1500}},
             {"DC", {"Math", 400, 200, 50, 200, 600, 1400, 1700, 2000}}
     };
-public:
     /*
     const int NumArts1 = 2;
     const int NumArts3 = 3;
