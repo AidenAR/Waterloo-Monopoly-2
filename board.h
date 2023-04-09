@@ -39,7 +39,9 @@ class Board {
     void loadGame(std::string f);
     void saveGame(std::string f);
     std::string getWinner();
+    bool isGameOver();
     void auction(std::string cellName);
+    friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
 #endif

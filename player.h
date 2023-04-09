@@ -81,6 +81,8 @@ public:
     int playerAssetsWorth(); //Deals with bankrupt
     int getJailTurns();
     void TimsJailTurns(); //Handles jail rolls as well as jail turn
+    void placePlayerHere(int newPosn, bool notifyCell = true);
+    void addProperty(std::shared_ptr<Ownable> c);
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };

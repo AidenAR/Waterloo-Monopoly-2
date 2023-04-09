@@ -274,6 +274,18 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     }
 }
 
+void Player::placePlayerHere(int newPosn, bool notifyCell = true) {
+    playerPosn = newPosn;
+
+    if (notifyCell) {
+        state.playerPosn = playerPosn;
+        state.type = StateType::Landed;
+        state.cellName = "";
+        state.newOwner = nullptr;
+        notifyObservers();
+    }
+}
+
 void Player::printAssets() {
     cout << "Name: " << playerName << endl;
     cout << "Character: " << pieceName << endl;
@@ -469,6 +481,10 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
 //Handles jail rolls as well as jail turns
 void Player::setJailTurns(int j) {
     jailTurns = j;
+}
+
+void Player::addProperty(shared_ptr<Ownable> c) {
+    ownedProperties.push_back(c);
 }
 
 
