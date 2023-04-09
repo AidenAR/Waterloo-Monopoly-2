@@ -22,10 +22,6 @@ class Cell: public Subject<Info, State>, public Observer<Info, State> {
         virtual void notify(Subject<Info, State> &whoNotified) = 0;
         //virtual Info getInfo() const;
         void notifyObservers();
-        std::string getName() const;
-        int getPosn() const;
-        int getI() const;
-        int getJ() const;
 };
 
 
