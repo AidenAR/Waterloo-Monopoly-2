@@ -40,7 +40,7 @@ void Gyms::payTuition(Player *p) {
         getOwnedBy()->addFunds(membership);
         p->subFunds(membership);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            // TODO p->setIsBankrupt(true);
         }
     } else if (numGymsOwned == 2) {
         int die1 = getBoard(*this).rollDice()[0];
@@ -51,7 +51,7 @@ void Gyms::payTuition(Player *p) {
         getOwnedBy()->addFunds(membershipTwo);
         p->subFunds(membershipTwo);
         if (p->getMoney() < 0) {
-            p->setIsBankrupt(true);
+            //TODO p->setIsBankrupt(true);
         }
     }
 }
@@ -148,8 +148,9 @@ void Gyms::notify(std::shared_ptr<Subject<State>> whoFrom) {
         setOwnedBy(state.newOwner);
         break;
     case StateType::Landed:
-        if (getOwnedBy() != whoFrom) {
-            payTuition(whoFrom);
+        Player *whoFromPlayer = dynamic_cast<Player *>(whoFrom.get());
+        if (getOwnedBy() != whoFromPlayer) {
+            payTuition(whoFromPlayer);
         }
         break;
     default:

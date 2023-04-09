@@ -105,19 +105,40 @@ void AcademicBuildings::payTuition(Player *p) {
             owner->addFunds((std::get<3>(building)) * 2);
             p->subFunds((std::get<3>(building)) * 2);
             if (p->getMoney() < 0) {
-                p->setIsBankrupt(true);
+                //TODO p->setIsBankrupt(true);
                 //.......what happens after call fn
             }
         } else {
             auto building = academic_buildings.find(cName)->second;
             //reg tuition
-            int num = 3 + getImproveCount();
-            owner->addFunds(std::get<3 + getImproveCount()>(building));
-            p->subFunds(std::get<3 + getImproveCount()>(building));
+            int num = getImproveCount();
+            int num1;
+           switch (num) {
+               case 0:
+                num1 = std::get<3>(building);
+                break;
+               case 1:
+                   num1 = std::get<4>(building);
+                   break;
+               case 2:
+                   num1 = std::get<5>(building);
+                   break;
+               case 3:
+                   num1 = std::get<6>(building);
+                   break;
+               case 4:
+                   num1 = std::get<7>(building);
+                   break;
+               case 5:
+                   num1 = std::get<8>(building);
+                   break;
+           }
+            owner->addFunds(num1);
+            p->subFunds(num1);
             //make call to Bankrupt
             //Hassan pls
             if (p->getMoney() < 0) {
-                p->setIsBankrupt(true);
+                //p->setIsBankrupt(true);
                 //.......what happens after call fn
             }
         }
