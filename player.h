@@ -83,6 +83,8 @@ public:
     void TimsJailTurns(); //Handles jail rolls as well as jail turn
     void placePlayerHere(int newPosn, bool notifyCell = true);
     void addProperty(std::shared_ptr<Ownable> c);
+    void setJailTurns(int j);
+    void TimsJailCell(Player& p);
 
     void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };

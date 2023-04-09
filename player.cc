@@ -104,8 +104,8 @@ void Player::subtractRollRims() {
     totalCups = totalCups > 0 ?  totalCups-- : 0;
     jailTurns = 0;
     timsJail = false;
-    jailRolls.clear()
-    rollMove();
+    jailRolls.clear();
+    //rollMove();
 }
 
 
@@ -298,7 +298,7 @@ void Player::printAssets() {
 
     //properties owned
     for (auto &cell: ownedProperties) {
-        cout << "Property: " << cell.getInfo()->cellName << " : $" << cell.getInfo()->price << endl;
+        cout << "Property: " << cell->getInfo()->cellName << " : $" << cell->getInfo()->price << endl;
     }
 }
 
@@ -306,7 +306,7 @@ void Player::printAssets() {
 int Player::playerAssetsWorth() {
     int totalAssets = 0;
     for (auto &cell: ownedProperties) {
-        totalAssets += cell.getInfo().price;
+        totalAssets += cell->getInfo().price;
     }
     totalAssets += money;
     return totalAssets;
@@ -344,7 +344,7 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
         // Update FacultyMap
         // god knows how this works bruh pls ask aiden again
         auto academic = dynamic_cast<AcademicBuildings*>(whoFrom.get());
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
     }
 
     cout << "Successfully purchased cell!" << endl;
@@ -469,8 +469,8 @@ void Player::sellPropertyTo(std::shared_ptr<Player> newOwner = nullptr, string c
         // Update FacultyMap
         auto academic = dynamic_cast<AcademicBuildings*>(responseCell.get());
 
-        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]++;
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getName(),academic->academic_buildings)])]--;
+        newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]--;
     }
 
 }
