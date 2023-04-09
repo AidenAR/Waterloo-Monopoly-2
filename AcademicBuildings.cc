@@ -243,10 +243,13 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
         break;
     case StateType::Landed:
         if (getOwnedBy() == nullptr) {
-            // Player now must deicde whether to auction or purchase.
+            // Player now must decide whether to auction or purchase.
             // Send notif back to player s they can decide.
         } else if (getOwnedBy() != whoFrom.get()) {
-            payTuition(whoFrom);
+            Player *whoFromPlayer = dynamic_cast<Player *>(whoFrom.get());
+            if (whoFromPlayer == nullptr) return;
+
+            payTuition(whoFromPlayer);
         } // Else we own cell, nothing to do.
         break;
     default:
@@ -328,4 +331,4 @@ void Player:: partMonopoly() {
         FacultyMap["Math"].second = true;
     }
 }
-8/
+*/
