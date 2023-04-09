@@ -2,14 +2,29 @@
 #include "nonownable.h"
 #include "ownable.h"
 #include "player.h"
-#include "property.h"
 #include <iostream>
+#include "cell.h"
+#include <fstream>
+#include <string>
+#include <vector>
+#include "textdisplay.h"
+#include <sstream>
+
+
 
 class CollectOsap;
 class GoToTims;
 class Slc;
 class Tuition;
 class CoopFee;
+class NeedlesHall;
+class Residences;
+class AcademicBuilding;
+class GotoTims;
+class gyms;
+class DCTimsLine;
+class Goose;
+
 
 using namespace std;
 
@@ -17,25 +32,26 @@ Board::~Board() {
     delete td;
 }
 
+
 char Board::pieceSymbol(string pieceName) {
-    swicth (pieceName) {
-        case "Goose":
-            return 'G';
-        case "GRT Bus":
-            return 'B';
-        case "Tim Hortons Donut":
-            return 'D';
-        case "Professor":
-            return 'P';
-        case "Student":
-            return 'S';
-        case "Money":
-            return '$';
-        case "Laptop":
-            return 'L';
-        case "Pink Tie":
-            return 'T';
+    if (pieceName == "Goose") {
+        return 'G';
+    } else if (pieceName == "GRT Bus") {
+        return 'B';
+    } else if (pieceName == "Tim Hortons Donut") {
+        return 'D';
+    } else if (pieceName == "Professor") {
+        return 'P';
+    } else if (pieceName == "Student") {
+        return 'S';
+    } else if (pieceName == "Money") {
+        return '$';
+    } else if (pieceName == "Laptop") {
+        return 'L';
+    } else if (pieceName == "Pink Tie") {
+        return 'T';
     }
+
 }
 
 bool Board::findinVector(vector<string> v, string s) {
@@ -49,52 +65,52 @@ bool Board::findinVector(vector<string> v, string s) {
 
 void Board::initializeCells() {
     Cells.emplace_back(make_shared<CollectOsap>(this, "COLLECT OSAP", 0, 80, 54));
-    Cells.emplace_back(make_shared<Property>(this, "AL", 1, 72, 54));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "AL", 1, 72, 54));
     Cells.emplace_back(make_shared<Slc>(this, "SLC", 2, 64, 54));
-    Cells.emplace_back(make_shared<Property>(this, "ML", 3, 56, 54));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ML", 3, 56, 54));
     Cells.emplace_back(make_shared<Tuition>(this, "TUITION", 4, 48, 54));
     Cells.emplace_back(make_shared<Residences>(this, "MKV", 5, 40, 54));
-    Cells.emplace_back(make_shared<Property>(this, "ECH", 6, 32, 54));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ECH", 6, 32, 54));
     Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 7, 24, 54));
-    Cells.emplace_back(make_shared<Property>(this, "PAS", 8, 16, 54));
-    Cells.emplace_back(make_shared<Property>(this, "HH", 9, 8, 54));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "PAS", 8, 16, 54));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "HH", 9, 8, 54));
     Cells.emplace_back(make_shared<DCTimsLine>(this, "DC TIMS LINE", 10, 0, 54));
-    Cells.emplace_back(make_shared<Property>(this, "RCH", 11, 0, 51));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "RCH", 11, 0, 51));
     Cells.emplace_back(make_shared<gyms>(this, "PAC", 12, 0, 46));
-    Cells.emplace_back(make_shared<Property>(this, "DWE", 13, 0, 41));
-    Cells.emplace_back(make_shared<Property>(this, "CPH", 14, 0, 36));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "DWE", 13, 0, 41));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "CPH", 14, 0, 36));
     Cells.emplace_back(make_shared<Residences>(this, "UWP", 15, 0, 31));
-    Cells.emplace_back(make_shared<Property>(this, "LHI", 16, 0, 26));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "LHI", 16, 0, 26));
     Cells.emplace_back(make_shared<Slc>(this, "SLC", 17, 0, 21));
-    Cells.emplace_back(make_shared<Property>(this, "BMH", 18, 0, 16));
-    Cells.emplace_back(make_shared<Property>(this, "OPT", 19, 0, 11));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "BMH", 18, 0, 16));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "OPT", 19, 0, 11));
     Cells.emplace_back(make_shared<Goose>(this, "GOOSE NESTING", 20, 0, 4));
-    Cells.emplace_back(make_shared<Property>(this, "EV1", 21, 8, 0));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV1", 21, 8, 0));
     Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 22, 16, 4));
-    Cells.emplace_back(make_shared<Property>(this, "EV2", 23, 24, 4));
-    Cells.emplace_back(make_shared<Property>(this, "EV3", 24, 32, 4));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV2", 23, 24, 4));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV3", 24, 32, 4));
     Cells.emplace_back(make_shared<Residences>(this, "V1", 25, 40, 4));
-    Cells.emplace_back(make_shared<Property>(this, "PHYS", 26, 48, 4));
-    Cells.emplace_back(make_shared<Property>(this, "B1", 27, 56, 4));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "PHYS", 26, 48, 4));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "B1", 27, 56, 4));
     Cells.emplace_back(make_shared<gyms>(this, "CIF", 28, 64, 4));
-    Cells.emplace_back(make_shared<Property>(this, "B2", 29, 72, 4));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "B2", 29, 72, 4));
     Cells.emplace_back(make_shared<GoToTims>(this, "GO TO TIMS", 30, 80, 4));
-    Cells.emplace_back(make_shared<Property>(this, "EIT", 31, 80, 11));
-    Cells.emplace_back(make_shared<Property>(this, "ESC", 32, 80, 16));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EIT", 31, 80, 11));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ESC", 32, 80, 16));
     Cells.emplace_back(make_shared<Slc>(this, "SLC", 33, 80, 21));
-    Cells.emplace_back(make_shared<Property>(this, "C2", 34, 80, 26));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "C2", 34, 80, 26));
     Cells.emplace_back(make_shared<Residences>(this, "REV", 35, 80, 31));
     Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 36, 80, 36));
-    Cells.emplace_back(make_shared<Property>(this, "MC", 37, 80, 41));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "MC", 37, 80, 41));
     Cells.emplace_back(make_shared<CoopFee>(this, "COOP FEE", 38, 80, 46));
-    Cells.emplace_back(make_shared<Property>(this, "DC", 39, 80, 51));
-    for int(int i = 0; i < 39; i++) {
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "DC", 39, 80, 51));
+    for (int i = 0; i < 39; i++) {
         Cells[i]->attach(td);
     }
 }
 
 void Board::init() {
-    td = make_shared<TextDisplay>(*this);
+    td = new TextDisplay{*this};
     initializeCells();
     int numPlayers;
     std::vector<std::string> chosenPieces;
@@ -154,16 +170,16 @@ void Board::saveGame(std::string f) {
     file.open(f);
     file << playerList.size() << endl;
     for (int i = 0; i < playerList.size(); i++) {
-        file << playerList[i]->getPlayerName() << " " << playerList[i]->getPieceName() << " " << playerList[i]->getMoney() << " " << playerList[i]->getPlayerPos() << " " << playerList[i]->getRollRims() << endl;
+        file << playerList[i]->getPlayerName() << " " << playerList[i]->getPieceName() << " " << playerList[i]->getMoney() << " " << playerList[i]->getPlayerPosn() << " " << playerList[i]->getRollRims() << endl;
         // add if player in jail or not
-        if (playerList[i]->timsJail) {
-            file << "true" << playerList[i]->jailTurns << endl;
+        if (playerList[i]->getTimsJail()) {
+            file << "true" << playerList[i]->getJailTurns()<< endl;
         } else {
             file << "false" << endl;
         }
-        file << playerList[i]->ownedProperties.size() << endl;
-        for (int j = 0; j < playerList[i]->ownedProperties.size(); j++) {
-            file << playerList[i]->ownedProperties[j]->getName() << " " << playerList[i]->ownedProperties[j]->getImproveLevel() << endl;
+        file << playerList[i]->getOwnedProperties().size() << endl;
+        for (int j = 0; j < playerList[i]->getOwnedProperties().size(); j++) {
+            file << playerList[i]->getOwnedProperties()[j]->getName() << " " << playerList[i]->getOwnedProperties()[j]->getInfo().improveCount << endl;
         }
     }
     file.close();
@@ -188,10 +204,10 @@ void Board::loadGame(std::string f) {
         string inJail;
         iss2 >> inJail;
         if (inJail == "true") {
-            p->timsJail = true;
-            iss2 >> p->jailTurns;
+            p->etTimsJail(true);
+            iss2 >> p->getJailTurns();
         } else {
-            p->timsJail = false;
+            p->setTimsJail(false);
         }
         getline(saved, line);
         istringstream iss3(line);
@@ -205,18 +221,18 @@ void Board::loadGame(std::string f) {
             iss4 >> propertyName >> improveLevel;
             for (int k = 0; k < Cells.size(); k++) {
                 if (Cells[k]->getName() == propertyName) {
-                    p->ownedProperties.emplace_back(Cells[k]);
-                    Cells[k].getInfo().ownedBy = p;
-                    Cells[k].getInfo().improveLevel = improveLevel;
-                    p->addProperty(Cells[k]);
+                    Cells[k]->getInfo()->ownedBy = p.get();
+                    Cells[k]->getInfo()->improveCount = improveLevel;
+                    shared_ptr<Ownable> o = dynamic_pointer_cast<Ownable>(Cells[k]);
+                    p->addProperty(o);
                 }
             }
         }
     }
 }
 
-ostream Board::&operator<<(ostream &out, const Grid &g) {
-    out << *(g.td);
+ostream &operator<<(ostream &out, const Board &b) {
+    out << *(b.td);
     return out;
 }
 
@@ -224,4 +240,61 @@ bool Board::isGameOver() {
     if (playerList.size() == 1) {
         return true;
     }
+}
+
+void Board::auction(std::string cellName) {
+    std::cout << "Auctioning " << cellName << std::endl;
+    std::vector<std::shared_ptr<Player>> pl = getPlayerList();
+    int numPlayers = pl.size();
+    int currentBid = 0;
+    int numBids = 0;
+    std::shared_ptr<Player> highestBidder = nullptr;
+
+    while (numPlayers > 1) {
+        std::shared_ptr<Player> currentBidder = pl[0];
+        cout << "Player " << currentBidder->getPlayerName() << ": Would you like to raise or withdraw? ";
+        string y;
+        if (!(cin >> y)) continue;
+        while (y != "raise" && y != "withdraw") {
+            cout << "Please enter a valid input!" << endl;
+            cin >> y;
+        }
+        if (y == "withdraw") {
+            pl.erase(pl.begin());
+            numPlayers--;
+        } else {
+            std::cout << currentBidder->getPlayerName() << ", enter your bid (just a number no dollar sign): ";
+            int bid;
+            std::cin >> bid;
+            if (bid < currentBid) {
+                std::cout << "Bid must be greater than the current bid of " << currentBid << std::endl;
+                continue;
+            }
+            currentBid = bid;
+            highestBidder = currentBidder;
+            numBids++;
+            pl.erase(pl.begin());
+            pl.push_back(currentBidder);
+        }
+    }
+
+    if (numBids == 0) {
+        std::cout << "No one bid on " << cellName << std::endl;
+        return;
+    }
+
+    std::cout << highestBidder->getPlayerName() << " won " << cellName << " for " << currentBid << std::endl;
+
+    highestBidder->subFunds(currentBid);
+
+    shared_ptr<Ownable> c = nullptr;
+    for (int i = 0; i < Cells.size(); i++) {
+        if (Cells[i]->getInfo()->cellName == cellName) {
+            c = dynamic_pointer_cast<Ownable>(Cells[i]);
+        }
+    }
+
+    highestBidder->addProperty(c);
+
+
 }

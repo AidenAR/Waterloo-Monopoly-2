@@ -20,7 +20,7 @@ class Cell: public Subject<Info, State>, public Observer<Info, State> {
     public:
         Cell(Board &board, std::string name, int posn, int i, int j);
         virtual void notify(Subject<Info, State> &whoNotified) = 0;
-        virtual Info getInfo() const = 0;
+        //virtual Info getInfo() const;
         void notifyObservers();
         std::string getName() const;
         int getPosn() const;

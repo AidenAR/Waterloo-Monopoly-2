@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
                 shared_ptr<Ownable> c = nullptr;
                 std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
-                    if (ownedProperties[i]->getName() == property) {
+                    if (ownedProperties[i]->getInfo().cellName == property) {
                         c = ownedProperties[i];
                     }
                 }
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
                 shared_ptr<Ownable> c = nullptr;
                 std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
-                    if (ownedProperties[i]->getName() == property) {
+                    if (ownedProperties[i]->getInfo().cellName == property) {
                         c = ownedProperties[i];
                     }
                 }
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
                 shared_ptr<Ownable> c = nullptr;
                 std::vector<std::shared_ptr<Ownable>> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
-                    if (ownedProperties[i]->getName() == property) {
+                    if (ownedProperties[i]->getInfo().cellName == property) {
                         c = ownedProperties[i];
                     }
                 }

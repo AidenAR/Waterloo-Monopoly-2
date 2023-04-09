@@ -13,7 +13,9 @@ struct Info {
 
     bool ownable;
     std::string cellName;
-    int posn;
+    const int posn;
+    const int i;
+    const int j;
 
     // Only ownable properties will use the following attributes; non-ownable should use just cellName and posn, and the Player obj decides what to do from there.
     OwnableType otype;
