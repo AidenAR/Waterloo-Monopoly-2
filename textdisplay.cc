@@ -7,6 +7,7 @@
 #include "state.h"
 #include "cell.h"
 #include "board.h"
+#include "player.h"
 
 using namespace std;
 
