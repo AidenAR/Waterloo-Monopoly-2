@@ -7,10 +7,8 @@
 
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
-#include "info.h"
 #include "observer.h"
 #include "subject.h"
 #include "board.h"

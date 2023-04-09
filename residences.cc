@@ -5,10 +5,8 @@
 #include "residences.h"
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
-#include "info.h"
 #include "observer.h"
 #include "subject.h"
 #include <iostream>
@@ -24,7 +22,7 @@ Residences::~Residences() {}
 
 //Pay Rent
 void Residences::payTuition(Player *p) {
-    Player *owner = info.ownedBy;
+    Player *owner = getOwnedBy();
     int numResOwned = owner->getNumResidences();
     if (numResOwned <= 0) {
         cout << "Not owned: No Rent" << endl;
@@ -63,43 +61,42 @@ void Residences::payTuition(Player *p) {
 
 
 void Residences::mortgage() {
-    string cellName = info.cellName;
-    Player *owner = info.ownedBy;
-    if (info.isMortgaged) {
+    string cellName = getName();
+    if (getMortgaged()) {
         cout << "mortgaged property already." << endl;
         return;
     }
-    if (owner) {
+    if (getOwnedBy() != nullptr) {
         //give owner half of cost
         int mortgageMoney = resCost * 0.5;
-        owner->addFunds(mortgageMoney);
-        info.isMortgaged = true;
-        info.wasSuccesful = true;
-        cout << "Successfully mortgaged" << endl;
+        getOwnedBy()->addFunds(mortgageMoney);
+        setMortgaged(true);
+        setSuccesful(true);
+        cout << "Successfully mortgaged " << cellName << endl;
     } else {
-        cout << "Not Owned: unsuccessfully mortgaged" << endl;
-        info.isMortgaged = false;
-        info.wasSuccesful = false;
+        cout << "Not Owned: unsuccessfully mortgaged " << cellName << endl;
+        setMortgaged(false);
+        setSuccesful(false);
     }
 }
 
 
 void Residences::unMortgage() {
-    string cellName = info.cellName;
-    Player *owner = info.ownedBy;
-    if (!info.isMortgaged) {
+    string cellName = getName();
+    Player *owner = getOwnedBy();
+    if (!getMortgaged()) {
         cout << "property not mortgaged." << endl;
         return;
     }
     if (owner) {
-        if (info.isMortgaged) {
+        if (getMortgaged()) {
             // owner pay 60% of cost
             int moneyOwed = (resCost * 0.6);
             cout << "Pay to unmortgage:$ " << moneyOwed << endl;
             if (owner->getMoney() > moneyOwed) {
                 owner->subFunds(moneyOwed);
-                info.isMortgaged = false;
-                info.wasSuccesful = false;
+                setMortgaged(false);
+                setSuccesful(false);
                 cout << "Successfully unMortgaged" << endl;
             } else {
                 cout << "Not Enough Money to unMortgage" << endl;
@@ -124,17 +121,17 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     switch (type)
     {
     case StateType::Purchase:
-        if (info.ownedBy != nullptr) {
-            info.wasSuccesful = false;
+        if (getOwnedBy() != nullptr) {
+            setSuccesful(false);
             break;
         }
-        this->info.ownedBy = state.newOwner;
-        this->info.wasSuccesful = true;
+        this->getOwnedBy() = state.newOwner;
+        this->getSuccesful(true);
 
         break;
     case StateType::Mortgage:
-        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
-            info.wasSuccesful = false;
+        if (this->getMortgaged() || getOwnedBy() != whoFrom.get()) {
+            setSuccesful(false);
             break;
         }
 
@@ -142,8 +139,8 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
 
         break;
     case StateType::Unmortgage:
-        if (this->info.isMortgaged || info.ownedBy != whoFrom.get()) {
-            info.wasSuccesful = false;
+        if (this->getMortgaged() || getOwnedBy() != whoFrom.get()) {
+            setSuccesful(false);
             break;
         }
 
@@ -151,10 +148,10 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
         break;
     case StateType::SellTo:
         // Fund transactions are handlded by player.cc
-        info.ownedBy = state.newOwner;
+        setOwnedBy(state.newOwner);
         break;
     case StateType::Landed:
-        if (info.ownedBy != whoFrom.get()) {
+        if (getOwnedBy() != whoFrom.get()) {
             payTuition(dynamic_cast<Player *>(whoFrom.get()));
         }
         break;

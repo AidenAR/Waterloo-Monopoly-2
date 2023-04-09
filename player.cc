@@ -14,7 +14,6 @@ using namespace std;
 #include <unordered_map>
 #include "AcademicBuildings.h"
 #include "state.h"
-#include "info.h"
 #include "board.h"
 #include <tuple>
 #include <memory>
@@ -158,11 +157,10 @@ void  Player::addFunds(int num) {
 void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     // should do nothing if it isnt this Players turn
 
-    Info *info = whoFrom->getInfo();
     shared_ptr<Cell> whoFromCell = dynamic_pointer_cast<Cell>(whoFrom);
     this->responseCell = whoFromCell;
 
-    string cellName = info->cellName;
+    string cellName = whoFromCell->getName();
     
     cout << "You landed on:" << endl;
     cout << cellName << endl;
@@ -172,7 +170,7 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     // vector<string> residences = {"MKV","UWP","V1","REV"};
     // vector<string> gyms = {"PAC","CIF"};
 
-    if (info->ownable) {
+    if (whoFromCell->getOwnable()) {
         // Ownable
 
         // when should ownable cells even be notifyin??
@@ -188,8 +186,8 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
 
         // however if player wants to like add improvements, then we send another request, but thats not handled here.
 
-        if (info->ownedBy == nullptr) {
-            cout << "Cell owned by nobody, would you like to purchase for: " << info->price << "\n[y/n]" << endl;
+        if (whoFromCell->getOwnedBy() == nullptr) {
+            cout << "Cell owned by nobody, would you like to purchase for: " << whoFromCell->getPrice() << "\n[y/n]" << endl;
             cout << "Note, not buying will result in cell being auctioned." << endl;
             
             string response;
@@ -279,22 +277,22 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
                 placePlayerHere(10); // DC tims line
                 //TODO: put player in jail
             } else if (randNum < 5) {
-                placePlayerHere(info->posn - 2);
+                placePlayerHere(whoFromCell->getPosn() - 2);
                 //
             } else if (randNum < 9) {
-                placePlayerHere(info->posn - 1);
+                placePlayerHere(whoFromCell->getPosn() - 1);
                 //
             } else if (randNum < 13) {
-                placePlayerHere(info->posn + 2);
+                placePlayerHere(whoFromCell->getPosn() + 2);
                 //
             } else if (randNum < 17) {
-                placePlayerHere(info->posn + 3);
+                placePlayerHere(whoFromCell->getPosn() + 3);
                 //
             } else if (randNum < 20) {
-                placePlayerHere(info->posn - 2);
+                placePlayerHere(whoFromCell->getPosn() - 2);
                 //
             } else if (randNum < 23) {
-                placePlayerHere(info->posn - 2);
+                placePlayerHere(whoFromCell->getPosn() - 2);
                 //
             } else if (randNum < 24) {
                 placePlayerHere(0);
@@ -346,7 +344,7 @@ void Player::printAssets() {
 
     //properties owned
     for (auto &cell: ownedProperties) {
-        cout << "Property: " << cell->getInfo()->cellName << " : $" << cell->getInfo()->price << endl;
+        cout << "Property: " << cell->getName() << " : $" << cell->getPrice() << endl;
     }
 }
 
@@ -354,7 +352,7 @@ void Player::printAssets() {
 int Player::playerAssetsWorth() {
     int totalAssets = 0;
     for (auto &cell: ownedProperties) {
-        totalAssets += cell->getInfo()->price;
+        totalAssets += cell->getPrice();
     }
     totalAssets += money;
     return totalAssets;
@@ -400,22 +398,21 @@ void Player::attemptUnmortgage(string cellname) {
 // 2. Cell is unowned
 // After these are true, we need to deduct funds from player, addto list of properties, and increment counters.
 void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
-    Info *cellInfo = whoFrom->getInfo();
     
     // All the cases we shouldnt buy cell in
     // should probably put a descriptive error lollll
-    if (cellInfo->posn != this->playerPosn) return;
-    if (!cellInfo->ownable) return;
-    if (cellInfo->ownedBy != nullptr) return;
-    if (cellInfo->price > this->money) return;
+    if (whoFrom->getPosn() != this->playerPosn) return;
+    if (!whoFrom->getOwnable()) return;
+    if (whoFrom->getOwnedBy() != nullptr) return;
+    if (whoFrom->getPrice() > this->money) return;
     
     // Pay
-    subFunds(cellInfo->price);
+    subFunds(whoFrom->getPrice());
 
     // Add to prop vector
     ownedProperties.push_back(whoFrom);
 
-    OwnableType otype = cellInfo->otype;
+    OwnableType otype = whoFrom->getOtype();
 
     // Increment counter based on property type
     if (otype == OwnableType::Gym) {
@@ -488,23 +485,6 @@ void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve
     }
 }
 
-
-// Helper function to update FacultyMap for an academic property
-void updateFacultyMap(std::unordered_map<std::string, std::pair<int, bool>>& facultyMap,
-                      const std::shared_ptr<Cell>& cell, std::shared_ptr<Player> player) {
-    auto academic = std::dynamic_pointer_cast<AcademicBuildings>(cell);
-
-    if (academic) {
-        auto facultyName = academic->getFacultyName(cell->getInfo()->cellName);
-        auto& facultyPair = academic->academic_buildings[facultyName];
-
-        player->FacultyMap[std::get<1>(facultyPair->first)]++;
-        facultyMap[std::get<1>(facultyPair->first)]--;
-    }
-}
-
-
-
 // Helpful for anything around selling properties. 
 // If newOwner is not provided, means we arent selling it to anybody
 // newOwner represents person property is sold to.
@@ -530,9 +510,8 @@ void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int sal
     
     // After notifyObservers() finishes, responseCell should update with intended cell
     // (as it is the only cell which should respond)
-    Info *oprop = responseCell->getInfo();
 
-    if (!oprop->wasSuccesful) {
+    if (!responseCell->getSuccesful()) {
         cout << "Unsuccessful trade );" << endl;
         return;
     }
@@ -540,7 +519,7 @@ void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int sal
     // Since trade was successful on Cell side and all its attributes are updated, lets update our Players. 
 
     if (salePrice == -1) {
-        salePrice = oprop->price;
+        salePrice = responseCell->getPrice();
     }
 
     // Pay
@@ -558,19 +537,24 @@ void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int sal
     }
 
     // Increment counter based on property type
-    if (oprop->otype == OwnableType::Gym) {
+    if (responseCell->getOtype() == OwnableType::Gym) {
         numGyms--;
         newOwner->numGyms++;
-    } else if (oprop->otype == OwnableType::Residence) {
+    } else if (responseCell->getOtype() == OwnableType::Residence) {
         numResidences--;
         newOwner->numResidences++;
-    } else if (oprop->otype == OwnableType::Academic) {
-
+    } else if (responseCell->getOtype() == OwnableType::Academic) {
         // Update FacultyMap
-        auto academic = dynamic_cast<AcademicBuildings*>(responseCell.get());
-        //TODO:
-        // newOwner->FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]++;
-        // FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo()->cellName)])]--;
+        auto academic = dynamic_cast<AcademicBuildings *>(responseCell.get());
+        string facultyName = academic->getFacultyName(academic->getName());
+        
+        // Increment the faculty count for the new owner
+        newOwner->FacultyMap[facultyName].first++;
+
+        // Decrement the faculty count for the previous owner
+        if (FacultyMap.find(facultyName) != FacultyMap.end()) {
+            FacultyMap[facultyName].first--;
+        }
     }
 }
 

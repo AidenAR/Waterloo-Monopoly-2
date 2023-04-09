@@ -24,7 +24,7 @@ void NonOwnable::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     case StateType::Move:
         // Which unownable cells care about whether cells move ontop of it???
 
-        if (info.cellName == "OCollectOsapSAP") {
+        if (getName() == "OCollectOsapSAP") {
             notifyObservers();
         }
         break;

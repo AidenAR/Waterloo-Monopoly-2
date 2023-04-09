@@ -43,7 +43,7 @@ protected:
         void setSuccesful(bool wasSuccesful);
         bool getOwnable();
         int getImproveCount();
-        void setImproveCount();
+        void setImproveCount(int newImprove);
         int getPrice();
         bool getMortgaged();
         void setMortgaged(bool isMortgaged);

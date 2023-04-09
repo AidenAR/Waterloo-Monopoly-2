@@ -5,10 +5,8 @@
 #include "AcademicBuildings.h"
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
-#include "info.h"
 #include "observer.h"
 #include "subject.h"
 #include <tuple>
@@ -35,9 +33,8 @@ std::string AcademicBuildings::getFacultyName(const std::string& buildingName) {
 
 
 void AcademicBuildings::buyImprovement() {
-    Info info2 = this->getInfo();
-    Player *owner = info2.ownedBy;
-    string cName = info2.cellName;
+    Player *owner = getOwnedBy();
+    string cName = getName();
     if (isMortgage) {
         cout << "mortgaged property: No improvements Allowed" << endl;
         return;
@@ -45,18 +42,18 @@ void AcademicBuildings::buyImprovement() {
     string facName = getFacultyName(cName);
     if (owner) {
         owner->partMonopoly();
-        if (FacultyMap[facName].second && info2.improveCount < 5) {
+        if (FacultyMap[facName].second && getImproveCount() < 5) {
             //owner has a monopoly and < 5 built so can buy improvement
             //tuple w costs
             auto building = academic_buildings.find(cName)->second;
             //get cost of curr improvement and subtract
             owner->subFunds(std::get<2>(building));
-            if (info2.improveCount < 4) {
+            if (getImproveCount() < 4) {
                 cout << "Installed a Bathroom" << endl;
             } else {
                 cout << "Installed a Cafeteria" << endl;
             }
-            info2.improveCount++;
+            setImproveCount( (getImproveCount() + 1) );
         }
     } else {
         cout << "No Ownership:No Improvements allowed" << endl;
@@ -65,15 +62,15 @@ void AcademicBuildings::buyImprovement() {
 
 
 void AcademicBuildings::sellImprovement() {
-    int improvement = info.improveCount;
+    getImproveCount();
 
-    Player *owner = info.ownedBy;
-    string cName = info.cellName;
+    Player *owner = getOwnedBy();
+    string cName = getCellName();
     if (owner == nullptr) {
         cout << "Not owned: No Improvements to sell" << endl;
         return;
     }
-    if (info.improveCount < 0) {
+    if (getImproveCount() < 0) {
         cout << "No Improvements to sell" << endl;
         return;
     }
@@ -81,14 +78,14 @@ void AcademicBuildings::sellImprovement() {
     auto building = academic_buildings.find(cName)->second;
     //get cost of curr improvement and subtract
     owner->addFunds((std::get<2>(building)) * 0.5);
-    cout << "Sold Improvement: " << improvement << endl;
-    if (info.improveCount < 4) {
+    cout << "Sold Improvement: " << getImproveCount() << endl;
+    if (getImproveCount() < 4) {
         cout << "Sold a Bathroom" << endl;
     } else {
         cout << "Sold a Cafeteria" << endl;
     }
     cout << "Received:$" << ((std::get<2>(building)) * 0.5) << endl;
-    info.improveCount--;
+    setImproveCount(getImproveCount() - 1);
 }
 
 

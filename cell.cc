@@ -2,7 +2,6 @@
 #include "board.h"
 #include <string>
 
-
 using namespace std;
 
 
@@ -54,8 +53,8 @@ bool Cell::getOwnable() {
 int Cell::getImproveCount() {
     return improveCount;
 }
-void Cell::setImproveCount() {
-    improveCount++;
+void Cell::setImproveCount(int newImprove) {
+    improveCount = newImprove;
 }
 
 int Cell::getPrice() {
