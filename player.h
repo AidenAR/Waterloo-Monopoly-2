@@ -85,6 +85,7 @@ public:
     bool getIsBankrupt();
     void setIsBankrupt();
     int playerAssetsWorth(); //Deals with bankrupt
+    void partMonopoly();
     
     void addProperty(std::shared_ptr<Ownable> c);
     void setJailTurns(int j);
