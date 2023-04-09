@@ -1,12 +1,19 @@
 #include "subject.h"
+#include "observer.h"
+#include <iostream>
+#include "info.h"
+#include "state.h"
+#include <memory>
+#include <vector>
+using namespace std;
 
 template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::attach(Observer<InfoType, StateType> *o) {
+void Subject<InfoType, StateType>::attach(shared_ptr<Observer<InfoType, StateType>> o) {
     observers.emplace_back(o);
 }
 
 template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::detach(Observer<InfoType, StateType> *o) {
+void Subject<InfoType, StateType>::detach(shared_ptr<Observer<Info, State>> o) {
     for (auto it = observers.begin(); it != observers.end(); ++it) {
         if (*it == o) {
             observers.erase(it);

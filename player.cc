@@ -18,7 +18,7 @@ using namespace std;
 #include "board.h"
 
 
-Player::Player(string playerName, char pieceName, int money, int rollRims, int playerPosn):
+Player::Player(Board *board, string playerName, char pieceName, int money, int rollRims, int playerPosn): board{board},
     playerName{playerName}, pieceName{pieceName},
     money{startingMoney}, rollRims{rollRims},
     playerPosn{0}, numGyms{0}, numResidences{0},
@@ -88,18 +88,20 @@ void Player::addRollRims() {
     //Get that 1% chance
     int add_cup = rand() % 100 + 1;
 
-    if (add_cup == 1 && totalCups < 4 && getRollRims() < 4) {
+    if (add_cup == 1 && board->getTotalCups() < 4 && getRollRims() < 4) {
         rollRims++;
         //Ahmed implemented a get board global cup counter
-        totalCups++;
+        board->addToTotalCups();
         cout << "Congrats! You won a Roll Up the Rim cup" << endl;
     }
 }
 
 void Player::subtractRollRims() {
     rollRims = rollRims > 0 ?  rollRims-- : 0;
-    //Ahmed implemented a get board global cup counter
-    totalCups = totalCups > 0 ?  totalCups-- : 0;
+    
+    if (board->getTotalCups() > 0) {
+        board->removeFromTotalCups();
+    }
     jailTurns = 0;
     timsJail = false;
     jailRolls.clear();
@@ -263,13 +265,7 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
             }
 
         } else if (cellName == "SLC") {
-            int rollUpTheRim = rand() % 100;
-            if (timsCupChance == 100) {
-                rollRims++;
-                //Ahmed implemented a get board global cup counter
-                totalCups++;
-                cout << "Congrats! You won a Roll Up the Rim cup" << endl;
-            }
+            addRollRims();
 
             int randNum = rand() % 24;
             
@@ -302,13 +298,8 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
 
 
         } else if (cellName == "NeedlesHall") {
-            int rollUpTheRim = rand() % 100;
-            if (timsCupChance == 100) {
-                rollRims++;
-                //Ahmed implemented a get board global cup counter
-                totalCups++;
-                cout << "Congrats! You won a Roll Up the Rim cup" << endl;
-            }
+            addRollRims();
+            
 
             int randNum = rand() % 18;
             
