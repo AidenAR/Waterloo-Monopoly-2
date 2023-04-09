@@ -38,6 +38,8 @@ class Board {
     void loadGame(std::string f);
     void saveGame(std::string f);
     std::string getWinner();
+    bool isGameOver();
+    friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };
 
 #endif

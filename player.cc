@@ -260,6 +260,18 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     }
 }
 
+void Player::placePlayerHere(int newPosn, bool notifyCell = true) {
+    playerPosn = newPosn;
+
+    if (notifyCell) {
+        state.playerPosn = playerPosn;
+        state.type = StateType::Landed;
+        state.cellName = "";
+        state.newOwner = nullptr;
+        notifyObservers();
+    }
+}
+
 void Player::printAssets() {
     cout << "Name: " << playerName << endl;
     cout << "Character: " << pieceName << endl;

@@ -210,3 +210,10 @@ void Board::loadGame(std::string f) {
         }
     }
 }
+
+ostream &operator<<(ostream &out, const Grid &g) {
+    out << *(g.td);
+    return out;
+}
+
+
