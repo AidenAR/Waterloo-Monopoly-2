@@ -19,7 +19,7 @@ class Board {
 
     std::vector<std::shared_ptr<Player>> playerList;
     //TextDisplay *td = nullptr; // The text display.
-    TextDisplay *td; // The text display
+    std::shared_ptr<TextDisplay> td; // The text display
     std::vector<std::shared_ptr<Cell>> Cells; // The list of cells on the board
 
     char pieceSymbol(std::string pieceName);

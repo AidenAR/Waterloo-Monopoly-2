@@ -1,10 +1,13 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
+#include <memory>
+#include <vector>
+
 template <typename InfoType, typename StateType> class Observer;
 
 template <typename InfoType, typename StateType> class Subject {
-    std::vector<Observer<InfoType, StateType> *> observers;
+    std::vector<std::shared_ptr<Observer<InfoType, StateType>>> observers;
 
 public:
     // Idt its a good idea to require Subjects to have an
@@ -22,8 +25,8 @@ public:
     virtual StateType *getState() const;
     virtual void setState(StateType state);
 
-    void attach(std::shared_ptr<Object<Info, State> *> o);
-    void detach(std::shared_ptr<Object<Info, State> *> o);
+    void attach(std::shared_ptr<Observer<InfoType, StateType>> o);
+    void detach(std::shared_ptr<Observer<InfoType, StateType>> o);
     void notifyObservers();
 };
 

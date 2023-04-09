@@ -20,12 +20,6 @@ protected:
     Info info;
     public:
         Cell(Board &board, std::string name, int posn, int i, int j);
-        //virtual void notify(Subject<Info, State> &whoNotified) = 0;
-        void notifyObservers();
-        std::string getName() const;
-        int getPosn() const;
-        int getI() const;
-        int getJ() const;
 };
 
 

@@ -28,10 +28,6 @@ class Goose;
 
 using namespace std;
 
-Board::~Board() {
-    delete td;
-}
-
 
 char Board::pieceSymbol(string pieceName) {
     if (pieceName == "Goose") {
@@ -110,7 +106,7 @@ void Board::initializeCells() {
 }
 
 void Board::init() {
-    td = new TextDisplay{*this};
+    td = make_shared<TextDisplay>(this);
     initializeCells();
     int numPlayers;
     std::vector<std::string> chosenPieces;
@@ -179,7 +175,7 @@ void Board::saveGame(std::string f) {
         }
         file << playerList[i]->getOwnedProperties().size() << endl;
         for (int j = 0; j < playerList[i]->getOwnedProperties().size(); j++) {
-            file << playerList[i]->getOwnedProperties()[j]->getName() << " " << playerList[i]->getOwnedProperties()[j]->getInfo().improveCount << endl;
+            file << playerList[i]->getOwnedProperties()[j]->getInfo()->cellName << " " << playerList[i]->getOwnedProperties()[j]->getInfo()->improveCount << endl;
         }
     }
     file.close();
@@ -205,7 +201,9 @@ void Board::loadGame(std::string f) {
         iss2 >> inJail;
         if (inJail == "true") {
             p->setTimsJail(true);
-            iss2 >> p->getJailTurns();
+            string jailTurns;
+            iss2 >> jailTurns;
+            p->setJailTurns(stoi(jailTurns));
         } else {
             p->setTimsJail(false);
         }
@@ -220,7 +218,7 @@ void Board::loadGame(std::string f) {
             int improveLevel;
             iss4 >> propertyName >> improveLevel;
             for (int k = 0; k < Cells.size(); k++) {
-                if (Cells[k]->getName() == propertyName) {
+                if (Cells[k]->getInfo()->cellName == propertyName) {
                     Cells[k]->getInfo()->ownedBy = p.get();
                     Cells[k]->getInfo()->improveCount = improveLevel;
                     shared_ptr<Ownable> o = dynamic_pointer_cast<Ownable>(Cells[k]);
