@@ -16,6 +16,8 @@ using namespace std;
 #include "state.h"
 #include "info.h"
 #include "board.h"
+#include <tuple>
+#include <memory>
 
 
 Player::Player(Board *board, string playerName, char pieceName, int money, int rollRims, int playerPosn): board{board},
