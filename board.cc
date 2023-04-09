@@ -96,7 +96,7 @@ void Board::initializeCells() {
     Cells.emplace_back(make_shared<AcademicBuilding>(this, "BMH", 18, 0, 16, true, OwnableType::Academic, 180));
     Cells.emplace_back(make_shared<AcademicBuilding>(this, "OPT", 19, 0, 11, true, OwnableType::Academic, 200));
     Cells.emplace_back(make_shared<Goose>(this, "GOOSE NESTING", 20, 0, 4, false, OwnableType::NonOwnable, 0));
-    CCells.emplace_back(make_shared<AcademicBuilding>(this, "EV1", 21, 8, 0, true, OwnableType::Academic, 220));
+    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV1", 21, 8, 0, true, OwnableType::Academic, 220));
     Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 22, 16, 4, false, OwnableType::NonOwnable, 0));
     Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV2", 23, 24, 4, true, OwnableType::Academic, 220));
     Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV3", 24, 32, 4, true, OwnableType::Academic, 240));

@@ -4,7 +4,6 @@
 #include "subject.h"
 #include <string>
 
-class Info;
 class State;
 class Player;
 class Board;
@@ -12,7 +11,7 @@ class Board;
 enum OwnableType{Academic, Residence, Gym, NonOwnable};
 
 
-class Cell: public Subject<Info, State>, public Observer<Info, State> {
+class Cell: public Subject<State>, public Observer<State> {
 protected:
     std::string name;
     int posn;

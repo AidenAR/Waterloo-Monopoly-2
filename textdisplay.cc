@@ -54,7 +54,7 @@ TextDisplay::TextDisplay(Board &board): board{board} {
     }
 }
 
-void TextDisplay::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void TextDisplay::notify(std::shared_ptr<State>> whoFrom) {
     Info info = *whoFrom->getInfo();
     string name = info.cellName;
     int posn = info.posn;

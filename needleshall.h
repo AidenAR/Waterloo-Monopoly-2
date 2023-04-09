@@ -2,7 +2,7 @@
 #define NEEDLESHALL_H
 #include "nonownable.h"
 
-template <typename InfoType, typename StateType> class Subject;
+template <typename StateType> class Subject;
 
 class NeedlesHall: public NonOwnable {
     public:

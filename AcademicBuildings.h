@@ -6,10 +6,8 @@
 #define ACADEMICBUILDINGS_H
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
-#include "info.h"
 #include "observer.h"
 #include "subject.h"
 #include <map>
@@ -76,7 +74,7 @@ public:
     void payTuition(Player *p) override;
     void mortgage() override;
     void unMortgage() override;
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
+    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
 };
 
 

@@ -6,8 +6,7 @@
 #define OWNABLE_H
 #include "cell.h"
 #include "player.h"
-template <typename InfoType, typename StateType> class Subject;
-class Info;
+template <typename StateType> class Subject;
 class State;
 
 
@@ -22,7 +21,7 @@ public:
     virtual void payTuition(Player *p) = 0;
     virtual void mortgage() = 0;
     virtual void unMortgage() = 0;
-    virtual void notify(std::shared_ptr<Subject<Info, State>> whoFrom) = 0;
+    virtual void notify(std::shared_ptr<Subject<State>> whoFrom) = 0;
     void auction();
     void setOwner(Player *p);
 };

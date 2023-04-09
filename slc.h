@@ -2,7 +2,7 @@
 #define SLC_H
 #include "nonownable.h"
 
-template <typename InfoType, typename StateType> class Subject;
+template <typename StateType> class Subject;
 
 class Slc: public NonOwnable {
     public:

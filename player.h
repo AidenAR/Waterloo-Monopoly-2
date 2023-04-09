@@ -8,7 +8,6 @@
 #include "subject.h"
 #include "observer.h"
 #include "state.h"
-#include "info.h"
 #include "board.h"
 #include <vector>
 #include <string>
@@ -16,7 +15,7 @@
 #include <unordered_map>
 #include "AcademicBuildings.h"
 
-class Player : public Subject<Info, State> , public Observer<Info, State>{
+class Player : public Subject<State> , public Observer<State>{
     char pieceName;
     const int startingMoney = 1500;
     std::string playerName;
@@ -106,7 +105,7 @@ public:
     void setJailTurns(int j);
     void TimsJailCell(Player& p);
 
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom);
+    void notify(std::shared_ptr<Subject<State>> whoFrom);
 };
 
 #endif //PLAYER_H

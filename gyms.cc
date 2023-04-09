@@ -5,7 +5,6 @@
 #include "gyms.h"
 #include "ownable.h"
 #include <unordered_map>
-#include "info.h"
 #include "player.h"
 #include "state.h"
 #include "info.h"
@@ -110,7 +109,7 @@ void Gyms::unMortgage() {
 
 
 
-void Gyms::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
+void Gyms::notify(std::shared_ptr<Subject<State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     
