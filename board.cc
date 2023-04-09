@@ -190,7 +190,7 @@ void Board::saveGame(std::string f) {
         }
         file << playerList[i]->getOwnedProperties().size() << endl;
         for (int j = 0; j < playerList[i]->getOwnedProperties().size(); j++) {
-            file << playerList[i]->getOwnedProperties()[j]->getInfo()->cellName << " " << playerList[i]->getOwnedProperties()[j]->getInfo()->improveCount << endl;
+            file << playerList[i]->getOwnedProperties()[j]->getName() << " " << playerList[i]->getOwnedProperties()[j]->getImproveCount() << endl;
         }
     }
     file.close();
@@ -233,9 +233,9 @@ void Board::loadGame(std::string f) {
             int improveLevel;
             iss4 >> propertyName >> improveLevel;
             for (int k = 0; k < Cells.size(); k++) {
-                if (Cells[k]->getInfo()->cellName == propertyName) {
-                    Cells[k]->getInfo()->ownedBy = p.get();
-                    Cells[k]->getInfo()->improveCount = improveLevel;
+                if (Cells[k]->getName() == propertyName) {
+                    Cells[k]->getOwnedBy() == p.get();
+                    Cells[k]->getImproveCount() == improveLevel;
                     shared_ptr<Ownable> o = dynamic_pointer_cast<Ownable>(Cells[k]);
                     p->addProperty(o);
                 }
@@ -302,7 +302,7 @@ void Board::auction(std::string cellName) {
 
     shared_ptr<Ownable> c = nullptr;
     for (int i = 0; i < Cells.size(); i++) {
-        if (Cells[i]->getInfo()->cellName == cellName) {
+        if (Cells[i]->getName() == cellName) {
             c = dynamic_pointer_cast<Ownable>(Cells[i]);
         }
     }

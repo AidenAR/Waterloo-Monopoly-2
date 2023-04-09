@@ -16,6 +16,8 @@ using namespace std;
 #include "state.h"
 #include "info.h"
 #include "board.h"
+#include <tuple>
+#include <memory>
 
 
 Player::Player(Board *board, string playerName, char pieceName, int money, int rollRims, int playerPosn): board{board},
@@ -51,7 +53,7 @@ int Player::getRollRims() {
 }
 
 
-State *Player::getState() const {
+State *Player::getState() {
     return &state;
 }
 
@@ -349,7 +351,7 @@ void Player::printAssets() {
 int Player::playerAssetsWorth() {
     int totalAssets = 0;
     for (auto &cell: ownedProperties) {
-        totalAssets += cell->getInfo().price;
+        totalAssets += cell->getInfo()->price;
     }
     totalAssets += money;
     return totalAssets;
@@ -421,7 +423,7 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
         // Update FacultyMap
         // god knows how this works bruh pls ask aiden again
         auto academic = dynamic_cast<AcademicBuildings*>(whoFrom.get());
-        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName,academic->academic_buildings)])]++;
+        FacultyMap[std::get<1>(academic->academic_buildings[academic->getFacultyName(academic->getInfo().cellName)])]++;
     }
 
     cout << "Successfully purchased cell!" << endl;
