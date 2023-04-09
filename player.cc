@@ -9,7 +9,12 @@
 using namespace std;
 #include <cstdlib>
 #include <iostream>
+#include <vector>
+#include "board.h"
 
+class State;
+class Info;
+class Board;
 
 Player::Player(string playerName, char pieceName, int money, int rollRims, int playerPosn):
     playerName{playerName}, pieceName{pieceName},
@@ -176,19 +181,91 @@ void Player::notify(std::shared_ptr<Subject<Info, State>> whoFrom) {
     } else {
         // Non-ownable
         if (cellName == "OCollectOsapSAP") {
-            money += 200; //lol idk
+            addFunds(200);
         } else if (cellName == "DcTimsLine") {
+            if (getTimsJail()) {
+                if (getJailTurns() == 3) {
+                    cout << "You have been in jail for 3 turns, you must pay $50 to get out" << endl;
+                    subFunds(50);
+                    subtractRollRims();
+                } else if (getRollRims() > 0) {
+                    cout << "Do you want to use a roll up the rim cup to get out of jail?[y/n]" << endl;
+                    string response;
+                    cin >> response;
+                    if (response == "y") {
+                        subtractRollRims();
+                        // TODO: set player state to not in jail and set jailTurns to 0 
+                    } 
+                } else {
+                    cout << "You must roll doubles or pay $50 to get out of jail" << endl;
+                    cout << "Do you want to roll or pay?[roll/pay]" << endl;
+                    string response;
+                    cin >> response;
+                    if (response == "roll") {
+                        vector<int> roll{Board.rollDice()};
+                        if (roll[0] == roll[1]) {
+                            
+                        } else{
 
+
+                        }
+                    }
+                }
+            }
         } else if (cellName == "GoToTims") {
-
+            
         } else if (cellName == "CoopFee") {
+            subFunds(150);
 
         } else if (cellName == "Tuiton") {
+            cout << "Do you want to pay $300 tuition or 10% of your total worth?[pay/10%]" << endl;
+            string response;
+            cin >> response;
+            if (response == "pay") {
+                subFunds(300);
+            } else {
+                subFunds(playerAssetsWorth() * 0.1);
+            }
 
         } else if (cellName == "SLC") {
+            int rollUpTheRim = rand() % 100;
+            if (timsCupChance == 100) {
+                rollRims++;
+                //Ahmed implemented a get board global cup counter
+                totalCups++;
+                cout << "Congrats! You won a Roll Up the Rim cup" << endl;
+            }
+
+            int randNum = rand() % 24;
+            
+
 
         } else if (cellName == "NeedlesHall") {
+            int rollUpTheRim = rand() % 100;
+            if (timsCupChance == 100) {
+                rollRims++;
+                //Ahmed implemented a get board global cup counter
+                totalCups++;
+                cout << "Congrats! You won a Roll Up the Rim cup" << endl;
+            }
 
+            int randNum = rand() % 18;
+            
+            if (randNum < 1) {
+                subFunds(200);
+            } else if (randNum < 3) {
+                subFunds(100);
+            } else if (randNum < 6) {
+                subFunds(50);
+            } else if (randNum <  12) {
+                addFunds(25);
+            } else if (randNum < 15) {
+                addFunds(50);
+            } else if (randNum < 17) {
+                addFunds(100);
+            } else if (randNum < 18) {
+                addFunds(200);
+            }
         }
     }
 }
@@ -430,4 +507,3 @@ void Player::TimsJailCell(Player& p) {
         p.setJailTurns(0);
     }
 }
-

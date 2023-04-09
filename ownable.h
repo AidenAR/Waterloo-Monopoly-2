@@ -24,6 +24,7 @@ public:
     virtual void unMortgage() = 0;
     virtual void notify(std::shared_ptr<Subject<Info, State>> whoFrom) = 0;
     void auction();
+    void setOwner(Player *p);
 };
 
 #endif //OWNABLE_H
