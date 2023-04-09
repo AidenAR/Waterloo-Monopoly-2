@@ -85,7 +85,7 @@ public:
     void setIsBankrupt();
     int playerAssetsWorth(); // Deals with bankrupt
 
-    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
+    void notify(std::shared_ptr<Subject<Info, State>> whoFrom);
 };
 
 #endif //PLAYER_H
