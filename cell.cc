@@ -30,9 +30,6 @@ int Cell::getPosn() {
     return posn;
 }
 
-void Cell::setPosn(int posn) {
-    this->posn = posn;
-}
 
 int Cell::getI() {
     return i;

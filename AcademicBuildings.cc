@@ -11,6 +11,8 @@
 #include "subject.h"
 #include <tuple>
 #include <iostream>
+#include <memory>
+
 using namespace std;
 
 //Bankrupt fn  implemented:
@@ -42,7 +44,7 @@ void AcademicBuildings::buyImprovement() {
     string facName = getFacultyName(cName);
     if (owner) {
         owner->partMonopoly();
-        if (FacultyMap[facName].second && getImproveCount() < 5) {
+        if (getOwnedBy()->FacultyMap[facName].second && getImproveCount() < 5) {
             //owner has a monopoly and < 5 built so can buy improvement
             //tuple w costs
             auto building = academic_buildings.find(cName)->second;
@@ -95,7 +97,7 @@ void AcademicBuildings::payTuition(Player *p) {
     string facName = getFacultyName(cName);
     if (owner) {
         owner->partMonopoly();
-        if (FacultyMap[facName].second && getImproveCount() == 0) {
+        if (getOwnedBy()->FacultyMap[facName].second && getImproveCount() == 0) {
             //owner has a monopoly and < 5 built so can buy improvement
             //tuple w costs
             auto building = academic_buildings.find(cName)->second;
@@ -109,6 +111,7 @@ void AcademicBuildings::payTuition(Player *p) {
         } else {
             auto building = academic_buildings.find(cName)->second;
             //reg tuition
+            int num = 3 + getImproveCount();
             owner->addFunds(std::get<3 + getImproveCount()>(building));
             p->subFunds(std::get<3 + getImproveCount()>(building));
             //make call to Bankrupt
@@ -136,7 +139,7 @@ void AcademicBuildings::mortgage() {
     if (owner) {
         //sell off all improvements if existing
         if (getImproveCount() > 0) {
-            for (int i = 0; i < info.improveCount; i++) {
+            for (int i = 0; i < getImproveCount(); i++) {
                 this->sellImprovement();
             }
         }
