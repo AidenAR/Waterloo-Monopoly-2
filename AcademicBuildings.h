@@ -12,15 +12,10 @@
 #include "info.h"
 #include "observer.h"
 #include "subject.h"
+#include <map>
 
 
 class AcademicBuildings: public Ownable {
-private:
-    Board &board;
-    std::string name;
-    int pos;
-    int i;
-    int j;
 protected:
     std::map<std::string, std::tuple<std::string,
     int, int, int, int, int, int, int, int>> academic_buildings = {
@@ -74,15 +69,15 @@ public:
     const int NumSci2 = 3;
     const int NumMath = 2;
 */
-    AcademicBuildings(board &b, std::string name, int pos, int i, int j);
-    AcademicBuildings~();
-    void sellImprovement(int improvement) override;
+    AcademicBuildings(Board &b, std::string name, int pos, int i, int j);
+    ~AcademicBuildings();
+    void sellImprovement() override;
     void buyImprovement() override;
-    std::string getFacultyName(const std::string& buildingName)
+    std::string getFacultyName(const std::string& buildingName);
     void payTuition(Player *p) override;
-    void mortgage(std::string cellName) override;
-    void unMortgage(std::string cellName) override;
-    void notify(Subject<Info, State> &whoNotified) override;
+    void mortgage() override;
+    void unMortgage() override;
+    void notify(std::shared_ptr<Subject<Info, State>> whoFrom) override;
 };
 
 

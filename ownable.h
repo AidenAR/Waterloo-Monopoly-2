@@ -17,13 +17,14 @@ protected:
     bool isMortgage = false;
 public:
     virtual int improvementCost() = 0;
-    virtual void sellImprovement(int improvement) = 0;
+    virtual void sellImprovement() = 0;
     virtual void buyImprovement() = 0;
     virtual void payTuition(Player *p) = 0;
-    virtual void mortgage(std::string cellName) = 0;
-    virtual void unMortgage(std::string cellName) = 0;
-    virtual void notify(Subject<Info, State> &whoNotified) = 0;
+    virtual void mortgage() = 0;
+    virtual void unMortgage() = 0;
+    virtual void notify(std::shared_ptr<Subject<Info, State>> whoFrom) = 0;
     void auction();
+    void setOwner(Player *p);
 };
 
 #endif //OWNABLE_H
