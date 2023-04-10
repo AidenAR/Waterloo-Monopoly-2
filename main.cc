@@ -83,6 +83,9 @@ int main(int argc, char *argv[]) {
                 
             } else if (cmd == "next") {
                 currentPlayer++;
+                cout << "currentPlayer: " << currentPlayer << endl;
+                cout << "players.size(): " << players.size() << endl;
+                cout << "currentPlayer % players.size(): " << currentPlayer % players.size() << endl;
                 p = players[currentPlayer % players.size()].get();
                 continue;
             } else if (cmd == "trade") {
