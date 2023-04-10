@@ -108,7 +108,7 @@ public:
     int playerAssetsWorth(); //Deals with bankrupt
     void partMonopoly();
     
-    //void addProperty(Cell &c);
+    void addProperty(Cell *c);
     void setJailTurns(int j);
     void TimsJailCell(Player& p);
     Cell *findCell(Cell *c);

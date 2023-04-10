@@ -54,24 +54,39 @@ int main(int argc, char *argv[]) {
                 cout << "all: displays the assets of every player. For verifying the correctness of your transactions. Does not work if a player is deciding how to pay Tuition." << endl;
                 cout << "save <filename>: saves the current state of the game to filename." << endl;
             } else if (cmd == "roll") {
-                vector <int> dice = b.rollDice();
-                cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
-                int diceRollCount = 1;
-                int diceTotal = dice[0] + dice[1];
-                while (dice[0] == dice[1]) {
-                    diceRollCount++;
-                    if (diceRollCount == 3) {
-                        cout << "You rolled three doubles in a row, you are sent to DC Tims Line." << endl;
-                        p->setPlayerPosn(10);
+                int diceRollCount;
+                int diceTotal;
 
-                        p->setTimsJail(true);
-                        break;
-                    }
-                    cout << "You rolled doubles, you get to roll again!" << endl;
-                    dice = b.rollDice();
-                    diceTotal += dice[0] + dice[1];
+                if (testing == true) {
+                    int dice1, dice2;
+                    cin >> dice1 >> dice2;
+                    vector <int> dice;
+                    dice.push_back(dice1);
+                    dice.push_back(dice2);
                     cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
+                    diceRollCount = 1;
+                    diceTotal = dice[0] + dice[1];
+                } else {
+                    vector <int> dice = b.rollDice();
+                    cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
+                    diceRollCount = 1;
+                    diceTotal = dice[0] + dice[1];
+                    while (dice[0] == dice[1]) {
+                        diceRollCount++;
+                        if (diceRollCount == 3) {
+                            cout << "You rolled three doubles in a row, you are sent to DC Tims Line." << endl;
+                            p->setPlayerPosn(10);
+
+                            p->setTimsJail(true);
+                            break;
+                        }
+                        cout << "You rolled doubles, you get to roll again!" << endl;
+                        dice = b.rollDice();
+                        diceTotal += dice[0] + dice[1];
+                        cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
+                    }
                 }
+                
                 int newPosn = (p->getPlayerPosn() + diceTotal) % 40;
                 p->setPlayerPosn(newPosn);
                 cout << "You are now on " << b.getCell(newPosn)->getName() << endl;

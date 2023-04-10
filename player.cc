@@ -563,9 +563,9 @@ void Player::setJailTurns(int j) {
     jailTurns = j;
 }
 
-// void Player::addProperty(Cell &c) {
-//     ownedProperties.emplace_back(c);
-// }
+void Player::addProperty(Cell *c) {
+    ownedProperties.emplace_back(c);
+}
 
 void Player::setTimsJail(bool j) {
     timsJail = j;

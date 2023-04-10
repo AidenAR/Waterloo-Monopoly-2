@@ -31,7 +31,7 @@ void Ownable::buy(Player *p) {
     }
     p->subFunds(getPrice());
     setOwnedBy(p);
-    //p->addProperty(*this);
+    p->addProperty(this);
     cout << "Bought " << getName() << " for " << price << endl;
 }
 
