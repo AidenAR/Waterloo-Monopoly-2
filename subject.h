@@ -2,6 +2,7 @@
 #define SUBJECT_H
 #include <vector>
 #include <memory>
+#include "state.h"
 
 // /* A note on InfoType and StateType:
 
@@ -55,10 +56,10 @@
 // #ifndef SUBJECT_H
 // #define SUBJECT_H
 
-template <typename StateType> class Observer;
+class Observer;
 
-template <typename StateType> class Subject { //}: public std::enable_shared_from_this <Subject<StateType>> {
-    std::vector<std::shared_ptr<Observer<StateType>>> observers;
+class Subject { //}: public std::enable_shared_from_this <Subject<StateType>> {
+    std::vector<std::shared_ptr<Observer>> observers;
 
 public:
     // Idt its a good idea to require Subjects to have an
@@ -75,26 +76,25 @@ public:
     virtual StateType *getState();
     virtual void setState(StateType state);
 
-    void attach(std::shared_ptr<Observer<StateType>> o);
+    void attach(std::shared_ptr<Observer> o);
     // void detach(std::shared_ptr<Observer<StateType>> o);
     void notifyObservers();
 };
-template <typename StateType>
-void Subject<StateType>::attach(std::shared_ptr<Observer<StateType>> o) {
+
+void Subject::attach(std::shared_ptr<Observer> o) {
     observers.emplace_back(o);
 }
 
-template <typename StateType>
-void Subject<StateType>::notifyObservers() {
-  for (auto &ob : observers) ob->notify( std::shared_ptr<Subject<StateType>>(this));
+
+void Subject::notifyObservers() {
+  for (auto &ob : observers) ob->notify( std::shared_ptr<Subject>(this));
 }
 
-template <typename StateType>
-StateType *Subject<StateType>::getState() {
+
+StateType *Subject::getState() {
     return nullptr;
 }
 
-template <typename StateType>
-void Subject<StateType>::setState(StateType state) {}
+void Subject::setState(StateType state) {}
 
 #endif

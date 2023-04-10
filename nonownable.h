@@ -2,13 +2,13 @@
 #define NONOWNABLE_H
 #include "cell.h"
 
-template <typename StateType> class Subject;
+class Subject;
 class State;
 
 class NonOwnable: public Cell {
     public:
         NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
-        void notify(std::shared_ptr<Subject<State>> whoFrom);
+        void notify(std::shared_ptr<Subject> whoFrom);
 };
 
 #endif

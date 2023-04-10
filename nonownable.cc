@@ -4,13 +4,13 @@
 
 using namespace std;
 
-template <typename StateType> class Subject;
+class Subject;
 
 
 NonOwnable::NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price): 
     Cell(board, name, posn, i, j, ownable, otype, price) {}
 
-void NonOwnable::notify(std::shared_ptr<Subject<State>> whoFrom) {
+void NonOwnable::notify(std::shared_ptr<Subject> whoFrom) {
 
     cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
     return;

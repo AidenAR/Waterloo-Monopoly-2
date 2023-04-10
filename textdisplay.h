@@ -5,11 +5,11 @@
 #include "observer.h"
 #include "state.h"
 
-template <typename State> class Subject;
+class Subject;
 class Cell;
 class Board;
 
-class TextDisplay: public Observer<State> {
+class TextDisplay: public Observer {
     std::vector<std::vector<char>> theDisplay;
     Board &board;
     
@@ -17,7 +17,7 @@ class TextDisplay: public Observer<State> {
         TextDisplay(Board &board);
         void updatePlayerPosn(std::shared_ptr<Cell> cell);
         void updateImprovement(std::shared_ptr<Cell> cell);
-        void notify(std::shared_ptr<Subject<State>> whoFrom);
+        void notify(std::shared_ptr<Subject> whoFrom);
         friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

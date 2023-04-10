@@ -352,7 +352,7 @@ void Ownable::unMortgage() {
 
 
 
-void Ownable::notify(std::shared_ptr<Subject<State>> whoFrom) {
+void Ownable::notify(std::shared_ptr<Subject> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
 

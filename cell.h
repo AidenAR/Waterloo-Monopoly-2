@@ -11,7 +11,7 @@ class Board;
 enum OwnableType{Academic, Residence, Gym, Nonownable};
 
 
-class Cell: public Subject<State>, public Observer<State> {
+class Cell: public Subject, public Observer {
 protected:
     std::string name;
     int posn;

@@ -5,7 +5,7 @@
 using namespace std;
 
 
-template <typename StateType> class Subject;
+class Subject;
 
 Cell::Cell(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price) : 
     board{board}, name{name}, posn{posn}, i{i}, j{j}, ownable{ownable}, otype{otype}, price{price} {}

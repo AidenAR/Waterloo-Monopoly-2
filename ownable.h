@@ -9,7 +9,8 @@
 #include <map>
 #include <unordered_map>
 #include <string>
-template <typename StateType> class Subject;
+
+class Subject;
 class State;
 
 
@@ -81,7 +82,7 @@ public:
     void payTuition(Player *p) ;
     void mortgage();
     void unMortgage();
-    void notify(std::shared_ptr<Subject<State>> whoFrom);
+    void notify(std::shared_ptr<Subject> whoFrom);
     void setOwner(Player *p);
     std::string getFacultyName(const std::string& buildingName);
 
