@@ -16,6 +16,22 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     Board b;
+    bool testing = false;
+    string loadfile = "";
+
+    for (int i = 0; i < argc; i++) {
+        string arg = argv[i];
+        if (arg == "-testing") {
+            testing = true;
+        } else if (arg == "-load") {
+            if (argc == ++i) {
+                loadfile = argv[i];
+            }
+        } else {
+            cout << "invalid arguments" << endl;
+        }
+
+    }
     cout << "Welcome to the game!" << endl;
     if (argc == 1) {
         b.init();
@@ -26,7 +42,7 @@ int main(int argc, char *argv[]) {
         while(!b.isGameOver()) {
             cout << "enter help for a list of commands" << endl;
             string cmd;
-            shared_ptr<Player> p = players[currentPlayer];
+            Player *p = players[currentPlayer].get();
             cin >> cmd;
             if (cmd == "help") {
                 cout << "roll: roll the dice" << endl;
@@ -61,13 +77,13 @@ int main(int argc, char *argv[]) {
                 p->setPlayerPosn(newPosn);
                 cout << "You are now on " << b.getCell(newPosn)->getName() << endl;
                 b.getCell(newPosn)->notifyObservers();
-                b.getCell(newPosn)->event(p.get());
+                b.getCell(newPosn)->event(p);
 
                 cout << b;
                 
             } else if (cmd == "next") {
                 currentPlayer++;
-                p = players[currentPlayer % players.size()];
+                p = players[currentPlayer % players.size()].get();
                 continue;
             } else if (cmd == "trade") {
                 string name, give, receive;
@@ -83,10 +99,10 @@ int main(int argc, char *argv[]) {
                 }
                 if (response == "accept") {
                     cout << "Trade accepted!" << endl;
-                    shared_ptr<Player> tradeTo = nullptr;
+                    Player *tradeTo = nullptr;
                     for (int i = 0; i < players.size(); i++) {
                         if (players[i]->getName() == name) {
-                            tradeTo = players[i];
+                            tradeTo = players[i].get();
                         }
                     }
                     //p->attemptTrade(tradeTo.get(), give, receive);
@@ -97,11 +113,11 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "improve") {
                 string property, buySell;
                 cin >> property >> buySell;
-                shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
+                Ownable *c = nullptr;
+                std::vector<Cell *> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
+                        c = dynamic_cast<Ownable*>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {
@@ -120,11 +136,12 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "mortgage") {
                 string property;
                 cin >> property;
-                shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
+                Ownable *c = nullptr;
+                Ownable *c = nullptr;
+                std::vector<Cell *> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
+                        c = dynamic_cast<Ownable*>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {
@@ -135,11 +152,12 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "unmortgage") {
                 string property;
                 cin >> property;
-                shared_ptr<Ownable> c = nullptr;
-                std::vector<std::shared_ptr<Cell>> ownedProperties = p->getOwnedProperties();
+                Ownable *c = nullptr;
+                Ownable *c = nullptr;
+                std::vector<Cell *> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
-                        c = dynamic_pointer_cast<Ownable>(ownedProperties[i]);
+                        c = dynamic_cast<Ownable*>(ownedProperties[i]);
                     }
                 }
                 if (c == nullptr) {
@@ -163,6 +181,8 @@ int main(int argc, char *argv[]) {
                 cout << "Invalid command, please enter a valid command." << endl;
             }
         }
+    } else if (loadfile != "") {
+        b.loadGame(loadfile);
     }
     
     cout << b;

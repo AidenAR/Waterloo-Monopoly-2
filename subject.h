@@ -6,10 +6,10 @@
 class Observer;
 
 class Subject: public std::enable_shared_from_this <Subject>{
-    std::vector<std::shared_ptr<Observer>> observers;
+    std::vector<Observer *> observers;
 
   public:
-    void attach(std::shared_ptr<Observer> o);  
+    void attach(Observer *o);  
     void notifyObservers();
     virtual std::string getName()=0;
 

@@ -102,7 +102,7 @@ void Board::initializeCells() {
     Cells.emplace_back(make_shared<Ownable>(*this, "DC", 39, 80, 51, true, OwnableType::Academic, 400));
     
     for (int i=0; i<40; i++){
-		Cells[i]->attach(td);
+		Cells[i]->attach(td.get());
 		Cells[i]->notifyObservers();
 	}
 }
@@ -142,7 +142,7 @@ void Board::init() {
         shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), 1500, 0, 0);
         playerList.emplace_back(p);
     }
-    td->updatePlayerPosn(Cells[0]);
+    td->updatePlayerPosn(Cells[0].get());
 }
 
 vector<int> Board::rollDice() {
@@ -158,8 +158,8 @@ std::vector<std::shared_ptr<Player>> Board::getPlayerList() {
     return playerList;
 }
 
-std::shared_ptr<Cell> Board::getCell(int i) {
-    return Cells[i];
+Cell * Board::getCell(int i) {
+    return Cells[i].get();
 }
 
 
@@ -223,7 +223,7 @@ void Board::loadGame(std::string f) {
                 if (Cells[k]->getName() == propertyName) {
                     Cells[k]->getOwnedBy() == p.get();
                     Cells[k]->getImproveCount() == improveLevel;
-                    shared_ptr<Ownable> o = dynamic_pointer_cast<Ownable>(Cells[k]);
+                    Ownable *o = dynamic_cast<Ownable*>(Cells[k].get());
                     //p->addProperty(o);
                 }
             }

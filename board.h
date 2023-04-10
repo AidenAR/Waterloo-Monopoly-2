@@ -28,8 +28,9 @@ class Board {
 
  public:
 
+    
     std::vector<std::shared_ptr<Player>> getPlayerList();
-    std::shared_ptr<Cell> getCell(int i);
+    Cell * getCell(int i);
     void addToTotalCups();
     void removeFromTotalCups();
     int getTotalCups();

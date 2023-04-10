@@ -15,13 +15,24 @@ using namespace std;
 
 
 
-void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
+void TextDisplay::updatePlayerPosn(Cell *cell) {
     cout << "updatePlayerPosn" << endl;
     int cordI = cell->getI();
     int cordJ = cell->getJ();
     int posn = cell->getPosn();
     int playersOnCell = 0;
     vector<char> players;
+
+    for (int i = 0; i < board.getCellList().size(); i++) {
+        if (board.getCellList()[i]->getPosn() != posn) {
+            for (int j = 0; j < board.getPlayerList().size(); j++) {
+                if (board.getPlayerList()[j]->getPlayerPosn() == posn) {
+                    theDisplay[board.getCellList()[i]->getJ()][board.getCellList()[i]->getI() + 1] = space;
+                }
+            }
+        }
+    }
+
     for (int i = 0; i < board.getPlayerList().size(); i++) {
         if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
             playersOnCell++;
@@ -39,7 +50,7 @@ void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
     }
 }
 
-void TextDisplay::updateImprovement(shared_ptr<Cell> cell) {
+void TextDisplay::updateImprovement(Cell *cell) {
     int cordI = cell->getI();
     int cordJ = cell->getJ();
     int posn = cell->getPosn();
@@ -63,20 +74,20 @@ TextDisplay::TextDisplay(Board &board): board{board} {
     }
 }
 
-void TextDisplay::notify(shared_ptr<Subject> whoFrom) {
+void TextDisplay::notify(Subject *whoFrom) {
     cout << "textdisplay notified" << endl;
     // Assume that only cells notify us
-    shared_ptr<Cell> whoFromCell = nullptr;
+    Cell *whoFromCell = nullptr;
     string name = whoFrom->getName();
     for (int i = 0; i < board.getCellList().size(); i++) {
         if (board.getCellList()[i]->getName() == name) {
-            whoFromCell = board.getCellList()[i];
+            whoFromCell = board.getCellList()[i].get();
         }
     }
     int posn = whoFromCell->getPosn();
     int improveLevel = whoFromCell->getImproveCount();
     bool ownable = whoFromCell->getOwnable();
-    shared_ptr<Cell> cell = board.getCell(posn);
+    Cell *cell = board.getCell(posn);
     // iteratre through players and find the player that is on the cell that notified
     for (int i = 0; i < board.getPlayerList().size(); i++) {
         if (board.getPlayerList()[i]->getPlayerPosn() == posn) {

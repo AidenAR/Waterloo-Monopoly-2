@@ -73,7 +73,7 @@ int Player::getJailTurns() {
     return jailTurns;
 }
 
-vector<std::shared_ptr<Cell>> Player::getOwnedProperties() {
+vector<Cell *> Player::getOwnedProperties() {
     return ownedProperties;
 }
 
@@ -134,9 +134,9 @@ void  Player::addFunds(int num) {
     money += num;
 }
 
-shared_ptr<Cell> Player::findCell(shared_ptr<Cell> cell) {
+Cell *Player::findCell(Cell *cell) {
     for (auto &c : ownedProperties) {
-        if (c.get() == cell.get()) {
+        if (c == cell) {
             return c;
         }
     }
@@ -648,7 +648,7 @@ void Player::moneyTransfer(Player *to, int amount) {
     to->money += amount;
 }
 
-void Player::propertyTransfer(Player *to, std::shared_ptr<Cell> c) {
+void Player::propertyTransfer(Player *to, Cell *c) {
     auto it = findCell(c);
     //ownedProperties.erase(it);
     to->ownedProperties.emplace_back(c);

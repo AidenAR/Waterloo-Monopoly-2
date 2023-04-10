@@ -25,7 +25,7 @@ class Player : public Subject {
     std::string playerName;
     int money;
     int playerPosn;
-    std::vector<std::shared_ptr<Cell>> ownedProperties;
+    std::vector<Cell *> ownedProperties;
     int numGyms;
     int numResidences;
     bool timsJail;
@@ -36,7 +36,7 @@ class Player : public Subject {
 
     // When we call notifyObservers() but need the respective cell which responded, we store it here.
     // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
-    std::shared_ptr<Cell> responseCell = nullptr;
+    Cell *responseCell = nullptr;
     
     Board *board;
 
@@ -80,7 +80,7 @@ public:
 
     int getNumGyms();
     int getNumResidences();
-    std::vector<std::shared_ptr<Cell>> getOwnedProperties();
+    std::vector<Cell *> getOwnedProperties();
     
     
     void setTimsJail(bool j);
@@ -111,10 +111,10 @@ public:
     //void addProperty(Cell &c);
     void setJailTurns(int j);
     void TimsJailCell(Player& p);
-    std::shared_ptr<Cell> findCell(std::shared_ptr<Cell> c);
-    void removeProperty(std::shared_ptr<Cell> c);
+    Cell *findCell(Cell *c);
+    void removeProperty(Cell *c);
     void moneyTransfer(Player *to, int amount);
-    void propertyTransfer(Player *to, std::shared_ptr<Cell> c);
+    void propertyTransfer(Player *to, Cell *c);
 
     // void notify(Subject &whoFrom);
 };
