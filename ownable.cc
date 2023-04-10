@@ -379,7 +379,7 @@ void Ownable::unMortgage() {
     }
 }
 
-
+//test
 
 void Ownable::event(Player *p) {
     
