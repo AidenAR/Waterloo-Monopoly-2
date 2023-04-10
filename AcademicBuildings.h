@@ -68,13 +68,13 @@ public:
 */
     AcademicBuildings(Board &b, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     ~AcademicBuildings();
-    void sellImprovement() override;
-    void buyImprovement() override;
+    void sellImprovement();
+    void buyImprovement();
     std::string getFacultyName(const std::string& buildingName);
-    void payTuition(Player *p) override;
-    void mortgage() override;
-    void unMortgage() override;
-    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
+    void payTuition(Player *p);
+    void mortgage();
+    void unMortgage();
+    void notify(std::shared_ptr<Subject<State>> whoFrom);
 };
 
 

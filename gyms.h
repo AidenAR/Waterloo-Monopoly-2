@@ -26,10 +26,10 @@ public:
     Gyms(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     Board getBoard(Gyms& g);
     ~Gyms();
-    void payTuition(Player *p) override; //payMembership is like payTuition
-    void mortgage() override;
-    void unMortgage() override;
-    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
+    void payTuition(Player *p); //payMembership is like payTuition
+    void mortgage();
+    void unMortgage();
+    void notify(std::shared_ptr<Subject<State>> whoFrom);
     // void auction();????
 };
 

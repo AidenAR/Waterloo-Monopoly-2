@@ -11,18 +11,6 @@
 #include "cell.h"
 
 
-class CollectOsap;
-class GoToTims;
-class Slc;
-class Tuition;
-class CoopFee;
-class NeedlesHall;
-class Residences;
-class AcademicBuilding;
-class GotoTims;
-class gyms;
-class DCTimsLine;
-class Goose;
 
 
 using namespace std;
@@ -71,53 +59,58 @@ int Board::getTotalCups() {
 }
 
 void Board::initializeCells() {
-    Cells.emplace_back(make_shared<CollectOsap>(this, "COLLECT OSAP", 0, 80, 54, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "AL", 1, 72, 54, true, OwnableType::Academic, 40));
-    Cells.emplace_back(make_shared<Slc>(this, "SLC", 2, 64, 54, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ML", 3, 56, 54, true, OwnableType::Academic, 60));
-    Cells.emplace_back(make_shared<Tuition>(this, "TUITION", 4, 48, 54, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<Residences>(this, "MKV", 5, 40, 54, true, OwnableType::Residence, 200));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ECH", 6, 32, 54, true, OwnableType::Academic, 100));
-    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 7, 24, 54, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "PAS", 8, 16, 54, true, OwnableType::Academic, 100));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "HH", 9, 8, 54, true, OwnableType::Academic, 120));
-    Cells.emplace_back(make_shared<DCTimsLine>(this, "DC TIMS LINE", 10, 0, 54, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "RCH", 11, 0, 51, true, OwnableType::Academic, 140));
-    Cells.emplace_back(make_shared<gyms>(this, "PAC", 12, 0, 46, true, OwnableType::Gym, 150));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "DWE", 13, 0, 41, true, OwnableType::Academic, 140));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "CPH", 14, 0, 36, true, OwnableType::Academic, 160));
-    Cells.emplace_back(make_shared<Residences>(this, "UWP", 15, 0, 31, true, OwnableType::Residence, 200));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "LHI", 16, 0, 26, true, OwnableType::Academic, 180));
-    Cells.emplace_back(make_shared<Slc>(this, "SLC", 17, 0, 21, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "BMH", 18, 0, 16, true, OwnableType::Academic, 180));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "OPT", 19, 0, 11, true, OwnableType::Academic, 200));
-    Cells.emplace_back(make_shared<Goose>(this, "GOOSE NESTING", 20, 0, 4, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV1", 21, 8, 0, true, OwnableType::Academic, 220));
-    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 22, 16, 4, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV2", 23, 24, 4, true, OwnableType::Academic, 220));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EV3", 24, 32, 4, true, OwnableType::Academic, 240));
-    Cells.emplace_back(make_shared<Residences>(this, "V1", 25, 40, 4, true, OwnableType::Residence, 200));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "PHYS", 26, 48, 4, true, OwnableType::Academic, 260));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "B1", 27, 56, 4, true, OwnableType::Academic, 260));
-    Cells.emplace_back(make_shared<gyms>(this, "CIF", 28, 64, 4, true, OwnableType::Gym, 150));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "B2", 29, 72, 4, true, OwnableType::Academic, 280));
-    Cells.emplace_back(make_shared<GoToTims>(this, "GO TO TIMS", 30, 80, 4, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "EIT", 31, 80, 11, true, OwnableType::Academic, 300));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "ESC", 32, 80, 16, true, OwnableType::Academic, 300));
-    Cells.emplace_back(make_shared<Slc>(this, "SLC", 33, 80, 21, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "C2", 34, 80, 26, true, OwnableType::Academic, 320));
-    Cells.emplace_back(make_shared<Residences>(this, "REV", 35, 80, 31, true, OwnableType::Residence, 200));
-    Cells.emplace_back(make_shared<NeedlesHall>(this, "NEEDLES HALL", 36, 80, 36, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "MC", 37, 80, 41, true, OwnableType::Academic, 350));
-    Cells.emplace_back(make_shared<CoopFee>(this, "COOP FEE", 38, 80, 46, false, OwnableType::NonOwnable, 0));
-    Cells.emplace_back(make_shared<AcademicBuilding>(this, "DC", 39, 80, 51, true, OwnableType::Academic, 400));
-    for (int i = 0; i < 39; i++) {
+    
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "COLLECT OSAP", 0, 80, 54, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "AL", 1, 72, 54, true, OwnableType::Academic, 40));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "SLC", 2, 64, 54, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "ML", 3, 56, 54, true, OwnableType::Academic, 60));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "TUITION", 4, 48, 54, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "MKV", 5, 40, 54, true, OwnableType::Residence, 200));
+    Cells.emplace_back(make_shared<Ownable>(*this, "ECH", 6, 32, 54, true, OwnableType::Academic, 100));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "NEEDLES HALL", 7, 24, 54, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "PAS", 8, 16, 54, true, OwnableType::Academic, 100));
+    Cells.emplace_back(make_shared<Ownable>(*this, "HH", 9, 8, 54, true, OwnableType::Academic, 120));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "DC TIMS LINE", 10, 0, 54, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "RCH", 11, 0, 51, true, OwnableType::Academic, 140));
+    Cells.emplace_back(make_shared<Ownable>(*this, "PAC", 12, 0, 46, true, OwnableType::Gym, 150));
+    Cells.emplace_back(make_shared<Ownable>(*this, "DWE", 13, 0, 41, true, OwnableType::Academic, 140));
+    Cells.emplace_back(make_shared<Ownable>(*this, "CPH", 14, 0, 36, true, OwnableType::Academic, 160));
+    Cells.emplace_back(make_shared<Ownable>(*this, "UWP", 15, 0, 31, true, OwnableType::Residence, 200));
+    Cells.emplace_back(make_shared<Ownable>(*this, "LHI", 16, 0, 26, true, OwnableType::Academic, 180));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "SLC", 17, 0, 21, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "BMH", 18, 0, 16, true, OwnableType::Academic, 180));
+    Cells.emplace_back(make_shared<Ownable>(*this, "OPT", 19, 0, 11, true, OwnableType::Academic, 200));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "GOOSE NESTING", 20, 0, 4, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "EV1", 21, 8, 0, true, OwnableType::Academic, 220));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "NEEDLES HALL", 22, 16, 4, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "EV2", 23, 24, 4, true, OwnableType::Academic, 220));
+    Cells.emplace_back(make_shared<Ownable>(*this, "EV3", 24, 32, 4, true, OwnableType::Academic, 240));
+    Cells.emplace_back(make_shared<Ownable>(*this, "V1", 25, 40, 4, true, OwnableType::Residence, 200));
+    Cells.emplace_back(make_shared<Ownable>(*this, "PHYS", 26, 48, 4, true, OwnableType::Academic, 260));
+    Cells.emplace_back(make_shared<Ownable>(*this, "B1", 27, 56, 4, true, OwnableType::Academic, 260));
+    Cells.emplace_back(make_shared<Ownable>(*this, "CIF", 28, 64, 4, true, OwnableType::Gym, 150));
+    Cells.emplace_back(make_shared<Ownable>(*this, "B2", 29, 72, 4, true, OwnableType::Academic, 280));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "GO TO TIMS", 30, 80, 4, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "EIT", 31, 80, 11, true, OwnableType::Academic, 300));
+    Cells.emplace_back(make_shared<Ownable>(*this, "ESC", 32, 80, 16, true, OwnableType::Academic, 300));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "SLC", 33, 80, 21, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "C2", 34, 80, 26, true, OwnableType::Academic, 320));
+    Cells.emplace_back(make_shared<Ownable>(*this, "REV", 35, 80, 31, true, OwnableType::Residence, 200));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "NEEDLES HALL", 36, 80, 36, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "MC", 37, 80, 41, true, OwnableType::Academic, 350));
+    Cells.emplace_back(make_shared<NonOwnable>(*this, "COOP FEE", 38, 80, 46, false, OwnableType::Nonownable, 0));
+    Cells.emplace_back(make_shared<Ownable>(*this, "DC", 39, 80, 51, true, OwnableType::Academic, 400));
+    
+    for (int i = 0; i < 40; i++) {
         Cells[i]->attach(td);
+        for (auto player : playerList) {
+            Cells[i]->attach(player);
+        }
     }
 }
 
 void Board::init() {
-    td = make_shared<TextDisplay>(this);
+    td = make_shared<TextDisplay>(*this);
     initializeCells();
     int numPlayers;
     std::vector<std::string> chosenPieces;
@@ -139,16 +132,27 @@ void Board::init() {
         cin >> name;
         cout << "What is the piece of player" << i << "?" << endl;
         cin >> piece;
-        while (findinVector(pieceList, piece)) {
+        while (!findinVector(pieceList, piece)) {
             cout << "Please enter a valid piece!" << endl;
             cin >> piece;
         }
         while(findinVector(chosenPieces, piece)) {
             cout << piece << " has already been choesen, please select a different piece!" << endl;
+            cin >> piece;
         }
-        shared_ptr<Player> p = make_shared<Player>(*this, name, pieceSymbol(piece), 1500, 0, 0);
+        chosenPieces.emplace_back(piece);
+        shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), 1500, 0, 0);
         playerList.emplace_back(p);
     }
+
+    for (auto player : playerList) {
+        for (int i = 0; i<40; i++) {
+            player->attach(Cells[i]);
+        }
+    }
+
+
+    td->updatePlayerPosn(Cells[0]);
 }
 
 vector<int> Board::rollDice() {
@@ -201,7 +205,7 @@ void Board::loadGame(std::string f) {
         string name, piece;
         int money, playerPosn, rollRims;
         iss >> name >> piece >> money >> playerPosn >> rollRims;
-        shared_ptr<Player> p = make_shared<Player>(name, pieceSymbol(piece), money, playerPosn, rollRims);
+        shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), money, playerPosn, rollRims);
         playerList.emplace_back(p);
         getline(saved, line);
         istringstream iss2(line);

@@ -108,7 +108,7 @@ void Residences::unMortgage() {
 }
 
 
-void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
+void Residences::notify(std::shared_ptr<Subject<State>> whoFrom) {
     State state = *(whoFrom->getState());
     StateType type = state.type;
     

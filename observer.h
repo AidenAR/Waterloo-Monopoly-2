@@ -7,7 +7,8 @@ class Subject;
 
 template <typename StateType>
 class Observer {
-    virtual void notify(std::shared_ptr<Subject<StateType>> whoFrom) = 0;
+    public:
+        virtual void notify(std::shared_ptr<Subject<StateType>> whoFrom) = 0;
 };
 
 #endif

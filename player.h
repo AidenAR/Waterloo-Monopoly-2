@@ -13,7 +13,6 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
-#include "AcademicBuildings.h"
 
 class Ownable;
 
@@ -85,12 +84,12 @@ public:
     void setTimsJail(bool j);
 
     // Movement related
-    void moveForward(bool landed = false);
+    void moveForward(bool landed);
     void placePlayerHere(int newPosn, bool notifyCell);
 
     // Core player functions
     void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
-    void sellPropertyTo(Player *newOwner, std::string cellName, int salePrice);
+    void sellPropertyTo(std::string cellName, Player *newOwner = nullptr, int salePrice = -1);
     void attemptTrade(Player *tradeTo, std::string give, std::string recieve);
     
     // Ownable property actions

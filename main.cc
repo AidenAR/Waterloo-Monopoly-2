@@ -3,21 +3,29 @@
 #include "player.h"
 #include <iostream>
 #include <vector>
+#include "ownable.h"
+#include "nonownable.h"
 
 using namespace std;
+
+
+//Note:
+// if argc != 1 we get issues (shit!)
 
 
 int main(int argc, char *argv[]) {
 
     Board b;
     cout << "Welcome to the game!" << endl;
-    if (argc == 0) {
+    if (argc == 1) {
         b.init();
+        cout << b;
+
+        int currentPlayer = 0;
         vector<shared_ptr<Player>> players = b.getPlayerList();
         while(!b.isGameOver()) {
             cout << "enter help for a list of commands" << endl;
             string cmd;
-            int currentPlayer = 0;
             shared_ptr<Player> p = players[currentPlayer];
             cin >> cmd;
             if (cmd == "help") {
@@ -50,13 +58,15 @@ int main(int argc, char *argv[]) {
                 }
                 int newPosn = (p->getPlayerPosn() + diceTotal) % 40;
                 for (int i=0; i<newPosn-1; i++) {
-                    p->moveForward();
+                    p->moveForward(false);
                 }
                 p->moveForward(true);
                 
+                cout << b;
+                
             } else if (cmd == "next") {
                 currentPlayer++;
-                p = players[currentPlayer];
+                p = players[currentPlayer % players.size()];
                 continue;
             } else if (cmd == "trade") {
                 string name, give, receive;

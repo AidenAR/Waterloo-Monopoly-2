@@ -24,10 +24,10 @@ public:
     const int resCost = 200;
     Residences(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price);
     ~Residences();
-    void payTuition(Player *p) override; //payRent is like payTuition
-    void mortgage() override;
-    void unMortgage() override;
-    void notify(std::shared_ptr<Subject<State>> whoFrom) override;
+    void payTuition(Player *p); //payRent is like payTuition
+    void mortgage();
+    void unMortgage();
+    void notify(std::shared_ptr<Subject<State>> whoFrom);
 };
 
 

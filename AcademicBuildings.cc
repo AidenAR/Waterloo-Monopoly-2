@@ -19,7 +19,7 @@ using namespace std;
 //Hassan check notifs
 
 AcademicBuildings::AcademicBuildings(Board &board, std::string name, int pos, int i, int j, bool ownable, OwnableType otype, int price) :
-    Ownable(board, name, posn, i, j, ownable, otype, price) {}
+    Ownable{board, name, posn, i, j, ownable, otype, price} {}
 
 AcademicBuildings::~AcademicBuildings() {}
 
@@ -263,6 +263,7 @@ void AcademicBuildings::notify(std::shared_ptr<Subject<State>> whoFrom) {
         buyImprovement();
         break;
     case StateType::Landed:
+    
         if (getOwnedBy() == nullptr) {
             // Player now must decide whether to auction or purchase.
             // Send notif back to player s they can decide.

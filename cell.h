@@ -8,7 +8,7 @@
 class Player;
 class Board;
 
-enum OwnableType{Academic, Residence, Gym, NonOwnable};
+enum OwnableType{Academic, Residence, Gym, Nonownable};
 
 
 class Cell: public Subject<State>, public Observer<State> {
@@ -27,25 +27,25 @@ protected:
     int improveCount = 0;
     int price;
     bool isMortgaged = false;
-    public:
-        Cell(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
-        // //virtual void notify(Subject<Info, State> &whoNotified) = 0;
-        // void notifyObservers();
-        Player *getOwnedBy();
-        OwnableType getOtype();
-        void setOwnedBy(Player *ownedBy);
-        std::string getName();
-        int getPosn();
-        int getI();
-        int getJ();
-        bool getSuccesful();
-        void setSuccesful(bool wasSuccesful);
-        bool getOwnable();
-        int getImproveCount();
-        void setImproveCount(int newImprove);
-        int getPrice();
-        bool getMortgaged();
-        void setMortgaged(bool isMortgaged);
+public:
+    Cell(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
+    // //virtual void notify(Subject<Info, State> &whoNotified) = 0;
+    // void notifyObservers();
+    Player *getOwnedBy();
+    OwnableType getOtype();
+    void setOwnedBy(Player *ownedBy);
+    std::string getName();
+    int getPosn();
+    int getI();
+    int getJ();
+    bool getSuccesful();
+    void setSuccesful(bool wasSuccesful);
+    bool getOwnable();
+    int getImproveCount();
+    void setImproveCount(int newImprove);
+    int getPrice();
+    bool getMortgaged();
+    void setMortgaged(bool isMortgaged);
 
 
 };

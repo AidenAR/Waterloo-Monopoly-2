@@ -12,11 +12,12 @@ using namespace std;
 #include <vector>
 #include "board.h"
 #include <unordered_map>
-#include "AcademicBuildings.h"
 #include "state.h"
 #include "board.h"
 #include <tuple>
 #include <memory>
+#include "cell.h"
+#include "ownable.h"
 
 
 Player::Player(Board *board, string playerName, char pieceName, int money, int rollRims, int playerPosn): board{board},
@@ -136,6 +137,8 @@ void Player::moveForward(bool landed = false) {
     state.cellName = "";
     state.type = landed ? StateType::Landed : StateType::Move;
     state.playerPosn = playerPosn;
+
+    cout << "boutta send landed notif lfg" << endl;
 
     this->notifyObservers();
 }
@@ -448,8 +451,9 @@ bool isNum(string str) {
 void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve) {
     // Three cases:
     // give money, recieve property
+    int giveInt = stoi(give);
     if (isNum(give)) {
-        int giveInt = stoi(give);
+        
         if (giveInt > this->money) {
             // means we dont have the funds for this trade!
             cout << "You do not have enough money for trade );" << endl;
@@ -462,7 +466,7 @@ void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve
         } else {
             // I am paying money for other guys property
 
-            tradeTo->sellPropertyTo(this, recieve, giveInt);
+            tradeTo->sellPropertyTo(recieve, this, giveInt);
         }
     } else {
         if (isNum(recieve)) {
@@ -474,11 +478,11 @@ void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve
                 return;
             }
 
-            sellPropertyTo(tradeTo, give, recieveInt);
+            sellPropertyTo(give, tradeTo, recieveInt);
         } else {
             // I am trading property with the other guy
-            sellPropertyTo(tradeTo, give, 0);
-            tradeTo->sellPropertyTo(this, recieve, 0);
+            sellPropertyTo(give, tradeTo, 0);
+            tradeTo->sellPropertyTo(recieve, this, giveInt);
         }
     }
 }
@@ -491,7 +495,7 @@ void Player::attemptTrade(Player *tradeTo, std::string give, std::string recieve
 // else, we are sold the property for the amount salePrice. 
 // Requirements:
 // None
-void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int salePrice = -1) {
+void Player::sellPropertyTo(string cellName, Player *newOwner, int salePrice) {
     // Before selling property, lets verify funds.
 
     if (salePrice > newOwner->money) {
@@ -543,7 +547,7 @@ void Player::sellPropertyTo(Player *newOwner = nullptr, string cellName, int sal
         newOwner->numResidences++;
     } else if (responseCell->getOtype() == OwnableType::Academic) {
         // Update FacultyMap
-        auto academic = dynamic_cast<AcademicBuildings *>(responseCell.get());
+        auto academic = dynamic_cast<Ownable *>(responseCell.get());
         string facultyName = academic->getFacultyName(academic->getName());
         
         // Increment the faculty count for the new owner
@@ -565,9 +569,12 @@ void Player::setJailTurns(int j) {
 }
 
 void Player::addProperty(shared_ptr<Ownable> c) {
-    ownedProperties.push_back(c);
+    ownedProperties.emplace_back(c);
 }
 
+void Player::setTimsJail(bool j) {
+    timsJail = j;
+}
 
 void Player::TimsJailCell(Player& p) {
     // Check if the player is currently in jail

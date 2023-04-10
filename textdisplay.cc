@@ -14,6 +14,7 @@ using namespace std;
 
 
 void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
+    cout << "updatePlayerPosn" << endl;
     int cordI = cell->getI();
     int cordJ = cell->getJ();
     int posn = cell->getPosn();
@@ -22,11 +23,17 @@ void TextDisplay::updatePlayerPosn(shared_ptr<Cell> cell) {
     for (int i = 0; i < board.getPlayerList().size(); i++) {
         if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
             playersOnCell++;
+            cout << "entered if statement in updatePlayerPosn for updating display" << endl;
+            cout << "player name: " << board.getPlayerList()[i]->getPieceName() << endl;
             players.emplace_back(board.getPlayerList()[i]->getPieceName());
         }
     }
     for (int i = 0; i < playersOnCell; i++) {
-        theDisplay[cordI + i + 1][cordJ] = players[i];
+        cout << "entered for loop in updatePlayerPosn for updating display" << endl;
+        cout << "cordI + i + 1 = " << cordI + i + 1 << endl;
+        cout << "cordJ = " << cordJ << endl;
+        cout << "i = " << i << endl;
+        theDisplay[cordJ][cordI + i + 1] = players[i];
     }
 }
 
@@ -55,6 +62,7 @@ TextDisplay::TextDisplay(Board &board): board{board} {
 }
 
 void TextDisplay::notify(std::shared_ptr<Subject<State>> whoFrom) {
+    cout << "textdisplay notified" << endl;
     // Assume that only cells notify us
     Cell *whoFromCell = dynamic_cast<Cell*>(whoFrom.get());
     if (whoFromCell == nullptr) return;
