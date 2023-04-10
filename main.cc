@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
     }
     cout << "Welcome to the game!" << endl;
-    if (argc == 1) {
+    if (argc == 2) {
         b.init();
         cout << b;
 
