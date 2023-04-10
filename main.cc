@@ -38,11 +38,10 @@ int main(int argc, char *argv[]) {
         cout << b;
 
         int currentPlayer = 0;
-        vector<shared_ptr<Player>> players = b.getPlayerList();
         while(!b.isGameOver()) {
             cout << "enter help for a list of commands" << endl;
             string cmd;
-            Player *p = players[currentPlayer].get();
+            Player *p = b.getPlayerList()[currentPlayer].get();
             cin >> cmd;
             if (cmd == "help") {
                 cout << "roll: roll the dice" << endl;
@@ -84,9 +83,9 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "next") {
                 currentPlayer++;
                 cout << "currentPlayer: " << currentPlayer << endl;
-                cout << "players.size(): " << players.size() << endl;
-                cout << "currentPlayer % players.size(): " << currentPlayer % players.size() << endl;
-                p = players[currentPlayer % players.size()].get();
+                cout << "players.size(): " << b.getPlayerList().size() << endl;
+                cout << "currentPlayer % players.size(): " << currentPlayer % b.getPlayerList().size() << endl;
+                p = b.getPlayerList()[currentPlayer % b.getPlayerList().size()].get();
                 continue;
             } else if (cmd == "trade") {
                 string name, give, receive;
@@ -103,9 +102,9 @@ int main(int argc, char *argv[]) {
                 if (response == "accept") {
                     cout << "Trade accepted!" << endl;
                     Player *tradeTo = nullptr;
-                    for (int i = 0; i < players.size(); i++) {
-                        if (players[i]->getName() == name) {
-                            tradeTo = players[i].get();
+                    for (int i = 0; i < b.getPlayerList().size(); i++) {
+                        if (b.getPlayerList()[i]->getName() == name) {
+                            tradeTo = b.getPlayerList()[i].get();
                         }
                     }
                     //p->attemptTrade(tradeTo.get(), give, receive);
@@ -171,8 +170,8 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "bankrupt") {
                 // TODO p->bankrupt();
             } else if (cmd == "all") {
-                for (int i = 0; i < players.size(); i++) {
-                    players[i]->printAssets();
+                for (int i = 0; i < b.getPlayerList().size(); i++) {
+                    b.getPlayerList()[i]->printAssets();
                 }
             } else if (cmd == "save") {
                 string filename;
