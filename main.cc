@@ -137,7 +137,6 @@ int main(int argc, char *argv[]) {
                 string property;
                 cin >> property;
                 Ownable *c = nullptr;
-                Ownable *c = nullptr;
                 std::vector<Cell *> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {
                     if (ownedProperties[i]->getName() == property) {
@@ -152,7 +151,6 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "unmortgage") {
                 string property;
                 cin >> property;
-                Ownable *c = nullptr;
                 Ownable *c = nullptr;
                 std::vector<Cell *> ownedProperties = p->getOwnedProperties();
                 for (int i = 0; i < ownedProperties.size(); i++) {

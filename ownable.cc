@@ -379,8 +379,6 @@ void Ownable::unMortgage() {
     }
 }
 
-//test
-
 void Ownable::event(Player *p) {
     
     cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
