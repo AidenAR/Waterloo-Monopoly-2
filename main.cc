@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         while(!b.isGameOver()) {
             cout << "enter help for a list of commands" << endl;
             string cmd;
-            Player *p = b.getPlayerList()[currentPlayer].get();
+            Player *p = b.getPlayerList()[currentPlayer % b.getPlayerList().size()].get();
             cin >> cmd;
             if (cmd == "help") {
                 cout << "roll: roll the dice" << endl;
