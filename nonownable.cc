@@ -4,20 +4,18 @@
 
 using namespace std;
 
-class Subject;
-
 
 NonOwnable::NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price): 
     Cell(board, name, posn, i, j, ownable, otype, price) {}
 
-void NonOwnable::notify(std::shared_ptr<Subject> whoFrom) {
+void NonOwnable::notify(Subject &whoFrom) {
 
     cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
     return;
     
     // As this is a Cell, we are guaranteed only Players will notify it. 
     // Thus, we can assume that we can obtain a State object from it.
-    State state = *whoFrom->getState();
+    State state = *whoFrom.getState();
 
 
     // What cases should we even respond to it?? 

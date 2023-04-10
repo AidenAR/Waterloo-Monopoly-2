@@ -82,7 +82,7 @@ public:
     void payTuition(Player *p) ;
     void mortgage();
     void unMortgage();
-    void notify(std::shared_ptr<Subject> whoFrom);
+    void notify(Subject &whoFrom);
     void setOwner(Player *p);
     std::string getFacultyName(const std::string& buildingName);
 

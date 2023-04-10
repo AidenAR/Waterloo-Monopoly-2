@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "state.h"
+#include "observer.h"
 
 // /* A note on InfoType and StateType:
 
@@ -56,10 +57,9 @@
 // #ifndef SUBJECT_H
 // #define SUBJECT_H
 
-class Observer;
 
 class Subject { //}: public std::enable_shared_from_this <Subject<StateType>> {
-    std::vector<std::shared_ptr<Observer>> observers;
+    std::vector<Observer *> observers;
 
 public:
     // Idt its a good idea to require Subjects to have an
@@ -73,28 +73,30 @@ public:
     // Subject.cc for now will implement dummy methods that dont do anything useful.
 
 
-    virtual StateType *getState();
-    virtual void setState(StateType state);
+    virtual State *getState();
+    virtual void setState(State state);
 
-    void attach(std::shared_ptr<Observer> o);
-    // void detach(std::shared_ptr<Observer<StateType>> o);
+    void attach(Observer *);
+    // void detach(std::shared_ptr<Observer<State>> o);
     void notifyObservers();
 };
 
-void Subject::attach(std::shared_ptr<Observer> o) {
+void Subject::attach(Observer *o) {
     observers.emplace_back(o);
 }
 
 
 void Subject::notifyObservers() {
-  for (auto &ob : observers) ob->notify( std::shared_ptr<Subject>(this));
+  for (auto &ob : observers) {
+        ob->notify(*this);
+    }
 }
 
 
-StateType *Subject::getState() {
+State *Subject::getState() {
     return nullptr;
 }
 
-void Subject::setState(StateType state) {}
+void Subject::setState(State state) {}
 
 #endif

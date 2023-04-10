@@ -229,7 +229,7 @@ void Ownable::mortgage() {
             cout << "mortgaged property already." << endl;
             return;
         }
-        if (owner) {
+        if (owner != nullptr) {
             //sell off all improvements if existing
             if (getImproveCount() > 0) {
                 for (int i = 0; i < getImproveCount(); i++) {
@@ -352,8 +352,8 @@ void Ownable::unMortgage() {
 
 
 
-void Ownable::notify(std::shared_ptr<Subject> whoFrom) {
-    State state = *(whoFrom->getState());
+void Ownable::notify(Subject &whoFrom) {
+    State state = *(whoFrom.getState());
     StateType type = state.type;
 
     cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
@@ -379,14 +379,14 @@ void Ownable::notify(std::shared_ptr<Subject> whoFrom) {
         break;
     case StateType::Mortgage:
         if (getMortgaged()) return;
-        if (getOwnedBy() != whoFrom.get()) return;
+        if (getOwnedBy() != &whoFrom) return;
         if (getName() != state.cellName) return;
 
         mortgage();
         break;
     case StateType::Unmortgage:
         if (getMortgaged()) return;
-        if (getOwnedBy() != whoFrom.get()) return;
+        if (getOwnedBy() != &whoFrom) return;
         if (getName() != state.cellName) return;
 
         unMortgage();
@@ -414,8 +414,8 @@ void Ownable::notify(std::shared_ptr<Subject> whoFrom) {
         if (getOwnedBy() == nullptr) {
             // Player now must decide whether to auction or purchase.
             // Send notif back to player s they can decide.
-        } else if (getOwnedBy() != whoFrom.get()) {
-            Player *whoFromPlayer = dynamic_cast<Player *>(whoFrom.get());
+        } else if (getOwnedBy() != &whoFrom) {
+            Player *whoFromPlayer = dynamic_cast<Player *>(&whoFrom);
             if (whoFromPlayer == nullptr) return;
 
             payTuition(whoFromPlayer);

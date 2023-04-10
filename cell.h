@@ -29,8 +29,6 @@ protected:
     bool isMortgaged = false;
 public:
     Cell(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
-    // //virtual void notify(Subject<Info, State> &whoNotified) = 0;
-    // void notifyObservers();
     Player *getOwnedBy();
     OwnableType getOtype();
     void setOwnedBy(Player *ownedBy);

@@ -17,7 +17,7 @@ class TextDisplay: public Observer {
         TextDisplay(Board &board);
         void updatePlayerPosn(std::shared_ptr<Cell> cell);
         void updateImprovement(std::shared_ptr<Cell> cell);
-        void notify(std::shared_ptr<Subject> whoFrom);
+        void notify(Subject &whoFrom);
         friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

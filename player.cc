@@ -151,14 +151,25 @@ void  Player::addFunds(int num) {
     money += num;
 }
 
+shared_ptr<Cell> Player::findCell(shared_ptr<Cell> cell) {
+    for (auto &c : ownedProperties) {
+        if (c.get() == cell.get()) {
+            return c;
+        }
+    }
+    return nullptr;
+}
+
 // As this is a Player, we will only be notified by Cells, so Cells contain data with their Info attribute; use Info accessors.
 // Do NOT call State accessors here.
 // The only cells which will be notifying us are those who want the player to do smth (ie, pay tuiton)
-void Player::notify(std::shared_ptr<Subject> whoFrom) {
+void Player::notify(Subject &whoFrom) {
     // should do nothing if it isnt this Players turn
 
-    shared_ptr<Cell> whoFromCell = dynamic_pointer_cast<Cell>(whoFrom);
-    this->responseCell = whoFromCell;
+    Cell *whoFromCell = dynamic_cast<Cell*>(&whoFrom);
+    if (whoFromCell == nullptr) return;
+
+    this->responseCell = std::make_shared<Cell>(*whoFromCell);
 
     string cellName = whoFromCell->getName();
     
@@ -397,7 +408,7 @@ void Player::attemptUnmortgage(string cellname) {
 // 1. Player has enough money to purchase Cell
 // 2. Cell is unowned
 // After these are true, we need to deduct funds from player, addto list of properties, and increment counters.
-void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
+void Player::attemptBuyProperty(Cell *whoFrom) {
     
     // All the cases we shouldnt buy cell in
     // should probably put a descriptive error lollll
@@ -410,7 +421,7 @@ void Player::attemptBuyProperty(std::shared_ptr<Cell> whoFrom) {
     subFunds(whoFrom->getPrice());
 
     // Add to prop vector
-    ownedProperties.push_back(whoFrom);
+    ownedProperties.emplace_back(*whoFrom);
 
     OwnableType otype = whoFrom->getOtype();
 
@@ -505,6 +516,8 @@ void Player::sellPropertyTo(string cellName, Player *newOwner, int salePrice) {
     state.type = StateType::SellTo;
     state.cellName = cellName;
     state.newOwner = newOwner; // argh casting issues!!1!1!
+
+    responseCell = nullptr;
     
     // We attempt to do this trade
     notifyObservers();
@@ -532,10 +545,8 @@ void Player::sellPropertyTo(string cellName, Player *newOwner, int salePrice) {
     traderProps.push_back(responseCell);
     
     // Remove from our property vector
-    auto it = std::find(ownedProperties.begin(), ownedProperties.end(), responseCell);
-    if (it != ownedProperties.end()) {
-        ownedProperties.erase(it);
-    }
+    auto it = findCell(responseCell);
+    ownedProperties.erase(it);
 
     // Increment counter based on property type
     if (responseCell->getOtype() == OwnableType::Gym) {
@@ -546,7 +557,8 @@ void Player::sellPropertyTo(string cellName, Player *newOwner, int salePrice) {
         newOwner->numResidences++;
     } else if (responseCell->getOtype() == OwnableType::Academic) {
         // Update FacultyMap
-        auto academic = dynamic_cast<Ownable *>(responseCell.get());
+        auto academic = dynamic_pointer_cast<Ownable>(responseCell);
+        if (academic == nullptr) return;
         string facultyName = academic->getFacultyName(academic->getName());
         
         // Increment the faculty count for the new owner

@@ -17,7 +17,7 @@
 class Ownable;
 
 
-class Player : public Subject<State> , public Observer<State>{
+class Player : public Subject, public Observer {
     char pieceName;
     const int startingMoney = 1500;
     std::string playerName;
@@ -88,7 +88,7 @@ public:
     void placePlayerHere(int newPosn, bool notifyCell);
 
     // Core player functions
-    void attemptBuyProperty(std::shared_ptr<Cell> whoFrom);
+    void attemptBuyProperty(Cell *whoFrom);
     void sellPropertyTo(std::string cellName, Player *newOwner = nullptr, int salePrice = -1);
     void attemptTrade(Player *tradeTo, std::string give, std::string recieve);
     
@@ -109,8 +109,9 @@ public:
     void addProperty(std::shared_ptr<Ownable> c);
     void setJailTurns(int j);
     void TimsJailCell(Player& p);
+    std::shared_ptr<Cell> findCell(std::shared_ptr<Cell> c);
 
-    void notify(std::shared_ptr<Subject<State>> whoFrom);
+    void notify(Subject &whoFrom);
 };
 
 #endif //PLAYER_H

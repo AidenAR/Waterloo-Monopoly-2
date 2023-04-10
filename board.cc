@@ -102,9 +102,9 @@ void Board::initializeCells() {
     Cells.emplace_back(make_shared<Ownable>(*this, "DC", 39, 80, 51, true, OwnableType::Academic, 400));
     
     for (int i = 0; i < 40; i++) {
-        Cells[i]->attach(td);
+        Cells[i]->attach(td.get());
         for (auto player : playerList) {
-            Cells[i]->attach(player);
+            Cells[i]->attach(player.get());
         }
     }
 }
@@ -147,7 +147,7 @@ void Board::init() {
 
     for (auto player : playerList) {
         for (int i = 0; i<40; i++) {
-            player->attach(Cells[i]);
+            player->attach(Cells[i].get());
         }
     }
 

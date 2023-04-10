@@ -8,6 +8,8 @@
 #include "cell.h"
 #include "board.h"
 #include "player.h"
+#include "subject.h"
+#include <memory>
 
 using namespace std;
 
@@ -61,10 +63,10 @@ TextDisplay::TextDisplay(Board &board): board{board} {
     }
 }
 
-void TextDisplay::notify(std::shared_ptr<Subject> whoFrom) {
+void TextDisplay::notify(Subject &whoFrom) {
     cout << "textdisplay notified" << endl;
     // Assume that only cells notify us
-    Cell *whoFromCell = dynamic_cast<Cell*>(whoFrom.get());
+    Cell *whoFromCell = dynamic_cast<Cell*>(&whoFrom);
     if (whoFromCell == nullptr) return;
 
     string name = whoFromCell->getName();

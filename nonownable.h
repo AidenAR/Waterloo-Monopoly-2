@@ -8,7 +8,7 @@ class State;
 class NonOwnable: public Cell {
     public:
         NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
-        void notify(std::shared_ptr<Subject> whoFrom);
+        void notify(Subject &whoFrom);
 };
 
 #endif

@@ -6,7 +6,7 @@ class Subject;
 
 class Observer {
     public:
-        virtual void notify(std::shared_ptr<Subject> whoFrom) = 0;
+        virtual void notify(Subject &whoFrom) = 0;
 };
 
 #endif
