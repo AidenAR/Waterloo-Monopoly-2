@@ -11,7 +11,7 @@ class Board;
 enum OwnableType{Academic, Residence, Gym, Nonownable};
 
 
-class Cell: public Subject, public Observer {
+class Cell: public Subject{
 protected:
     std::string name;
     int posn;
@@ -32,7 +32,7 @@ public:
     Player *getOwnedBy();
     OwnableType getOtype();
     void setOwnedBy(Player *ownedBy);
-    std::string getName();
+    virtual std::string getName() override;
     int getPosn();
     int getI();
     int getJ();
@@ -44,6 +44,7 @@ public:
     int getPrice();
     bool getMortgaged();
     void setMortgaged(bool isMortgaged);
+    virtual void event(Player *p);
 
 
 };

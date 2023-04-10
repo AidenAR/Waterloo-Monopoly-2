@@ -47,7 +47,8 @@ int main(int argc, char *argv[]) {
                     diceRollCount++;
                     if (diceRollCount == 3) {
                         cout << "You rolled three doubles in a row, you are sent to DC Tims Line." << endl;
-                        p->placePlayerHere(10, true);
+                        p->setPlayerPosn(10);
+
                         p->setTimsJail(true);
                         break;
                     }
@@ -57,11 +58,11 @@ int main(int argc, char *argv[]) {
                     cout << "You rolled a " << dice[0] << " and a " << dice[1] << endl;
                 }
                 int newPosn = (p->getPlayerPosn() + diceTotal) % 40;
-                for (int i=0; i<newPosn-1; i++) {
-                    p->moveForward(false);
-                }
-                p->moveForward(true);
-                
+                p->setPlayerPosn(newPosn);
+                cout << "You are now on " << b.getCell(newPosn)->getName() << endl;
+                b.getCell(newPosn)->notifyObservers();
+                b.getCell(newPosn)->event(p.get());
+
                 cout << b;
                 
             } else if (cmd == "next") {
@@ -84,11 +85,11 @@ int main(int argc, char *argv[]) {
                     cout << "Trade accepted!" << endl;
                     shared_ptr<Player> tradeTo = nullptr;
                     for (int i = 0; i < players.size(); i++) {
-                        if (players[i]->getPlayerName() == name) {
+                        if (players[i]->getName() == name) {
                             tradeTo = players[i];
                         }
                     }
-                    p->attemptTrade(tradeTo.get(), give, receive);
+                    //p->attemptTrade(tradeTo.get(), give, receive);
                 } else if (response == "reject") {
                     cout << "Trade rejected!" << endl;
                     continue;

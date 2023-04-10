@@ -101,12 +101,10 @@ void Board::initializeCells() {
     Cells.emplace_back(make_shared<NonOwnable>(*this, "COOP FEE", 38, 80, 46, false, OwnableType::Nonownable, 0));
     Cells.emplace_back(make_shared<Ownable>(*this, "DC", 39, 80, 51, true, OwnableType::Academic, 400));
     
-    for (int i = 0; i < 40; i++) {
-        Cells[i]->attach(td.get());
-        for (auto player : playerList) {
-            Cells[i]->attach(player.get());
-        }
-    }
+    for (int i=0; i<40; i++){
+		Cells[i]->attach(td);
+		Cells[i]->notifyObservers();
+	}
 }
 
 void Board::init() {
@@ -144,14 +142,6 @@ void Board::init() {
         shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), 1500, 0, 0);
         playerList.emplace_back(p);
     }
-
-    for (auto player : playerList) {
-        for (int i = 0; i<40; i++) {
-            player->attach(Cells[i].get());
-        }
-    }
-
-
     td->updatePlayerPosn(Cells[0]);
 }
 
@@ -178,7 +168,7 @@ void Board::saveGame(std::string f) {
     file.open(f);
     file << playerList.size() << endl;
     for (int i = 0; i < playerList.size(); i++) {
-        file << playerList[i]->getPlayerName() << " " << playerList[i]->getPieceName() << " " << playerList[i]->getMoney() << " " << playerList[i]->getPlayerPosn() << " " << playerList[i]->getRollRims() << endl;
+        file << playerList[i]->getName() << " " << playerList[i]->getPieceName() << " " << playerList[i]->getMoney() << " " << playerList[i]->getPlayerPosn() << " " << playerList[i]->getRollRims() << endl;
         // add if player in jail or not
         if (playerList[i]->getTimsJail()) {
             file << "true" << playerList[i]->getJailTurns() << endl;
@@ -234,11 +224,15 @@ void Board::loadGame(std::string f) {
                     Cells[k]->getOwnedBy() == p.get();
                     Cells[k]->getImproveCount() == improveLevel;
                     shared_ptr<Ownable> o = dynamic_pointer_cast<Ownable>(Cells[k]);
-                    p->addProperty(o);
+                    //p->addProperty(o);
                 }
             }
         }
     }
+}
+
+std::vector<std::shared_ptr<Cell>> Board::getCellList() {
+    return Cells;
 }
 
 ostream &operator<<(ostream &out, const Board &b) {
@@ -252,59 +246,59 @@ bool Board::isGameOver() {
     }
 }
 
-void Board::auction(std::string cellName) {
-    std::cout << "Auctioning " << cellName << std::endl;
-    std::vector<std::shared_ptr<Player>> pl = getPlayerList();
-    int numPlayers = pl.size();
-    int currentBid = 0;
-    int numBids = 0;
-    std::shared_ptr<Player> highestBidder = nullptr;
+// void Board::auction(std::string cellName) {
+//     std::cout << "Auctioning " << cellName << std::endl;
+//     std::vector<std::shared_ptr<Player>> pl = getPlayerList();
+//     int numPlayers = pl.size();
+//     int currentBid = 0;
+//     int numBids = 0;
+//     std::shared_ptr<Player> highestBidder = nullptr;
 
-    while (numPlayers > 1) {
-        std::shared_ptr<Player> currentBidder = pl[0];
-        cout << "Player " << currentBidder->getPlayerName() << ": Would you like to raise or withdraw? ";
-        string y;
-        if (!(cin >> y)) continue;
-        while (y != "raise" && y != "withdraw") {
-            cout << "Please enter a valid input!" << endl;
-            cin >> y;
-        }
-        if (y == "withdraw") {
-            pl.erase(pl.begin());
-            numPlayers--;
-        } else {
-            std::cout << currentBidder->getPlayerName() << ", enter your bid (just a number no dollar sign): ";
-            int bid;
-            std::cin >> bid;
-            if (bid < currentBid) {
-                std::cout << "Bid must be greater than the current bid of " << currentBid << std::endl;
-                continue;
-            }
-            currentBid = bid;
-            highestBidder = currentBidder;
-            numBids++;
-            pl.erase(pl.begin());
-            pl.push_back(currentBidder);
-        }
-    }
+//     while (numPlayers > 1) {
+//         std::shared_ptr<Player> currentBidder = pl[0];
+//         cout << "Player " << currentBidder->getPlayerName() << ": Would you like to raise or withdraw? ";
+//         string y;
+//         if (!(cin >> y)) continue;
+//         while (y != "raise" && y != "withdraw") {
+//             cout << "Please enter a valid input!" << endl;
+//             cin >> y;
+//         }
+//         if (y == "withdraw") {
+//             pl.erase(pl.begin());
+//             numPlayers--;
+//         } else {
+//             std::cout << currentBidder->getPlayerName() << ", enter your bid (just a number no dollar sign): ";
+//             int bid;
+//             std::cin >> bid;
+//             if (bid < currentBid) {
+//                 std::cout << "Bid must be greater than the current bid of " << currentBid << std::endl;
+//                 continue;
+//             }
+//             currentBid = bid;
+//             highestBidder = currentBidder;
+//             numBids++;
+//             pl.erase(pl.begin());
+//             pl.push_back(currentBidder);
+//         }
+//     }
 
-    if (numBids == 0) {
-        std::cout << "No one bid on " << cellName << std::endl;
-        return;
-    }
+//     if (numBids == 0) {
+//         std::cout << "No one bid on " << cellName << std::endl;
+//         return;
+//     }
 
-    std::cout << highestBidder->getPlayerName() << " won " << cellName << " for " << currentBid << std::endl;
+//     std::cout << highestBidder->getPlayerName() << " won " << cellName << " for " << currentBid << std::endl;
 
-    highestBidder->subFunds(currentBid);
+//     highestBidder->subFunds(currentBid);
 
-    shared_ptr<Ownable> c = nullptr;
-    for (int i = 0; i < Cells.size(); i++) {
-        if (Cells[i]->getName() == cellName) {
-            c = dynamic_pointer_cast<Ownable>(Cells[i]);
-        }
-    }
+//     shared_ptr<Ownable> c = nullptr;
+//     for (int i = 0; i < Cells.size(); i++) {
+//         if (Cells[i]->getName() == cellName) {
+//             c = dynamic_pointer_cast<Ownable>(Cells[i]);
+//         }
+//     }
 
-    highestBidder->addProperty(c);
+//     highestBidder->addProperty(c);
 
 
-}
+// }

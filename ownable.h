@@ -82,7 +82,9 @@ public:
     void payTuition(Player *p) ;
     void mortgage();
     void unMortgage();
-    void notify(Subject &whoFrom);
+    void buy(Player *p);
+    void auction();
+    void event(Player* p) override;
     void setOwner(Player *p);
     std::string getFacultyName(const std::string& buildingName);
 

@@ -28,6 +28,8 @@ int Cell::getPosn() {
     return posn;
 }
 
+void Cell::event(Player* p){}
+
 
 int Cell::getI() {
     return i;

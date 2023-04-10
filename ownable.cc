@@ -24,6 +24,35 @@ string Ownable::getFacultyName(const std::string& buildingName) {
 }
 
 
+void Ownable::buy(Player *p) {
+    if (p->getMoney() < price) {
+        cout << "Not enough funds" << endl;
+        return;
+    }
+    p->subFunds(getPrice());
+    setOwnedBy(p);
+    //p->addProperty(*this);
+    cout << "Bought " << getName() << " for " << price << endl;
+}
+
+void Ownable::auction() {
+    cout << "Auctioning " << getName() << endl;
+    int highestBid = 0;
+    Player *highestBidder = nullptr;
+    for (auto &player : board.getPlayerList()) {
+        if (player->getMoney() > highestBid) {
+            highestBid = player->getMoney();
+            highestBidder = player.get();
+        }
+    }
+    if (highestBidder) {
+        highestBidder->subFunds(highestBid);
+        setOwnedBy(highestBidder);
+        //highestBidder->addProperty(*this);
+        cout << "Auction won by " << highestBidder->getName() << " for " << highestBid << endl;
+    }
+}
+
 int Ownable::improvementCost() {
     if (otype != OwnableType::Academic) {
         return 0;
@@ -352,83 +381,35 @@ void Ownable::unMortgage() {
 
 
 
-void Ownable::notify(Subject &whoFrom) {
-    State state = *(whoFrom.getState());
-    StateType type = state.type;
-
-    cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
-    return;
+void Ownable::event(Player *p) {
     
-    // cellName != "" means notif directed for cell which is not the one Player is on, so gotta check if cellName matches.
-    if (!((state.cellName == this->name) || (state.playerPosn == this->posn))) {
-        return;
-    }
+    cout << "recieved notification. maybe intended for me idk. cellName: " << getName() << endl;
+    cout << "welcome to: " << getName() << endl;
 
-    // As cellName matches, means notif directed for this cell. 
-    switch (type)
-    {
-    case StateType::Purchase:
-        if (getOwnedBy() != nullptr) {
-            setSuccesful(false);
-            notifyObservers();
-            break;
+    if (getOwnedBy() != nullptr) {
+        cout << "owned by: " << getOwnedBy() << endl;
+        payTuition(p);
+    } else if (getOwnedBy() == nullptr && getPrice() > p->getMoney()) {
+        cout << "not owned by anyone, but you are broke" << endl;
+        auction();
+    } else if (getOwnedBy() == nullptr){
+        cout << "Do you want to buy this or not? (y/n)" << endl;
+        string input;
+        cin >> input;
+        if (input == "y") {
+            buy(p);
+        } else {
+            auction();
         }
-        setOwnedBy(state.newOwner);
-        setSuccesful(true);
-        notifyObservers();
-        break;
-    case StateType::Mortgage:
-        if (getMortgaged()) return;
-        if (getOwnedBy() != &whoFrom) return;
-        if (getName() != state.cellName) return;
 
-        mortgage();
-        break;
-    case StateType::Unmortgage:
-        if (getMortgaged()) return;
-        if (getOwnedBy() != &whoFrom) return;
-        if (getName() != state.cellName) return;
-
-        unMortgage();
-        break;
-    case StateType::SellTo:
-        // Fund transactions are handlded by player.cc
-        setOwnedBy(state.newOwner);
-        setSuccesful(true);
-        notifyObservers();
-        break;
-    case StateType::SellImprovement:
-        if (state.cellName != getName()) return;
-        if (otype != OwnableType::Academic) return;
-        
-        sellImprovement();
-        break;
-    case StateType::AddImprovement:
-        if (state.cellName != getName()) return;
-        if (otype != OwnableType::Academic) return;
-
-        buyImprovement();
-        break;
-    case StateType::Landed:
-        cout << "just recieved landed on Ownable cell: " << getName() << endl;
-        if (getOwnedBy() == nullptr) {
-            // Player now must decide whether to auction or purchase.
-            // Send notif back to player s they can decide.
-        } else if (getOwnedBy() != &whoFrom) {
-            Player *whoFromPlayer = dynamic_cast<Player *>(&whoFrom);
-            if (whoFromPlayer == nullptr) return;
-
-            payTuition(whoFromPlayer);
-        } // Else we own cell, nothing to do.
-        break;
-    case StateType::Move:
-        cout << "just moving across ownable cell with cellName: " << this->getName() << endl;
-        break;
-    default:
-        return;
+    } else {
+        cout << "you own this property" << endl;
     }
+        
 }
 
 void Ownable::setOwner(Player *p) {
     setOwnedBy(p);
 }
+
+

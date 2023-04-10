@@ -33,6 +33,7 @@ class Board {
     void addToTotalCups();
     void removeFromTotalCups();
     int getTotalCups();
+    std::vector<std::shared_ptr<Cell>> getCellList();
 
     void initializeCells();
     void init();
@@ -41,7 +42,7 @@ class Board {
     void saveGame(std::string f);
     std::string getWinner();
     bool isGameOver();
-    void auction(std::string cellName);
+    //void auction(std::string cellName);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 

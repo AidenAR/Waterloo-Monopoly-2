@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -g -Wall -MMD
-OBJECTS = main.o textdisplay.o board.o ownable.o player.o nonownable.o cell.o
+OBJECTS = main.o textdisplay.o board.o ownable.o player.o nonownable.o cell.o subject.o
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = watopoly
 

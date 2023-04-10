@@ -8,7 +8,7 @@ class State;
 class NonOwnable: public Cell {
     public:
         NonOwnable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
-        void notify(Subject &whoFrom);
+        void event(Player *p) override;
 };
 
 #endif

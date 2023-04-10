@@ -63,13 +63,16 @@ TextDisplay::TextDisplay(Board &board): board{board} {
     }
 }
 
-void TextDisplay::notify(Subject &whoFrom) {
+void TextDisplay::notify(shared_ptr<Subject> whoFrom) {
     cout << "textdisplay notified" << endl;
     // Assume that only cells notify us
-    Cell *whoFromCell = dynamic_cast<Cell*>(&whoFrom);
-    if (whoFromCell == nullptr) return;
-
-    string name = whoFromCell->getName();
+    shared_ptr<Cell> whoFromCell = nullptr;
+    string name = whoFrom->getName();
+    for (int i = 0; i < board.getCellList().size(); i++) {
+        if (board.getCellList()[i]->getName() == name) {
+            whoFromCell = board.getCellList()[i];
+        }
+    }
     int posn = whoFromCell->getPosn();
     int improveLevel = whoFromCell->getImproveCount();
     bool ownable = whoFromCell->getOwnable();
