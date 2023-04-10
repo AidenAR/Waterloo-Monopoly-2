@@ -23,15 +23,15 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
     int playersOnCell = 0;
     vector<char> players;
 
-    for (int i = 0; i < board.getCellList().size(); i++) {
-        if (board.getCellList()[i]->getPosn() != posn) {
-            for (int j = 0; j < board.getPlayerList().size(); j++) {
-                if (board.getPlayerList()[j]->getPlayerPosn() == posn) {
-                    theDisplay[board.getCellList()[i]->getJ()][board.getCellList()[i]->getI() + 1] = space;
-                }
-            }
-        }
-    }
+    // for (int i = 0; i < board.getCellList().size(); i++) {
+    //     if (board.getCellList()[i]->getPosn() != posn) {
+    //         for (int j = 0; j < board.getPlayerList().size(); j++) {
+    //             if (board.getPlayerList()[j]->getPlayerPosn() == posn) {
+    //                 theDisplay[board.getCellList()[i]->getJ()][board.getCellList()[i]->getI() + 1] = space;
+    //             }
+    //         }
+    //     }
+    // }
 
     for (int i = 0; i < board.getPlayerList().size(); i++) {
         if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
