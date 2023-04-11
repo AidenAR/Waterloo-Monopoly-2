@@ -76,6 +76,8 @@ void NonOwnable::event(Player *p) {
     } else if (name == "SLC") {
         p->addRollRims();
 
+        srand(time(0));
+
         int randNum = rand() % 24;
         
         // lmao these probabilities are fs way off but idc tbh
@@ -110,7 +112,7 @@ void NonOwnable::event(Player *p) {
     } else if (name == "NEEDLES HALL") {
         p->addRollRims();
         
-
+        srand(time(0));
         int randNum = rand() % 18;
         
         if (randNum < 1) {

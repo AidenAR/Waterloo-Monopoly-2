@@ -146,6 +146,7 @@ void Board::init() {
 }
 
 vector<int> Board::rollDice() {
+    srand(time(0));
     int dice1 = rand() % 6 + 1;
     int dice2 = rand() % 6 + 1;
     vector<int> dice;

@@ -353,8 +353,8 @@ void Player::freePlayerFromTimsJail() {
 
 
 void Player::printAssets() {
-    cout << "Total net worth: " << playerAssetsWorth() << endl;
     if (this->playerAssetsWorth() == 0) return;
+    cout << "Total net worth: " << playerAssetsWorth() << endl;
     cout << "Name: " << playerName << endl;
     cout << "Character: " << pieceName << endl;
     cout << "Money: $" << money << endl;
