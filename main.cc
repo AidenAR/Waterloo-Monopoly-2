@@ -24,10 +24,8 @@ int main(int argc, char *argv[]) {
         if (arg == "-testing") {
             testing = true;
         } else if (arg == "-load") {
-            if (argc == ++i) {
-                loadfile = argv[i];
-                cout << "loadFile = " << loadfile << endl;
-            }
+            loadfile = argv[i+1];
+            cout << "loadFile = " << loadfile << endl;
         } else if (arg == "./watopoly") {
             cout << "hooray welcome" << endl;
         } else {
