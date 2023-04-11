@@ -185,6 +185,7 @@ void Board::saveGame(std::string f) {
 }
 
 void Board::loadGame(std::string f) {
+    td = make_shared<TextDisplay>(this);
     ifstream saved(f);
     string line;
     getline(saved, line);
@@ -213,6 +214,7 @@ void Board::loadGame(std::string f) {
         istringstream iss3(line);
         int numProperties;
         iss3 >> numProperties;
+        initializeCells();
         for (int j = 0; j < numProperties; j++) {
             getline(saved, line);
             istringstream iss4(line);
@@ -225,9 +227,11 @@ void Board::loadGame(std::string f) {
                     Cells[k]->getImproveCount() == improveLevel;
                     Ownable *o = dynamic_cast<Ownable*>(Cells[k].get());
                     p->addProperty(o);
+                    Cells[i]->notifyObservers();
                 }
             }
         }
+        
     }
 }
 
