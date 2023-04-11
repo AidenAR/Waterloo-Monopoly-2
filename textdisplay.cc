@@ -39,7 +39,7 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
             playersOnCell++;
             cout << "entered if statement in updatePlayerPosn for updating display" << endl;
             cout << "player name: " << board.getPlayerList()[i]->getPieceName() << endl;
-            players.emplace_back(board.getPlayerList()[i]);
+            players.emplace_back(board.getPlayerList()[i].get());
         }
     }
     for (int i = 0; i < playersOnCell; i++) {
