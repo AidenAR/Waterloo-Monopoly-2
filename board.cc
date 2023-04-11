@@ -142,7 +142,7 @@ void Board::init() {
         shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), 1500, 0, 0);
         playerList.emplace_back(p);
     }
-    td->updatePlayerPosn(Cells[0].get());
+    td->updateBoard(Cells[0].get());
 }
 
 vector<int> Board::rollDice() {

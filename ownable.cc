@@ -70,6 +70,7 @@ void Ownable::auction() {
             cin >> response;
             if (response == "y") {
                 playerParticipation[i] = false;
+                i++;
                 continue;
             }
 
