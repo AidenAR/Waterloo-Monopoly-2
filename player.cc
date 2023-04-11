@@ -128,6 +128,21 @@ void Player::moveForward(int posn) {
 void Player::subFunds(int num) {
     money -= num;
     //TODO: should do bankruptin here if money<0
+    if (playerAssetsWorth() < abs(money)) {
+        cout << "you are too broke. you are bankrupt. byeee" << endl;
+        bankrupt();
+    } else {
+        cout << "raising money to avoid bankruptcy" << endl;
+        while (money < 0) {
+            Cell *poppedCell = getOwnedProperties()[getOwnedProperties().size()];
+            getOwnedProperties().pop_back();
+
+            cout << "Just sold the cell: " << poppedCell->getName() << " for " << poppedCell->getPrice() << endl;
+            poppedCell->setOwnedBy(nullptr);
+            addFunds(poppedCell->getPrice());
+        }
+    }
+
 }
 
 void  Player::addFunds(int num) {
