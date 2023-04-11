@@ -33,7 +33,12 @@ void TextDisplay::updateBoard(Cell *cell) {
         int playerPosn = board.getPlayerList()[i]->getPlayerPosn();
         int playerI = board.getCell(playerPosn)->getI();
         int playerJ = board.getCell(playerPosn)->getJ();
-        theDisplay2[playerJ][playerI + i + 1] = board.getPlayerList()[i]->getPieceName();
+        
+        if ((playerPosn < 10) || (playerPosn > 20 && playerPosn < 30)) {
+            theDisplay2[playerJ][playerI + i + 1] = board.getPlayerList()[i]->getPieceName();
+        } else {
+            theDisplay2[playerJ - 1][playerI + i + 1] = board.getPlayerList()[i]->getPieceName();
+        }
     }
 
     for (int i = 0; i < board.getCellList().size(); i++) {

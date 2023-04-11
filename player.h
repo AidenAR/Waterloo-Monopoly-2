@@ -78,6 +78,7 @@ public:
     int getJailTurns();
     void TimsJailTurns(); // Handles jail rolls as well as jail turn
 
+    int getLastPosn();
     int getNumGyms();
     int getNumResidences();
     std::vector<Cell *> getOwnedProperties();

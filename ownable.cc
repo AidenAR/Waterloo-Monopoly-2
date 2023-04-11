@@ -182,8 +182,8 @@ void Ownable::payTuition(Player *p) {
                 owner->addFunds((std::get<3>(building)) * 2);
                 p->subFunds((std::get<3>(building)) * 2);
                 if (p->getMoney() < 0) {
-                    //TODO p->setIsBankrupt(true);
-                    //.......what happens after call fn
+                    // TODO dont bankrupt, option ot raise!
+                    p->bankrupt();
                 }
             } else {
                 auto building = academic_buildings.find(cName)->second;
@@ -215,8 +215,7 @@ void Ownable::payTuition(Player *p) {
                 //make call to Bankrupt
                 //Hassan pls
                 if (p->getMoney() < 0) {
-                    //p->setIsBankrupt(true);
-                    //.......what happens after call fn
+                    p->bankrupt();
                 }
             }
         } else {
@@ -236,28 +235,28 @@ void Ownable::payTuition(Player *p) {
             owner->addFunds(oneResRent);
             p->subFunds(oneResRent);
             if (p->getMoney() < 0) {
-                // p->setIsBankrupt(true);
+                p->bankrupt();
             }
         } else if (numResOwned == 2) {
             cout << "Rent to be paid:$ " << twoResRent << endl;
             owner->addFunds(twoResRent);
             p->subFunds(twoResRent);
             if (p->getMoney() < 0) {
-                // p->setIsBankrupt(true);
+                p->bankrupt();
             }
         } else if (numResOwned == 3) {
             cout << "Rent to be paid:$ " << threeResRent << endl;
             owner->addFunds(threeResRent);
             p->subFunds(threeResRent);
             if (p->getMoney() < 0) {
-                // p->setIsBankrupt(true);
+                p->bankrupt();
             }
         } else if (numResOwned == 4) {
             cout << "Rent to be paid:$ " << fourResRent << endl;
             owner->addFunds(fourResRent);
             p->subFunds(fourResRent);
             if (p->getMoney() < 0) {
-                // p->setIsBankrupt(true);
+                p->bankrupt();
             }
         }
         
@@ -276,7 +275,7 @@ void Ownable::payTuition(Player *p) {
             getOwnedBy()->addFunds(membership);
             p->subFunds(membership);
             if (p->getMoney() < 0) {
-                // TODO p->setIsBankrupt(true);
+                p->bankrupt();
             }
         } else if (numGymsOwned == 2) {
             int die1 = board.rollDice()[0];
@@ -287,7 +286,7 @@ void Ownable::payTuition(Player *p) {
             getOwnedBy()->addFunds(membershipTwo);
             p->subFunds(membershipTwo);
             if (p->getMoney() < 0) {
-                //TODO p->setIsBankrupt(true);
+                p->bankrupt();
             }
         }
     } else {

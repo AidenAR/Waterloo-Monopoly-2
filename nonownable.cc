@@ -9,8 +9,11 @@ NonOwnable::NonOwnable(Board &board, std::string name, int posn, int i, int j, b
     Cell(board, name, posn, i, j, ownable, otype, price) {}
 
 void NonOwnable::event(Player *p) {
+
+    if (p->getLastPosn() > p->getPlayerPosn())
     if (name == "COLLECT OSAP") {
-            p->addFunds(200);
+        cout << "You collected OSAP! Recieved 200" << endl;
+        p->addFunds(200);
     } else if (name == "DC Tims Line") {
         if (p->getTimsJail()) {
             if (p->getRollRims() > 0) {

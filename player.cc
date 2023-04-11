@@ -121,7 +121,8 @@ void Player::subtractRollRims() {
 // This will notify all observers that Player is moving forward by 1 (Move notif). 
 // On the 5th moving, specify that player has landed on that spot with landed=true (Landed notif).
 void Player::moveForward(int posn) {
-    playerPosn += posn;
+    lastPosn = playerPosn;
+    playerPosn = (playerPosn + posn) % 40;
 }
 
 void Player::subFunds(int num) {
@@ -142,8 +143,29 @@ Cell *Player::findCell(Cell *cell) {
     return nullptr;
 }
 
-void Player::bankrupt() {
+int Player::getLastPosn() {
+    return lastPosn;
+}
 
+void Player::bankrupt() {
+    isBankrupt = true;
+    money = 0;
+    for (auto &property : ownedProperties) {
+        property->setOwnedBy(nullptr);
+    }
+    ownedProperties.clear();
+    numGyms = 0;
+    numResidences = 0;
+    rollRims = 0;
+    timsJail = false;
+    jailTurns = 0;
+    jailRolls.clear();
+    for (int i = 0; i < board->getPlayerList().size(); i++) {
+        if (board->getPlayerList()[i]->getName() == playerName) {
+            board->getPlayerList().erase(board->getPlayerList().begin() + i);
+        }
+    }
+    notifyObservers();
 }
 
 // As this is a Player, we will only be notified by Cells, so Cells contain data with their Info attribute; use Info accessors.

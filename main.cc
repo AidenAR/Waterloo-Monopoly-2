@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
             } else if (cmd == "assets") {
                 p->printAssets();
             } else if (cmd == "bankrupt") {
-                // TODO p->bankrupt();
+                p->bankrupt();
             } else if (cmd == "all") {
                 for (int i = 0; i < b.getPlayerList().size(); i++) {
                     b.getPlayerList()[i]->printAssets();
