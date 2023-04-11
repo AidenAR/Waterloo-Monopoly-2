@@ -68,7 +68,6 @@ public:
     int getMoney();
     int getPlayerPosn();
     void setPlayerPosn(int newPosn);
-    int getLastPosn();
 
     // Tims jail related
     int getRollRims();

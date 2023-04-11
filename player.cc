@@ -23,7 +23,7 @@ Player::Player(Board *board, string playerName, char pieceName, int money, int r
     playerName{playerName}, pieceName{pieceName},
     money{money}, rollRims{rollRims},
     playerPosn{playerPosn}, numGyms{0}, numResidences{0},
-    jailTurns{0}, timsJail{false}, lastPosn{playerPosn} {
+    jailTurns{0}, timsJail{false} {
     vector<int> jailRolls{0};
 }
 
@@ -52,7 +52,6 @@ int Player::getRollRims() {
 }
 
 void Player::setPlayerPosn(int newPosn) {
-    lastPosn = playerPosn;
     playerPosn = newPosn;
 }
 

@@ -48,22 +48,7 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
         cout << "cordJ = " << cordJ << endl;
         cout << "i = " << i << endl;
         theDisplay[cordJ][cordI + i + 1] = players[i]->getPieceName();
-    
-        lastCellOn = board.getCellList()[players[i]->getLastPosn()].get();
-
-        for (int i=lastCellOn->getI(); i< lastCellOn->getI() + 7; i++) {
-            if (theDisplay[lastCellOn->getJ()][lastCellOn->getI() + i + 1] = players[i]->getPieceName()) {
-                theDisplay[lastCellOn->getJ()][lastCellOn->getI() + i + 1] = space;
-                break;
-            }
-        }
-        ;
     }
-
-
-
-
-
 }
 
 void TextDisplay::updateImprovement(Cell *cell) {
