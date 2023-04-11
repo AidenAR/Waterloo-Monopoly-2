@@ -162,7 +162,7 @@ void Player::bankrupt() {
     jailRolls.clear();
     for (int i = 0; i < board->getPlayerList().size(); i++) {
         if (board->getPlayerList()[i]->getName() == playerName) {
-            board->getPlayerList().erase(board->getPlayerList().begin() + i);
+            board->getPlayerList()[i] == nullptr;
         }
     }
     notifyObservers();
