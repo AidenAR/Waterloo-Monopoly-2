@@ -129,14 +129,14 @@ void Board::init() {
         cout << "What is the name of player" << i << "?" << endl;
         cin >> name;
         cout << "What is the piece of player" << i << "?" << endl;
-        cin >> piece;
+        std::getline(std::cin, piece);
         while (!findinVector(pieceList, piece)) {
             cout << "Please enter a valid piece!" << endl;
-            cin >> piece;
+            std::getline(std::cin, piece);
         }
         while(findinVector(chosenPieces, piece)) {
             cout << piece << " has already been choesen, please select a different piece!" << endl;
-            cin >> piece;
+            std::getline(std::cin, piece);
         }
         chosenPieces.emplace_back(piece);
         shared_ptr<Player> p = make_shared<Player>(this, name, pieceSymbol(piece), 1500, 0, 0);

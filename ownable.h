@@ -84,7 +84,7 @@ public:
     void payTuition(Player *p) ;
     void mortgage();
     void unMortgage();
-    void buy(Player *p);
+    void buy(Player *p, int newPrice = -1);
     void auction();
     void event(Player* p) override;
     void setOwner(Player *p);

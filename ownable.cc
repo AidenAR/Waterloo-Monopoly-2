@@ -24,15 +24,17 @@ string Ownable::getFacultyName(const std::string& buildingName) {
 }
 
 
-void Ownable::buy(Player *p) {
-    if (p->getMoney() < price) {
+void Ownable::buy(Player *p, int newPrice) {
+    int tempPrice = newPrice == -1 ? price : newPrice;
+
+    if (p->getMoney() < tempPrice) {
         cout << "Not enough funds" << endl;
         return;
     }
-    p->subFunds(getPrice());
+    p->subFunds(tempPrice);
     setOwnedBy(p);
     p->addProperty(this);
-    cout << "Bought " << getName() << " for " << price << endl;
+    cout << "Bought " << getName() << " for " << tempPrice << endl;
 }
 
 bool Ownable::singleBool(vector<bool> b) {
@@ -66,7 +68,7 @@ void Ownable::auction() {
                 continue;
             }
             string response;
-            cout << "wanna drop tf out? type 'y' if u do, else type something else" << endl;
+            cout << "Player: " << player->getName() << ", wanna drop  out? type 'y' if u do, else type something else" << endl;
             cin >> response;
             if (response == "y") {
                 playerParticipation[i] = false;
