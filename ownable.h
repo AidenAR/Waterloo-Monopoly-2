@@ -74,6 +74,8 @@ protected:
     const int oneGym = 4;
     const int twoGym = 10;
 
+    bool singleBool(std::vector<bool> b);
+
 public:
     Ownable(Board &board, std::string name, int posn, int i, int j, bool ownable, OwnableType otype, int price);
     int improvementCost();

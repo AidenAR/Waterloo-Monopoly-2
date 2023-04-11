@@ -21,7 +21,6 @@ class Board;
 
 class Player : public Subject {
     char pieceName;
-    const int startingMoney = 1500;
     std::string playerName;
     int money;
     int playerPosn;
@@ -33,6 +32,7 @@ class Player : public Subject {
     int jailTurns;
     bool isBankrupt = false;
     std::vector<int> jailRolls;
+    int lastPosn;
 
     // When we call notifyObservers() but need the respective cell which responded, we store it here.
     // Generally, should be used to add to list of ownedProprties and look at its Info object for making desicions.
@@ -68,6 +68,7 @@ public:
     int getMoney();
     int getPlayerPosn();
     void setPlayerPosn(int newPosn);
+    int getLastPosn();
 
     // Tims jail related
     int getRollRims();
@@ -81,6 +82,8 @@ public:
     int getNumGyms();
     int getNumResidences();
     std::vector<Cell *> getOwnedProperties();
+
+    void bankrupt();
     
     
     void setTimsJail(bool j);
@@ -100,6 +103,7 @@ public:
     // void attemptMortgage(std::string cellname);
     // void attemptUnmortgage(std::string cellname);
     
+    // Money related
     void addFunds(int num);
     void subFunds(int num);
     void printAssets();
@@ -108,6 +112,7 @@ public:
     int playerAssetsWorth(); //Deals with bankrupt
     void partMonopoly();
     
+    // Property related
     void addProperty(Cell *c);
     void setJailTurns(int j);
     void TimsJailCell(Player& p);

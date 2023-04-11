@@ -21,7 +21,8 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
     int cordJ = cell->getJ();
     int posn = cell->getPosn();
     int playersOnCell = 0;
-    vector<char> players;
+    Cell *lastCellOn;
+    vector<Player *> players;
 
     // for (int i = 0; i < board.getCellList().size(); i++) {
     //     if (board.getCellList()[i]->getPosn() != posn) {
@@ -38,7 +39,7 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
             playersOnCell++;
             cout << "entered if statement in updatePlayerPosn for updating display" << endl;
             cout << "player name: " << board.getPlayerList()[i]->getPieceName() << endl;
-            players.emplace_back(board.getPlayerList()[i]->getPieceName());
+            players.emplace_back(board.getPlayerList()[i]);
         }
     }
     for (int i = 0; i < playersOnCell; i++) {
@@ -46,8 +47,23 @@ void TextDisplay::updatePlayerPosn(Cell *cell) {
         cout << "cordI + i + 1 = " << cordI + i + 1 << endl;
         cout << "cordJ = " << cordJ << endl;
         cout << "i = " << i << endl;
-        theDisplay[cordJ][cordI + i + 1] = players[i];
+        theDisplay[cordJ][cordI + i + 1] = players[i]->getPieceName();
+    
+        lastCellOn = board.getCellList()[players[i]->getLastPosn()].get();
+
+        for (int i=lastCellOn->getI(); i< lastCellOn->getI() + 7; i++) {
+            if (theDisplay[lastCellOn->getJ()][lastCellOn->getI() + i + 1] = players[i]->getPieceName()) {
+                theDisplay[lastCellOn->getJ()][lastCellOn->getI() + i + 1] = space;
+                break;
+            }
+        }
+        ;
     }
+
+
+
+
+
 }
 
 void TextDisplay::updateImprovement(Cell *cell) {
@@ -77,25 +93,21 @@ TextDisplay::TextDisplay(Board &board): board{board} {
 void TextDisplay::notify(Subject *whoFrom) {
     cout << "textdisplay notified" << endl;
     // Assume that only cells notify us
-    Cell *whoFromCell = nullptr;
-    string name = whoFrom->getName();
-    for (int i = 0; i < board.getCellList().size(); i++) {
-        if (board.getCellList()[i]->getName() == name) {
-            whoFromCell = board.getCellList()[i].get();
-        }
-    }
+    Cell *whoFromCell = dynamic_cast<Cell *>(whoFrom);
+    string name = whoFromCell->getName();
+    
     int posn = whoFromCell->getPosn();
     int improveLevel = whoFromCell->getImproveCount();
     bool ownable = whoFromCell->getOwnable();
-    Cell *cell = board.getCell(posn);
+    
     // iteratre through players and find the player that is on the cell that notified
     for (int i = 0; i < board.getPlayerList().size(); i++) {
         if (board.getPlayerList()[i]->getPlayerPosn() == posn) {
-            updatePlayerPosn(cell);
+            updatePlayerPosn(whoFromCell);
         }
     }
     if (ownable && improveLevel > 0) {
-        updateImprovement(cell);
+        updateImprovement(whoFromCell);
     }
 }
 

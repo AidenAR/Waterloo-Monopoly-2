@@ -35,20 +35,64 @@ void Ownable::buy(Player *p) {
     cout << "Bought " << getName() << " for " << price << endl;
 }
 
-void Ownable::auction() {
-    cout << "Auctioning " << getName() << endl;
-    int highestBid = 0;
-    Player *highestBidder = nullptr;
-    for (auto &player : board.getPlayerList()) {
-        if (player->getMoney() > highestBid) {
-            highestBid = player->getMoney();
-            highestBidder = player.get();
+bool Ownable::singleBool(vector<bool> b) {
+    int num = 0;
+    for (int i = 0; i < b.size(); i++) {
+        if (b[i]) {
+            num++;
         }
     }
+    if (num > 1) {
+        return false;
+    }
+    return true;
+}
+
+void Ownable::auction() {
+    cout << "Auctioning " << getName() << endl;
+    
+    int highestBid = 0;
+    vector<bool> playerParticipation;
+    for (auto &p : board.getPlayerList()) {
+        playerParticipation.emplace_back(true);
+    }
+
+    Player *highestBidder = nullptr;
+    int i = 0;
+    while (!singleBool(playerParticipation)) {
+        for (auto &player : board.getPlayerList()) {
+            if (!playerParticipation[i]) {
+                i++;
+                continue;
+            }
+            string response;
+            cout << "wanna drop tf out? type 'y' if u do, else type something else" << endl;
+            cin >> response;
+            if (response == "y") {
+                playerParticipation[i] = false;
+                continue;
+            }
+
+            if (player->getMoney() > highestBid) {
+                int bid;
+                cout << "How much would you like to bid, " << player->getName() << "?" << endl;
+                while (cin >> bid) {
+                    if (bid > highestBid) highestBidder = player.get();
+                    break;
+                }
+            }
+
+            i++;
+        }
+    }
+    
+
+    // int i = 0;
+    // P
+    
+
     if (highestBidder) {
-        highestBidder->subFunds(highestBid);
-        setOwnedBy(highestBidder);
-        //highestBidder->addProperty(*this);
+        buy(highestBidder);
         cout << "Auction won by " << highestBidder->getName() << " for " << highestBid << endl;
     }
 }
@@ -394,12 +438,17 @@ void Ownable::event(Player *p) {
         cout << "Do you want to buy this or not? (y/n)" << endl;
         string input;
         cin >> input;
-        if (input == "y") {
-            buy(p);
-        } else {
-            auction();
+        while (true) {
+            if (input == "y") {
+                buy(p);
+                break;
+            } else if (input == "n") {
+                auction();
+                break;
+            } else {
+                cout << "Plase enter either 'y' or 'n'" << endl;
+            }
         }
-
     } else {
         cout << "you own this property" << endl;
     }
