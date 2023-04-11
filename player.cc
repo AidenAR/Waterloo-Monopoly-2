@@ -77,12 +77,6 @@ vector<Cell *> Player::getOwnedProperties() {
     return ownedProperties;
 }
 
-
-int Player::getLastPosn() {
-    return lastPosn;
-}
-
-
 void Player::addRollRims() {
     //Get that 1% chance
     int add_cup = rand() % 100 + 1;
