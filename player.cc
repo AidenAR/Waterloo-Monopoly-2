@@ -649,8 +649,11 @@ void Player::moneyTransfer(Player *to, int amount) {
 }
 
 void Player::propertyTransfer(Player *to, Cell *c) {
-    auto it = findCell(c);
-    //ownedProperties.erase(it);
+    for (int i=0; i<ownedProperties.size(); i++) {
+        if (ownedProperties[i] == c) {
+            ownedProperties.erase(ownedProperties.begin() + i);
+        }
+    }
     to->ownedProperties.emplace_back(c);
     c->setOwnedBy(to);
 }

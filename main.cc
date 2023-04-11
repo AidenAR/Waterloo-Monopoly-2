@@ -27,15 +27,22 @@ int main(int argc, char *argv[]) {
             if (argc == ++i) {
                 loadfile = argv[i];
             }
+        } else if (arg == "./watopoly") {
+            cout << "hooray welcome" << endl;
         } else {
             cout << "invalid arguments" << endl;
         }
 
     }
     cout << "Welcome to the game!" << endl;
-    if (argc == 2) {
+    if (loadfile == "") {
         b.init();
-        cout << b;
+        
+    } else if (loadfile != "") {
+        b.loadGame(loadfile);
+    }
+    
+    cout << b;
 
         int currentPlayer = 0;
         while(!b.isGameOver()) {
@@ -196,9 +203,6 @@ int main(int argc, char *argv[]) {
                 cout << "Invalid command, please enter a valid command." << endl;
             }
         }
-    } else if (loadfile != "") {
-        b.loadGame(loadfile);
-    }
-    
+
     cout << b;
 }

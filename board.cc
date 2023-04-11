@@ -224,7 +224,7 @@ void Board::loadGame(std::string f) {
                     Cells[k]->getOwnedBy() == p.get();
                     Cells[k]->getImproveCount() == improveLevel;
                     Ownable *o = dynamic_cast<Ownable*>(Cells[k].get());
-                    //p->addProperty(o);
+                    p->addProperty(o);
                 }
             }
         }
